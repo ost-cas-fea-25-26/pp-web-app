@@ -1,7 +1,9 @@
-import {Button} from "@ost-cas-fea-25-26/pp-design-system";
+import { Button } from "@ost-cas-fea-25-26/pp-design-system";
 
 export default function Home() {
-  return <div>Lets go team Put & Push!
-  <Button variant='outline'>hello button</Button>
-  </div>;
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center p-24">
+      <Button variant="destructive">Hello Button</Button>
+    </div>
+  );
 }

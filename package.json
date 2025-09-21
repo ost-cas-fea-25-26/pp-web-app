@@ -1,5 +1,5 @@
 {
-  "name": "pp-web-app",
+  "name": "@ost-cas-fea-25-26/pp-web-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,24 +15,25 @@
     "node": "^22.0.0"
   },
   "dependencies": {
-    "@ost-cas-fea-25-26/pp-design-system": "^1.7.0",
+    "@ost-cas-fea-25-26/pp-design-system": "^1.11.1",
     "next": "^15.4.6",
-    "postcss": "^8.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@smartive/eslint-config": "^6.4.0",
     "@smartive/prettier-config": "^3.1.2",
-    "@tailwindcss/postcss": "^4.1.5",
+    "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.0.0",
     "knip": "^5.30.5",
+    "postcss": "^8.5.6",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.5",
+    "tailwindcss": "^4.1.13",
     "typescript": "^5.5.3"
   }
 }
