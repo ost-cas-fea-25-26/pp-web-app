@@ -6,19 +6,26 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "check:unused": "knip",
+    "check:unused": "knip --config knip.config.ts",
     "type-check": "tsc --noEmit",
-    "lint": "next typegen && eslint src --ext .ts,.tsx && npm run type-check && npm run check:unused",
-    "format": "prettier --write ."
+    "lint": "eslint src --ext .ts,.tsx && npm run type-check && npm run check:unused",
+    "lint:fix": "eslint src --ext .ts,.tsx --fix && npm run format",
+    "format": "prettier --write .",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest run --coverage"
   },
   "engines": {
     "node": "^22.0.0"
   },
   "dependencies": {
     "@ost-cas-fea-25-26/pp-design-system": "^2.13.0",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
     "next": "^15.4.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-intersection-observer": "^10.0.0",
+    "vitest": "^4.0.9"
   },
   "devDependencies": {
     "@smartive/eslint-config": "^6.4.0",
@@ -27,8 +34,11 @@
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.1.1",
+    "@vitest/coverage-v8": "^4.0.9",
     "eslint": "^9.0.0",
     "eslint-config-next": "^15.0.0",
+    "happy-dom": "^20.0.10",
     "knip": "^5.30.5",
     "postcss": "^8.5.6",
     "prettier": "^3.3.3",

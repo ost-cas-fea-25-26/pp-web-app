@@ -1,0 +1,55 @@
+name: "🛡️ Quality Check"
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+      - "gh-readonly-queue/**"
+
+jobs:
+  lint:
+    name: "✨ Lint"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run lint
+
+  test:
+    name: "🧪 Unit Test + Coverage"
+    runs-on: ubuntu-latest
+    outputs:
+      coverage: ${{ steps.coverage.outputs.path }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run test:unit:coverage
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v5
+        with:
+          name: coverage-report
+          path: coverage
+          if-no-files-found: error
+
+  build_test:
+    name: "🏗️ Build Test"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm run build
