@@ -7,7 +7,6 @@ const config = [
     settings: {
       react: { version: "detect" },
 
-      // 🔥 FIX: add TypeScript + Node resolver
       "import/resolver": {
         typescript: {
           project: "./tsconfig.json",
