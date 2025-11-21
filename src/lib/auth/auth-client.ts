@@ -9,7 +9,8 @@ export const baseURL =
 export const CUSTOM_PROVIDER_ID = "zitadel";
 
 const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_NEXT_URL ?? "http://localhost:3000",
+  baseURL: baseURL,
+  trustedOrigins: [baseURL],
   plugins: [genericOAuthClient()],
 });
 
