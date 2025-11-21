@@ -6,7 +6,7 @@ export class HttpClient {
 
   constructor(baseUrl?: string) {
     if (!baseUrl) {
-      throw new Error("API_URL is missing.");
+      throw new Error("QWACKER_API_URL is missing.");
     }
 
     this.baseUrl = baseUrl;
