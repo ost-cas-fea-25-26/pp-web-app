@@ -32,7 +32,7 @@ export const auth = betterAuth({
       config: [
         {
           providerId: CUSTOM_PROVIDER_ID,
-          clientId: "243151322562550215@mumble_auth_demo", //todo use our own id here: 346952796513305146
+          clientId: "346952796513305146",
           clientSecret: "", // PKCE doesn't require client secret
           discoveryUrl:
             "https://cas-fee-adv-ed1ide.zitadel.cloud/.well-known/openid-configuration",
