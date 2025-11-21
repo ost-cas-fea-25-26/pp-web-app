@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npm run auth:prepare",
+    "predev": "npm run auth:migrate:local",
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
+    "build": "npm run auth:migrate:deploy && next build --turbopack",
     "start": "next start",
     "check:unused": "knip --config knip.config.ts",
     "type-check": "tsc --noEmit",
@@ -14,10 +14,10 @@
     "format": "prettier --write .",
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest run --coverage",
-    "auth:check-db": "docker compose up -d postgres && until pg_isready -h localhost -p 5432; do sleep 1; done",
-    "auth:migrate": "npm run auth:check-db && npx @better-auth/cli migrate --config src/lib/auth/auth.ts",
-    "auth:generate": "npm run auth:check-db && npx @better-auth/cli generate --config src/lib/auth/auth.ts",
-    "auth:prepare": "npm run auth:migrate"
+    "db:init:local": "docker compose up -d postgres && until pg_isready -h localhost -p 5432; do sleep 1; done",
+    "auth:migrate:local": "npm run db:init:local && npx @better-auth/cli migrate --config src/lib/auth/auth.ts",
+    "auth:generate:local": "npm run db:init:local && npx @better-auth/cli generate --config src/lib/auth/auth.ts",
+    "auth:migrate:deploy": "npx @better-auth/cli migrate --config src/lib/auth/auth.ts"
   },
   "engines": {
     "node": "^22.0.0"
