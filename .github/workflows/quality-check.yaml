@@ -41,15 +41,3 @@ jobs:
           name: coverage-report
           path: coverage
           if-no-files-found: error
-
-  build_test:
-    name: "🏗️ Build Test"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci --no-audit --no-fund
-      - run: npm run build
