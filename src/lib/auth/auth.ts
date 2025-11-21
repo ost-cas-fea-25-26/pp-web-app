@@ -6,15 +6,17 @@ import { cache } from "react";
 import { baseURL, CUSTOM_PROVIDER_ID } from "./auth-client";
 import { Pool } from "pg";
 
-const NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
+const NEON_DATABASE_URL_UNPOOLED = process.env.NEON_DATABASE_URL_UNPOOLED;
 
-if (!NEON_DATABASE_URL) {
-  throw new Error("NEON_DATABASE_URL is not defined in environment variables");
+if (!NEON_DATABASE_URL_UNPOOLED) {
+  throw new Error(
+    "NEON_DATABASE_URL_UNPOOLED is not defined in environment variables"
+  );
 }
 
 export const auth = betterAuth({
   database: new Pool({
-    connectionString: NEON_DATABASE_URL,
+    connectionString: NEON_DATABASE_URL_UNPOOLED,
   }),
   baseURL,
   trustedOrigins: [baseURL],
