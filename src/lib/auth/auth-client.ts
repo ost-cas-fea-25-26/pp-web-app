@@ -13,7 +13,7 @@ const authClient = createAuthClient({
   plugins: [genericOAuthClient()],
 });
 
-export const { signIn, signOut, useSession } = authClient;
+export const { signIn, signOut } = authClient;
 
 export const signinZitadel = async () => {
   await signIn.oauth2({

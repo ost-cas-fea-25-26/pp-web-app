@@ -10,7 +10,6 @@ const config: KnipConfig = {
     // temporarily unused deps
     "@testing-library/jest-dom",
     "@testing-library/react",
-    "react-intersection-observer",
   ],
 };
 
