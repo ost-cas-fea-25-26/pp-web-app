@@ -17,7 +17,8 @@
     "db:init:local": "docker compose up -d postgres && until pg_isready -h localhost -p 5432; do sleep 1; done",
     "auth:migrate:local": "npm run db:init:local && npx @better-auth/cli migrate --config src/lib/auth/auth.ts",
     "auth:generate:local": "npm run db:init:local && npx @better-auth/cli generate --config src/lib/auth/auth.ts",
-    "auth:migrate:deploy": "npx @better-auth/cli migrate --yes --config src/lib/auth/auth.ts"
+    "auth:migrate:deploy": "npx @better-auth/cli migrate --yes --config src/lib/auth/auth.ts",
+    "link:design-system:local": "cd ../pp-design-system && npm run build:lib && FILE=$(npm pack | tail -n 1) && cd ../pp-web-app && npm install ../pp-design-system/$FILE"
   },
   "engines": {
     "node": "^22.0.0"
