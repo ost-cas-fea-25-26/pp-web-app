@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pp-user
+      POSTGRES_PASSWORD: pp-password
+      POSTGRES_DB: pp-database
+      TZ: "Europe/Zurich"
+      PGTZ: "Europe/Zurich"

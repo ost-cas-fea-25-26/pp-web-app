@@ -1,3 +1,5 @@
+import type { PaginatedResponse } from "../common/common.types";
+
 type BasePost = {
   id: string;
   creator: string;
@@ -8,7 +10,7 @@ type BasePost = {
   likedByUser: boolean;
 };
 
-type Post = BasePost & {
+export type Post = BasePost & {
   type: "post";
   replyCount: number;
 };
@@ -31,4 +33,6 @@ type DeletedPost = {
   replyCount?: number;
 };
 
-export type PostResult = Post | Reply | DeletedPost;
+type PostListItem = Post | Reply | DeletedPost;
+
+export type PostListResponse = PaginatedResponse<PostListItem>;
