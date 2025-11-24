@@ -3,7 +3,7 @@ import { nextCookies } from "better-auth/next-js";
 import { genericOAuth } from "better-auth/plugins";
 import { headers } from "next/headers";
 import { cache } from "react";
-import { baseURL, CUSTOM_PROVIDER_ID } from "./auth-client";
+import { CUSTOM_PROVIDER_ID } from "./auth-client";
 import { Pool } from "pg";
 
 const NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
@@ -12,12 +12,15 @@ if (!NEON_DATABASE_URL) {
   throw new Error("NEON_DATABASE_URL is not defined in environment variables");
 }
 
+const baseUrl = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : "http://localhost:3000";
+
 export const auth = betterAuth({
   database: new Pool({
     connectionString: NEON_DATABASE_URL,
   }),
-  baseURL,
-  trustedOrigins: [baseURL],
+  baseUrl,
   session: {
     expiresIn: 60 * 60 * 12, // 12 hours
     updateAge: 60 * 60 * 12, // 12 hours
