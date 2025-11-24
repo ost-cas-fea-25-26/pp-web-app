@@ -5,22 +5,13 @@ import { headers } from "next/headers";
 import { cache } from "react";
 import { CUSTOM_PROVIDER_ID } from "./auth-client";
 import { Pool } from "pg";
-
-const NEON_DATABASE_URL = process.env.NEON_DATABASE_URL;
-
-if (!NEON_DATABASE_URL) {
-  throw new Error("NEON_DATABASE_URL is not defined in environment variables");
-}
-
-const baseUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+import { requireEnv } from "../utils";
 
 export const auth = betterAuth({
   database: new Pool({
-    connectionString: NEON_DATABASE_URL,
+    connectionString: requireEnv("NEON_DATABASE_URL"),
   }),
-  baseUrl,
+  baseUrl: requireEnv("VERCEL_URL"),
   session: {
     expiresIn: 60 * 60 * 12, // 12 hours
     updateAge: 60 * 60 * 12, // 12 hours
@@ -35,7 +26,7 @@ export const auth = betterAuth({
       config: [
         {
           providerId: CUSTOM_PROVIDER_ID,
-          clientId: "346952796513305146",
+          clientId: requireEnv("AUTH_CLIENT_ID"),
           clientSecret: "", // PKCE doesn't require client secret
           discoveryUrl:
             "https://cas-fee-adv-ed1ide.zitadel.cloud/.well-known/openid-configuration",
@@ -50,7 +41,7 @@ export const auth = betterAuth({
       ],
     }),
   ],
-  secret: process.env.AUTH_SECRET ?? "this-is-very-secret",
+  secret: requireEnv("AUTH_SECRET"),
   advanced: {
     useSecureCookies: process.env.NODE_ENV === "production",
     cookiePrefix: "better-auth",
