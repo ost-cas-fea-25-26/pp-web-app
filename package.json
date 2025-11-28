@@ -14,16 +14,17 @@
     "format": "prettier --write .",
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest run --coverage",
-    "db:init:local": "docker compose up -d postgres && until pg_isready -h localhost -p 5432; do sleep 1; done",
+    "db:init:local": "docker compose up -d postgres",
     "auth:migrate:local": "npm run db:init:local && npx @better-auth/cli migrate --config src/lib/auth/auth.ts",
     "auth:generate:local": "npm run db:init:local && npx @better-auth/cli generate --config src/lib/auth/auth.ts",
-    "auth:migrate:deploy": "npx @better-auth/cli migrate --yes --config src/lib/auth/auth.ts"
+    "auth:migrate:deploy": "npx @better-auth/cli migrate --yes --config src/lib/auth/auth.ts",
+    "link:design-system:local": "cd ../pp-design-system && npm run build:lib && FILE=$(npm pack | tail -n 1) && cd ../pp-web-app && npm install ../pp-design-system/$FILE"
   },
   "engines": {
     "node": "^22.0.0"
   },
   "dependencies": {
-    "@ost-cas-fea-25-26/pp-design-system": "^2.16.1",
+    "@ost-cas-fea-25-26/pp-design-system": "^2.17.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "better-auth": "^1.4.3",
