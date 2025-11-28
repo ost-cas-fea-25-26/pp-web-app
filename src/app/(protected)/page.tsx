@@ -1,3 +1,4 @@
+import { CreatePostButton } from "@/components/create-post-button";
 import { LogoutButton } from "@/components/logout-button";
 import { PostList } from "@/components/post-list";
 import { getSession } from "@/lib/auth/auth";
@@ -10,6 +11,7 @@ const HomePage = async () => {
     <main>
       <p>You are logged in as {session?.user.name}</p>
       <LogoutButton />
+      <CreatePostButton />
       <Suspense fallback={<p>Loading posts...</p>}>
         <PostList />
       </Suspense>
