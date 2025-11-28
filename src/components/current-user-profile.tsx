@@ -22,7 +22,10 @@ export const CurrentUserProfile: FC = async () => {
   const bannerUrl = "/banners/rory-mcilroy.jpg";
   const avatarUrl = userData.avatarUrl ?? null;
 
-  const name = userData.username ?? "Unnamed User";
+  const name =
+    `${userData.firstname ?? ""} ${userData.lastname ?? ""}`.trim() ??
+    "Unknown User";
+
   const handle = userData.username ?? "unknown";
   const bio = "This is my bio!";
 
