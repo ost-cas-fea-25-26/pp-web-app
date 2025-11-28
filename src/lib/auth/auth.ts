@@ -2,7 +2,6 @@ import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import { genericOAuth } from "better-auth/plugins";
 import { headers } from "next/headers";
-import { cache } from "react";
 import { CUSTOM_PROVIDER_ID } from "./auth-client";
 import { Pool } from "pg";
 import { requireEnv } from "../utils";
@@ -48,13 +47,13 @@ export const auth = betterAuth({
   },
 });
 
-export const getSession = cache(async () => {
+export const getSession = async () => {
   return await auth.api.getSession({
     headers: await headers(),
   });
-});
+};
 
-export const getAccessToken = cache(async () => {
+export const getAccessToken = async () => {
   const reqHeaders = await headers();
   const session = await auth.api.getSession({ headers: reqHeaders });
 
@@ -74,4 +73,4 @@ export const getAccessToken = cache(async () => {
   }
 
   return token;
-});
+};

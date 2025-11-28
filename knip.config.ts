@@ -5,7 +5,6 @@ const config: KnipConfig = {
   ignoreDependencies: [
     "@smartive/prettier-config",
     "prettier-plugin-tailwindcss",
-    "tailwindcss",
 
     // temporarily unused deps
     "@testing-library/jest-dom",
