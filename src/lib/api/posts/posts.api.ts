@@ -1,11 +1,11 @@
 import type { HttpClient } from "../client/http-client";
-import type { Post, PostListResponse } from "./posts.types";
+import { PaginatedPost, Post } from "./posts.types";
 
 export class PostsApi {
   constructor(private client: HttpClient) {}
 
   getMany() {
-    return this.client.get<PostListResponse>("/posts");
+    return this.client.get<PaginatedPost>("/posts");
   }
 
   create(text: string) {
