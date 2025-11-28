@@ -1,6 +1,10 @@
 import { config as smartiveConfig } from "@smartive/eslint-config";
 
 const config = [
+  {
+    ignores: ["src/lib/api/generated/**"],
+  },
+
   ...smartiveConfig("react"),
 
   {
