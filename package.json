@@ -18,7 +18,7 @@
     "auth:migrate:local": "npm run db:init:local && npx @better-auth/cli migrate --config src/lib/auth/auth.ts",
     "auth:generate:local": "npm run db:init:local && npx @better-auth/cli generate --config src/lib/auth/auth.ts",
     "auth:migrate:deploy": "npx @better-auth/cli migrate --yes --config src/lib/auth/auth.ts",
-    "generate:api:types": "dotenv -e .env -- openapi-typescript \"$OPENAPI_SCHEMA_URL\" --output src/lib/api/generated/api.ts"
+    "generate:api:types": "openapi-typescript https://mumble-api-prod-714602723919.europe-west6.run.app/swagger/v1/swagger.json --output src/lib/api/generated/api.ts"
   },
   "engines": {
     "node": "^22.0.0"
