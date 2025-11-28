@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
-import { genericOAuth } from "better-auth/plugins";
+import { genericOAuth, customSession } from "better-auth/plugins";
 import { headers } from "next/headers";
 import { CUSTOM_PROVIDER_ID } from "./auth-client";
 import { Pool } from "pg";
@@ -10,6 +10,15 @@ export const auth = betterAuth({
   database: new Pool({
     connectionString: requireEnv("NEON_DATABASE_URL"),
   }),
+  user: {
+    additionalFields: {
+      zitadelId: {
+        type: "string",
+        required: false,
+        input: false,
+      },
+    },
+  },
   baseUrl: requireEnv("VERCEL_URL"),
   session: {
     expiresIn: 60 * 60 * 12, // 12 hours
@@ -36,8 +45,37 @@ export const auth = betterAuth({
             "urn:zitadel:iam:org:project:id:348701753820117818:aud",
           ],
           pkce: true,
+          mapProfileToUser(profile: Record<string, unknown>) {
+            const { sub, name, email, picture } = profile as {
+              sub: string;
+              name?: string;
+              email?: string;
+              picture?: string;
+            };
+
+            return {
+              name,
+              email,
+              image: picture ?? null,
+              zitadelId: sub,
+            };
+          },
         },
       ],
+    }),
+
+    customSession(async ({ user, session }) => {
+      await Promise.resolve(); // satisfy eslint
+
+      const u = user as { zitadelId?: string };
+
+      return {
+        user: {
+          ...user,
+          zitadelId: u.zitadelId ?? null,
+        },
+        session,
+      };
     }),
   ],
   secret: requireEnv("AUTH_SECRET"),
