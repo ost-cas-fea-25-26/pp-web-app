@@ -1,19 +1,20 @@
 import { CreatePostButton } from "@/components/create-post-button";
 import { LogoutButton } from "@/components/logout-button";
-import { getPostsAction } from "@/lib/actions/posts.actions";
+import { PostList } from "@/components/post-list";
 import { getSession } from "@/lib/auth/auth";
+import { Suspense } from "react";
 
 const HomePage = async () => {
   const session = await getSession();
-  const posts = await getPostsAction();
 
   return (
     <main>
       <p>You are logged in as {session?.user.name}</p>
       <LogoutButton />
       <CreatePostButton />
-
-      <pre>{JSON.stringify(posts, null, 2)}</pre>
+      <Suspense fallback={<p>Loading posts...</p>}>
+        <PostList />
+      </Suspense>
     </main>
   );
 };
