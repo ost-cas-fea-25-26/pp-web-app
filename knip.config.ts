@@ -10,6 +10,7 @@ const config: KnipConfig = {
     "@testing-library/jest-dom",
     "@testing-library/react",
   ],
+  ignoreBinaries: ["tail"],
 };
 
 export default config;
