@@ -22,7 +22,7 @@
     "link:design-system:local": "cd ../pp-design-system && npm run build:lib && FILE=$(npm pack | tail -n 1) && cd ../pp-web-app && npm install ../pp-design-system/$FILE"
   },
   "engines": {
-    "node": "^22.0.0"
+    "node": "^24.0.0"
   },
   "dependencies": {
     "@ost-cas-fea-25-26/pp-design-system": "^2.17.0",
