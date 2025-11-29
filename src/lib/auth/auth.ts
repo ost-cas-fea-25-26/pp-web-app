@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import { CUSTOM_PROVIDER_ID } from "./auth-client";
 import { Pool } from "pg";
 import { requireEnv } from "../utils";
+import { api } from "../api";
 
 export const auth = betterAuth({
   database: new Pool({
@@ -14,7 +15,7 @@ export const auth = betterAuth({
     additionalFields: {
       zitadelId: {
         type: "string",
-        required: false,
+        required: true,
         input: false,
       },
     },
@@ -54,10 +55,10 @@ export const auth = betterAuth({
             };
 
             return {
+              zitadelId: sub,
               name,
               email,
-              image: picture ?? null,
-              zitadelId: sub,
+              image: picture,
             };
           },
         },
@@ -67,12 +68,16 @@ export const auth = betterAuth({
     customSession(async ({ user, session }) => {
       await Promise.resolve(); // satisfy eslint
 
-      const u = user as { zitadelId?: string };
+      const zitadelUser = user as { zitadelId?: string };
+
+      if (!zitadelUser.zitadelId) {
+        throw new Error("Zitadel ID is missing on user.");
+      }
 
       return {
         user: {
           ...user,
-          zitadelId: u.zitadelId ?? null,
+          id: zitadelUser.zitadelId, // use Zitadel ID as user ID since the api expects the zitadelId
         },
         session,
       };
@@ -85,10 +90,22 @@ export const auth = betterAuth({
   },
 });
 
-export const getSession = async () => {
-  return await auth.api.getSession({
+export const getAuthenticatedUser = async () => {
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
+
+  const id = session?.user?.id;
+  if (!id) {
+    return null;
+  }
+
+  const currentUser = await api.users.getUserById(id);
+  if (!currentUser.success || !currentUser.data) {
+    return null;
+  }
+
+  return currentUser.data;
 };
 
 export const getAccessToken = async () => {

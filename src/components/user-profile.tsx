@@ -10,6 +10,7 @@ import {
   ProfileIcon,
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
+import { getAvatarFallbackLetters } from "@/lib/utils";
 
 type UserProfileProps = {
   userId: string;
@@ -33,7 +34,10 @@ export const UserProfile: FC<UserProfileProps> = async ({ userId }) => {
   const handle = userData.username ?? "unknown";
   const bio = "This is my bio!";
 
-  const fallbackLetters = name?.slice(0, 2).toUpperCase() ?? "UN";
+  const fallbackLetters = getAvatarFallbackLetters(
+    userData.firstname,
+    userData.lastname,
+  );
 
   return (
     <>

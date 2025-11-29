@@ -1,4 +1,4 @@
-import { getSession } from "@/lib/auth/auth";
+import { getAuthenticatedUser } from "@/lib/auth/auth";
 import { redirect } from "next/navigation";
 
 type ProtectedLayoutProps = {
@@ -6,9 +6,9 @@ type ProtectedLayoutProps = {
 };
 
 export const AuthGuard = async ({ children }: ProtectedLayoutProps) => {
-  const session = await getSession();
+  const user = await getAuthenticatedUser();
 
-  if (!session?.user) {
+  if (!user) {
     redirect("/login");
   }
 

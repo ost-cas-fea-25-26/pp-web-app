@@ -6,3 +6,13 @@ export const requireEnv = (name: string): string => {
 
   return value;
 };
+
+export const getAvatarFallbackLetters = (
+  firstName?: string | null,
+  lastName?: string | null,
+) => {
+  const firstInitial = firstName?.[0] ?? "";
+  const lastInitial = lastName?.[0] ?? "";
+
+  return `${firstInitial}${lastInitial}`.toUpperCase();
+};
