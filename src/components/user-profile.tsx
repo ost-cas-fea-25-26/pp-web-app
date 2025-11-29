@@ -1,4 +1,4 @@
-import { getMeAction } from "@/lib/actions/users.actions";
+import { getUserByIdAction } from "@/lib/actions/users.actions";
 import { FC } from "react";
 import Image from "next/image";
 import {
@@ -11,8 +11,12 @@ import {
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 
-export const CurrentUserProfile: FC = async () => {
-  const user = await getMeAction();
+type UserProfileProps = {
+  userId: string;
+};
+
+export const UserProfile: FC<UserProfileProps> = async ({ userId }) => {
+  const user = await getUserByIdAction(userId);
   if (!user?.success || !user.data) {
     return <p>User not found</p>;
   }
