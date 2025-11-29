@@ -1,15 +1,25 @@
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
-import { genericOAuth } from "better-auth/plugins";
+import { genericOAuth, customSession } from "better-auth/plugins";
 import { headers } from "next/headers";
 import { CUSTOM_PROVIDER_ID } from "./auth-client";
 import { Pool } from "pg";
 import { requireEnv } from "../utils";
+import { api } from "../api";
 
 export const auth = betterAuth({
   database: new Pool({
     connectionString: requireEnv("NEON_DATABASE_URL"),
   }),
+  user: {
+    additionalFields: {
+      zitadelId: {
+        type: "string",
+        required: true,
+        input: false,
+      },
+    },
+  },
   baseUrl: requireEnv("VERCEL_URL"),
   session: {
     expiresIn: 60 * 60 * 12, // 12 hours
@@ -36,8 +46,41 @@ export const auth = betterAuth({
             "urn:zitadel:iam:org:project:id:348701753820117818:aud",
           ],
           pkce: true,
+          mapProfileToUser(profile: Record<string, unknown>) {
+            const { sub, name, email, picture } = profile as {
+              sub: string;
+              name?: string;
+              email?: string;
+              picture?: string;
+            };
+
+            return {
+              zitadelId: sub,
+              name,
+              email,
+              image: picture,
+            };
+          },
         },
       ],
+    }),
+
+    customSession(async ({ user, session }) => {
+      await Promise.resolve(); // satisfy eslint
+
+      const zitadelUser = user as { zitadelId?: string };
+
+      if (!zitadelUser.zitadelId) {
+        throw new Error("Zitadel ID is missing on user.");
+      }
+
+      return {
+        user: {
+          ...user,
+          id: zitadelUser.zitadelId, // use Zitadel ID as user ID since the api expects the zitadelId
+        },
+        session,
+      };
     }),
   ],
   secret: requireEnv("AUTH_SECRET"),
@@ -47,10 +90,22 @@ export const auth = betterAuth({
   },
 });
 
-export const getSession = async () => {
-  return await auth.api.getSession({
+export const getAuthenticatedUser = async () => {
+  const session = await auth.api.getSession({
     headers: await headers(),
   });
+
+  const id = session?.user?.id;
+  if (!id) {
+    return null;
+  }
+
+  const currentUser = await api.users.getUserById(id);
+  if (!currentUser.success || !currentUser.data) {
+    return null;
+  }
+
+  return currentUser.data;
 };
 
 export const getAccessToken = async () => {
