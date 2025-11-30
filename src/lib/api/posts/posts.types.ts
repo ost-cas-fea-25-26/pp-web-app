@@ -1,3 +1,7 @@
-import type { components } from "../generated/api";
+import type { components, paths } from "../generated/api";
+
 export type Post = components["schemas"]["Post"];
 export type PaginatedPost = components["schemas"]["PostPaginatedResult"];
+export type PostsGetManyQueryParams = NonNullable<
+  NonNullable<paths["/posts"]["get"]["parameters"]>["query"]
+>;
