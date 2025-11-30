@@ -1,8 +1,26 @@
 import { getPostsAction } from "@/lib/actions/posts.actions";
 import { FC } from "react";
 
-export const PostList: FC = async () => {
-  const posts = await getPostsAction();
+type PostListProps = {
+  filterByTags?: string[];
+  filterLikedBy?: string[];
+  filterByCreatorsIds?: string[];
+};
 
-  return <pre>{JSON.stringify(posts, null, 2)}</pre>;
+export const PostList: FC = async ({
+  filterByTags,
+  filterLikedBy,
+  filterByCreatorsIds,
+}: PostListProps) => {
+  const posts = await getPostsAction({
+    creators: filterByCreatorsIds,
+    tags: filterByTags,
+    likedBy: filterLikedBy,
+  });
+
+  return (
+    <>
+      <pre>{JSON.stringify(posts, null, 2)}</pre>
+    </>
+  );
 };
