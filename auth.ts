@@ -1,15 +1,16 @@
 import { betterAuth } from "better-auth";
 import { nextCookies } from "better-auth/next-js";
 import { genericOAuth, customSession } from "better-auth/plugins";
-import { headers } from "next/headers";
-import { CUSTOM_PROVIDER_ID } from "./auth-client";
-import { Pool } from "pg";
-import { requireEnv } from "../utils";
-import { api } from "../api";
+import { CUSTOM_PROVIDER_ID } from "./src/lib/auth/client";
+import { requireEnv } from "./src/lib/utils";
+import { dbInstance } from "@/lib/db/instance";
+import { drizzleAdapter } from "better-auth/adapters/drizzle";
+import * as schema from "@/lib/db/schema";
 
 export const auth = betterAuth({
-  database: new Pool({
-    connectionString: requireEnv("NEON_DATABASE_URL"),
+  database: drizzleAdapter(dbInstance, {
+    provider: "pg",
+    schema,
   }),
   user: {
     additionalFields: {
@@ -89,43 +90,3 @@ export const auth = betterAuth({
     cookiePrefix: "better-auth",
   },
 });
-
-export const getAuthenticatedUser = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  const id = session?.user?.id;
-  if (!id) {
-    return null;
-  }
-
-  const currentUser = await api.users.getUserById(id);
-  if (!currentUser.success || !currentUser.data) {
-    return null;
-  }
-
-  return currentUser.data;
-};
-
-export const getAccessToken = async () => {
-  const reqHeaders = await headers();
-  const session = await auth.api.getSession({ headers: reqHeaders });
-
-  if (!session?.user) {
-    return null;
-  }
-
-  const token = await auth.api.getAccessToken({
-    headers: reqHeaders,
-    body: {
-      providerId: CUSTOM_PROVIDER_ID,
-    },
-  });
-
-  if (!token?.accessToken) {
-    return null;
-  }
-
-  return token;
-};

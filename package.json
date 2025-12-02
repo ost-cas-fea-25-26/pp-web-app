@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "npm run auth:migrate:local",
+    "predev": "npm run db:up && npm run db:migrate",
     "dev": "next dev --turbopack",
-    "build": "npm run auth:migrate:deploy && next build --turbopack",
+    "prebuild": "npm run db:migrate",
+    "build": "next build --turbopack",
     "start": "next start",
     "check:unused": "knip --config knip.config.ts",
     "type-check": "tsc --noEmit",
@@ -14,11 +15,10 @@
     "format": "prettier --write .",
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest run --coverage",
-    "db:init:local": "docker compose up -d postgres",
-    "auth:migrate:local": "npm run db:init:local && npx @better-auth/cli migrate --config src/lib/auth/auth.ts",
-    "auth:migrate:deploy": "npx @better-auth/cli migrate --yes --config src/lib/auth/auth.ts",
-    "generate:api:types": "openapi-typescript https://mumble-api-prod-714602723919.europe-west6.run.app/swagger/v1/swagger.json --output src/lib/api/generated/api.ts",
-    "link:design-system:local": "cd ../pp-design-system && npm run build:lib && FILE=$(npm pack | tail -n 1) && cd ../pp-web-app && npm install ../pp-design-system/$FILE"
+    "db:up": "docker compose up -d postgres",
+    "db:migrate": "npx drizzle-kit migrate",
+    "api:generate": "openapi-typescript https://mumble-api-prod-714602723919.europe-west6.run.app/swagger/v1/swagger.json --output src/lib/api/generated/api.ts",
+    "design-system:link": "cd ../pp-design-system && npm run build:lib && FILE=$(npm pack | tail -n 1) && cd ../pp-web-app && npm install ../pp-design-system/$FILE"
   },
   "engines": {
     "node": "^22.0.0"
@@ -28,6 +28,7 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "better-auth": "^1.4.3",
+    "drizzle-orm": "^0.44.7",
     "next": "16.0.5",
     "pg": "^8.16.3",
     "react": "19.2.0",
@@ -44,6 +45,7 @@
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
     "@vitest/coverage-v8": "^4.0.14",
+    "drizzle-kit": "^0.31.7",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.5",
     "happy-dom": "^20.0.11",

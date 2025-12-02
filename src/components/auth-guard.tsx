@@ -1,4 +1,4 @@
-import { getAuthenticatedUser } from "@/lib/auth/auth";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { redirect } from "next/navigation";
 
 type ProtectedLayoutProps = {

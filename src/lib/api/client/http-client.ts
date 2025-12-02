@@ -1,4 +1,4 @@
-import { getAccessToken } from "@/lib/auth/auth";
+import { getAccessToken } from "@/lib/auth/server";
 import type { ApiResponse } from "./api-response";
 
 export class HttpClient {

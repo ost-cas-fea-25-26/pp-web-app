@@ -1,4 +1,3 @@
-import { getAuthenticatedUser } from "@/lib/auth/auth";
 import { FC } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -9,6 +8,7 @@ import {
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { getAvatarFallbackLetters } from "@/lib/utils";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 
 export const HeaderActions: FC = async () => {
   const user = await getAuthenticatedUser();

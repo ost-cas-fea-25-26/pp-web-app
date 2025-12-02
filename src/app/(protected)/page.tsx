@@ -1,7 +1,7 @@
 import { CreatePostButton } from "@/components/create-post-button";
 import { LogoutButton } from "@/components/logout-button";
 import { PostList } from "@/components/post-list";
-import { getAuthenticatedUser } from "@/lib/auth/auth";
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import { Suspense } from "react";
 
 const HomePage = async () => {

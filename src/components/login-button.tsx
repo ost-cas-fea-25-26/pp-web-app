@@ -1,6 +1,6 @@
 "use client";
 
-import { signinZitadel } from "@/lib/auth/auth-client";
+import { signinZitadel } from "@/lib/auth/client";
 import { Button } from "@ost-cas-fea-25-26/pp-design-system";
 import type { FC } from "react";
 
