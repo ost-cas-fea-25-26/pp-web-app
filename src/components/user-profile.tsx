@@ -11,12 +11,17 @@ import {
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { getAvatarFallbackLetters } from "@/lib/utils";
+import { EditableAvatar } from "./editable-avatar";
 
 type UserProfileProps = {
   userId: string;
+  isEditable: boolean;
 };
 
-export const UserProfile: FC<UserProfileProps> = async ({ userId }) => {
+export const UserProfile: FC<UserProfileProps> = async ({
+  userId,
+  isEditable,
+}) => {
   const user = await getUserByIdAction(userId);
   if (!user?.success || !user.data) {
     return <p>User not found</p>;
@@ -57,21 +62,29 @@ export const UserProfile: FC<UserProfileProps> = async ({ userId }) => {
           />
         }
         avatarImageElement={
-          <Avatar
-            imageElement={
-              avatarUrl ? (
-                <Image
-                  src={avatarUrl}
-                  alt={`${name} avatar`}
-                  fill
-                  className="object-cover"
-                />
-              ) : null
-            }
-            size="xl"
-            border
-            fallbackText={fallbackLetters}
-          />
+          isEditable ? (
+            <EditableAvatar
+              avatarUrl={avatarUrl}
+              username={handle}
+              fallbackLetters={fallbackLetters}
+            />
+          ) : (
+            <Avatar
+              imageElement={
+                avatarUrl ? (
+                  <Image
+                    src={avatarUrl}
+                    alt={`${name} avatar`}
+                    fill
+                    className="object-cover"
+                  />
+                ) : null
+              }
+              size="xl"
+              border
+              fallbackText={fallbackLetters}
+            />
+          )
         }
         name={name}
         handle={handle}
