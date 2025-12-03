@@ -32,7 +32,8 @@ export const UserProfile: FC<UserProfileProps> = async ({ userId }) => {
     "Unknown User";
 
   const handle = userData.username ?? "unknown";
-  const bio = "This is my bio!";
+  const bio =
+    "Unschnöseliger Golfer, Drummer, Lieblings-Superheld: Tony Stark, Escape Room Fan, der einzige Informatiker ohne Kaffeesucht. Oft mit Kinderwagen am Bodensee anzutreffen.";
 
   const fallbackLetters = getAvatarFallbackLetters(
     userData.firstname,
