@@ -3,6 +3,7 @@
 import { Avatar, UploadImageModal } from "@ost-cas-fea-25-26/pp-design-system";
 import { FC, useState } from "react";
 import Image from "next/image";
+import { updateAvatarAction } from "@/lib/actions/users.actions";
 
 type EditableAvatarProps = {
   avatarUrl: string | null;
@@ -16,9 +17,13 @@ export const EditableAvatar: FC<EditableAvatarProps> = ({
   fallbackLetters,
 }) => {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
-  const saveNewAvatarImage = () => {
+  const saveNewAvatarImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append("media", file);
+
+    await updateAvatarAction(formData);
     setIsOpenEditModal(false);
-    //todo: implement saving logic
+    window.location.reload(); // todo error handling and revalidate path instead of full reload
   };
 
   return (
