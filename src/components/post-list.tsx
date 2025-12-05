@@ -9,11 +9,11 @@ type PostListProps = {
   filterByCreatorsIds?: string[];
 };
 
-export const PostList: FC = async ({
+export const PostList: FC<PostListProps> = async ({
   filterByTags,
   filterLikedBy,
   filterByCreatorsIds,
-}: PostListProps) => {
+}) => {
   const posts = await getPostsAction({
     creators: filterByCreatorsIds,
     tags: filterByTags,

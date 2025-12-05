@@ -21,22 +21,21 @@ export const PostItem: FC<PostItemProps> = ({
   avatarSrc,
   comments,
   likes,
-}) => {
-  return (
-    <Mumble
-      content={content}
-      avatarSrc={avatarSrc}
-      userName={userName}
-      userHandle={userHandle}
-      timestamp="2 hours ago"
-      size="m"
-      actions={
-        <MumbleActions
-          commentCounter={comments}
-          likeCounter={likes}
-          deepLink={`/mumble/${id}`}
-        />
-      }
-    />
-  );
-};
+}) => (
+  <Mumble
+    content={content}
+    avatarSrc={avatarSrc}
+    userName={userName}
+    userHandle={userHandle}
+    timestamp="2 hours ago"
+    size="m"
+    actions={
+      //Todo: add 'use client' to MumbleActions component in the design system so that we can remove 'use client' from this file
+      <MumbleActions
+        commentCounter={comments}
+        likeCounter={likes}
+        deepLink={`/mumble/${id}`}
+      />
+    }
+  />
+);
