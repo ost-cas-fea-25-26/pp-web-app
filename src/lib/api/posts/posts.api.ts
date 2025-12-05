@@ -17,4 +17,12 @@ export class PostsApi {
 
     return this.client.post<Post>("/posts", form);
   }
+
+  like(postId: string) {
+    return this.client.put(`/posts/${postId}/likes`);
+  }
+
+  unlike(postId: string) {
+    return this.client.delete(`/posts/${postId}/likes`);
+  }
 }
