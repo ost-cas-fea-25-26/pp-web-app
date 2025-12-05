@@ -67,6 +67,7 @@ export const UserProfile: FC<UserProfileProps> = async ({
               avatarUrl={avatarUrl}
               username={handle}
               fallbackLetters={fallbackLetters}
+              userId={userId}
             />
           ) : (
             <Avatar

@@ -9,21 +9,34 @@ type EditableAvatarProps = {
   avatarUrl: string | null;
   username: string;
   fallbackLetters: string;
+  userId: string;
 };
 
 export const EditableAvatar: FC<EditableAvatarProps> = ({
   avatarUrl,
   username,
   fallbackLetters,
+  userId,
 }) => {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
+
   const saveNewAvatarImage = async (file: File) => {
     const formData = new FormData();
     formData.append("media", file);
 
-    await updateAvatarAction(formData);
+    const result = await updateAvatarAction(userId, formData);
+
+    if (!result.success) {
+      // TODO: Replace with a nice toast notification
+      // e.g. https://ui.shadcn.com/docs/components/sonner
+
+      // eslint-disable-next-line no-alert
+      alert(`Failed to update avatar: ${result.error ?? "Unknown error"}`);
+
+      return;
+    }
+
     setIsOpenEditModal(false);
-    window.location.reload(); // todo error handling and revalidate path instead of full reload
   };
 
   return (
@@ -44,6 +57,7 @@ export const EditableAvatar: FC<EditableAvatarProps> = ({
         border
         fallbackText={fallbackLetters}
       />
+
       <UploadImageModal
         open={isOpenEditModal}
         onOpenChange={setIsOpenEditModal}

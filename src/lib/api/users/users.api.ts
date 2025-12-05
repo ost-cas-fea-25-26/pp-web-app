@@ -8,10 +8,7 @@ export class UsersApi {
     return this.client.get<User>(`/users/${id}`);
   }
 
-  async updateAvatar(file: File) {
-    const formData = new FormData();
-    formData.append("media", file);
-
+  async updateAvatar(formData: FormData) {
     return this.client.put<string>("/users/avatar", formData);
   }
 }
