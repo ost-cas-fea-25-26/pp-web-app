@@ -1,4 +1,4 @@
-import { getAccessToken } from "@/lib/auth/auth";
+import { getAccessToken } from "@/lib/auth/server";
 import type { ApiResponse } from "./api-response";
 
 export class HttpClient {
@@ -52,5 +52,11 @@ export class HttpClient {
     const headers = await this.buildAuthorizationHeaders();
 
     return this.execute<T>(path, { method: "POST", body, headers });
+  }
+
+  async put<T>(path: string, body?: BodyInit): Promise<ApiResponse<T>> {
+    const headers = await this.buildAuthorizationHeaders();
+
+    return this.execute<T>(path, { method: "PUT", body, headers });
   }
 }
