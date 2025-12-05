@@ -42,7 +42,7 @@ export const UserProfile: FC<UserProfileProps> = async ({
 
   const fallbackLetters = getAvatarFallbackLetters(
     userData.firstname,
-    userData.lastname
+    userData.lastname,
   );
 
   return (
