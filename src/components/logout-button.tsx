@@ -1,6 +1,6 @@
 "use client";
 
-import { signOut } from "@/lib/auth/auth-client";
+import { signOut } from "@/lib/auth/client";
 import { Button } from "@ost-cas-fea-25-26/pp-design-system";
 import { useRouter } from "next/navigation";
 import type { FC } from "react";
