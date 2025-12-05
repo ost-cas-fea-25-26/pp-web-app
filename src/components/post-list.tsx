@@ -24,7 +24,7 @@ export const PostList: FC = async ({
     <div className="flex flex-col gap-2">
       {posts?.data?.data?.map((post: Post) => (
         <PostItem
-          key={post.id}
+          key={post.id ?? "key"}
           id={post.id ?? "id"}
           content={<p>{post.text}</p>}
           userName={post.creator?.username ?? "TODO: Name"}

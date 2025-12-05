@@ -1,8 +1,8 @@
 import { PostsGetManyQueryParams } from "@/lib/api/posts/posts.types";
 
-export function buildPostsQueryString(
+export const buildPostsQueryString = (
   params?: PostsGetManyQueryParams,
-): string {
+): string => {
   if (!params) {
     return "";
   }
@@ -25,4 +25,4 @@ export function buildPostsQueryString(
   const qs = searchParams.toString();
 
   return qs ? `?${qs}` : "";
-}
+};
