@@ -23,21 +23,11 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
           tabs={[
             {
               text: "Your Mumbles",
-              content: (
-                <>
-                  Add your Posts here
-                  <PostList />
-                </>
-              ),
+              content: <PostList filterByCreatorsIds={[userId]} />,
             },
             {
               text: "Your Likes",
-              content: (
-                <>
-                  Add your Liked Posts here
-                  <PostList />
-                </>
-              ),
+              content: <PostList filterLikedBy={[userId]} />,
             },
           ]}
         />

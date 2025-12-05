@@ -9,21 +9,22 @@ type EditableAvatarProps = {
   avatarUrl: string | null;
   username: string;
   fallbackLetters: string;
+  userId: string;
 };
 
 export const EditableAvatar: FC<EditableAvatarProps> = ({
   avatarUrl,
   username,
   fallbackLetters,
+  userId,
 }) => {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
   const saveNewAvatarImage = async (file: File) => {
     const formData = new FormData();
     formData.append("media", file);
 
-    await updateAvatarAction(formData);
-    setIsOpenEditModal(false);
-    window.location.reload(); // todo error handling and revalidate path instead of full reload
+    await updateAvatarAction(userId, formData);
+    setIsOpenEditModal(false); //todo: error handling
   };
 
   return (
