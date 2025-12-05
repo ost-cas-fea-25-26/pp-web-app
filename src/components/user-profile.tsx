@@ -42,7 +42,7 @@ export const UserProfile: FC<UserProfileProps> = async ({
 
   const fallbackLetters = getAvatarFallbackLetters(
     userData.firstname,
-    userData.lastname,
+    userData.lastname
   );
 
   return (
@@ -98,9 +98,11 @@ export const UserProfile: FC<UserProfileProps> = async ({
           />
         }
         settingsLinkElement={
-          <Link href="/settings" title="Settings">
-            <SettingsIcon color="primary" size="m" />
-          </Link>
+          isEditable && (
+            <Link href="/settings" title="Settings">
+              <SettingsIcon color="primary" size="m" />
+            </Link>
+          )
         }
       />
     </>

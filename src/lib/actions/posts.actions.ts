@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { api } from "../api";
 import { PostsGetManyQueryParams } from "@/lib/api/posts/posts.types";
 
@@ -8,5 +9,12 @@ export const getPostsAction = async (params: PostsGetManyQueryParams) => {
 };
 
 export const createPostAction = async (text: string) => {
-  return api.posts.create(text);
+  const result = await api.posts.create(text);
+  if (!result.success) {
+    return result;
+  }
+
+  revalidatePath("/");
+
+  return { success: true };
 };
