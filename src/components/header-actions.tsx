@@ -4,11 +4,11 @@ import Image from "next/image";
 import {
   AvatarButton,
   IconButton,
-  LogoutIcon,
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { getAvatarFallbackLetters } from "@/lib/utils";
 import { getAuthenticatedUser } from "@/lib/auth/server";
+import { LogoutButton } from "./logout-button";
 
 export const HeaderActions: FC = async () => {
   const user = await getAuthenticatedUser();
@@ -51,12 +51,7 @@ export const HeaderActions: FC = async () => {
         color="primary"
         layout="stacked"
       />
-      <IconButton
-        label="Log out"
-        IconComponent={LogoutIcon}
-        color="primary"
-        layout="stacked"
-      />
+      <LogoutButton />
     </>
   );
 };
