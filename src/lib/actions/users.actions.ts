@@ -11,7 +11,12 @@ export const updateAvatarAction = async (
   userId: string,
   formData: FormData,
 ) => {
-  await api.users.updateAvatar(formData);
+  const result = await api.users.updateAvatar(formData);
+
+  if (!result.success) {
+    return result;
+  }
+
   revalidatePath(`/users/${userId}`);
 
   return { success: true };

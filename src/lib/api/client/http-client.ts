@@ -34,9 +34,17 @@ export class HttpClient {
         return { success: false, error: `Status ${response.status}` };
       }
 
-      const json = (await response.json()) as T;
+      const contentType = response.headers.get("content-type");
 
-      return { success: true, data: json };
+      if (contentType?.includes("application/json")) {
+        const json = (await response.json()) as T;
+
+        return { success: true, data: json };
+      }
+
+      const text = (await response.text()) as unknown as T;
+
+      return { success: true, data: text };
     } catch (err) {
       return { success: false, error: (err as Error).message };
     }
