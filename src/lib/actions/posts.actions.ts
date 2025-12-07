@@ -18,3 +18,11 @@ export const createPostAction = async (text: string) => {
 
   return { success: true };
 };
+
+export const likePostAction = async (postId: string) => {
+  return api.posts.like(postId);
+};
+
+export const unlikePostAction = async (postId: string) => {
+  return api.posts.unlike(postId);
+};

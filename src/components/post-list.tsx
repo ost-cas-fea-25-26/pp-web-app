@@ -32,6 +32,7 @@ export const PostList: FC<PostListProps> = async ({
           avatarSrc={post.creator?.avatarUrl ?? undefined}
           comments={post.replies ?? 0}
           likes={post.likes ?? 0}
+          liked={!!post.likedBySelf}
         />
       ))}
     </div>

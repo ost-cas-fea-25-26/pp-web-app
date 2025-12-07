@@ -67,4 +67,10 @@ export class HttpClient {
 
     return this.execute<T>(path, { method: "PUT", body, headers });
   }
+
+  async delete<T>(path: string): Promise<ApiResponse<T>> {
+    const headers = await this.buildAuthorizationHeaders();
+
+    return this.execute<T>(path, { method: "DELETE", headers });
+  }
 }
