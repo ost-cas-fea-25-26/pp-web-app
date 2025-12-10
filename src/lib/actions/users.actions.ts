@@ -3,6 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { api } from "../api";
 
+export const getUsersAction = async () => {
+  return api.users.getMany();
+};
+
 export const getUserByIdAction = async (userId: string) => {
   return api.users.getUserById(userId);
 };
