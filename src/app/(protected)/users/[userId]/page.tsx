@@ -1,5 +1,6 @@
 import { PostList } from "@/components/post-list";
 import { RecommendedUsers } from "@/components/recommended-users";
+import { UnfollowSection } from "@/components/unfollow-section";
 import { UserProfile } from "@/components/user-profile";
 import { getAuthenticatedUser } from "@/lib/auth/server";
 import { Tabs } from "@ost-cas-fea-25-26/pp-design-system";
@@ -24,19 +25,28 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
     <Suspense>
       <div className="gap-10 flex flex-col">
         <UserProfile userId={userId} isEditable={isOwnProfile} />
-        <RecommendedUsers selfId={authenticatedUser.id} />
-        <Tabs
-          tabs={[
-            {
-              text: "Your Mumbles",
-              content: <PostList filterByCreatorsIds={[userId]} />,
-            },
-            {
-              text: "Your Likes",
-              content: <PostList filterLikedBy={[userId]} />,
-            },
-          ]}
-        />
+        {isOwnProfile ? (
+          <>
+            <RecommendedUsers selfId={authenticatedUser.id} />
+            <Tabs
+              tabs={[
+                {
+                  text: "Your Mumbles",
+                  content: <PostList filterByCreatorsIds={[userId]} />,
+                },
+                {
+                  text: "Your Likes",
+                  content: <PostList filterLikedBy={[userId]} />,
+                },
+              ]}
+            />
+          </>
+        ) : (
+          <>
+            <UnfollowSection userId={userId} />
+            <PostList filterByCreatorsIds={[userId]} />
+          </>
+        )}
       </div>
     </Suspense>
   );
