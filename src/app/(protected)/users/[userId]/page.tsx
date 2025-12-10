@@ -16,11 +16,15 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
   const authenticatedUser = await getAuthenticatedUser();
   const isOwnProfile = authenticatedUser?.id === userId;
 
+  if (!authenticatedUser?.id) {
+    return <p>Please log in to view profiles.</p>;
+  }
+
   return (
     <Suspense>
       <div className="gap-10 flex flex-col">
         <UserProfile userId={userId} isEditable={isOwnProfile} />
-        <RecommendedUsers />
+        <RecommendedUsers selfId={authenticatedUser.id} />
         <Tabs
           tabs={[
             {

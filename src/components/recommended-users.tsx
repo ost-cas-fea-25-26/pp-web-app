@@ -1,24 +1,21 @@
-import { getUsersAction } from "@/lib/actions/users.actions";
-import {
-  Button,
-  MumbleIcon,
-  UserCard,
-} from "@ost-cas-fea-25-26/pp-design-system";
+import { getAllUnfollowedUsersAction } from "@/lib/actions/users.actions";
+import { UserCard } from "@ost-cas-fea-25-26/pp-design-system";
 import { FC } from "react";
 import Image from "next/image";
+import { FollowButton } from "./follow-button";
 
-export const RecommendedUsers: FC = async () => {
-  const allUsersResult = await getUsersAction();
+type RecommendedUsersProps = {
+  selfId: string;
+};
 
-  if (!allUsersResult.success) {
-    return <div>Failed to load recommended users.</div>;
-  }
-
-  const allUsers = allUsersResult.data?.data ?? [];
+export const RecommendedUsers: FC<RecommendedUsersProps> = async ({
+  selfId,
+}) => {
+  const unfollowedUsers = await getAllUnfollowedUsersAction(selfId);
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {allUsers?.map((user) => (
+      {unfollowedUsers?.map((user) => (
         <div key={user.id}>
           <UserCard
             avatarImageElement={
@@ -31,12 +28,7 @@ export const RecommendedUsers: FC = async () => {
                 />
               )
             }
-            button={
-              <Button fullWidth variant="primary">
-                Follow
-                <MumbleIcon color="white" />
-              </Button>
-            }
+            button={user.id && <FollowButton userId={user.id} />}
             handle={user.username ?? "unknown"}
             name={
               user.firstname && user.lastname

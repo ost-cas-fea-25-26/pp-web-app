@@ -1,5 +1,5 @@
 import { CreatePostButton } from "@/components/create-post-button";
-import { PostList } from "@/components/post-list";
+import { FollowedPostList } from "@/components/followed-post-list";
 import { Suspense } from "react";
 
 const HomePage = () => {
@@ -7,7 +7,7 @@ const HomePage = () => {
     <main>
       <CreatePostButton />
       <Suspense fallback={<p>Loading posts...</p>}>
-        <PostList />
+        <FollowedPostList />
       </Suspense>
     </main>
   );

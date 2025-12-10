@@ -25,3 +25,35 @@ export const updateAvatarAction = async (
 
   return { success: true };
 };
+
+export const followUserAction = async (userId: string) => {
+  const result = await api.users.followUser(userId);
+
+  if (!result.success) {
+    return result;
+  }
+
+  revalidatePath(`/users/${userId}`);
+
+  return { success: true };
+};
+
+export const unfollowUserAction = async (userId: string) => {
+  const result = await api.users.unfollowUser(userId);
+
+  if (!result.success) {
+    return result;
+  }
+
+  revalidatePath(`/users/${userId}`);
+
+  return { success: true };
+};
+
+export const getAllUnfollowedUsersAction = async (selfId: string) => {
+  return api.users.getAllUnfollowedUsers(selfId);
+};
+
+export const getFolloweesAction = async (userId: string) => {
+  return api.users.getFollowees(userId);
+};
