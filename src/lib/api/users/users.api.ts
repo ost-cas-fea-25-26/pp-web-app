@@ -33,7 +33,7 @@ export class UsersApi {
       return [];
     }
 
-return (
+    return (
       usersRes.payload.data?.filter(
         (user: User) => !followeeIds.includes(user.id ?? ""),
       ) ?? []
