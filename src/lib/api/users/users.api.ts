@@ -33,11 +33,11 @@ export class UsersApi {
       return [];
     }
 
-    const unfollowedUsers =
-      usersRes.payload.data?.filter((u) => !followeeIds.includes(u.id ?? "")) ??
-      [];
-
-    return unfollowedUsers;
+return (
+      usersRes.payload.data?.filter(
+        (user: User) => !followeeIds.includes(user.id ?? ""),
+      ) ?? []
+    );
   }
 
   async getFollowees(userId: string) {
