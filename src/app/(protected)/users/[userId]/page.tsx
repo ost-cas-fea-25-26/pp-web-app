@@ -1,6 +1,6 @@
+import { FollowToggleSection } from "@/components/follow-toggle-section";
 import { PostList } from "@/components/post-list";
 import { RecommendedUsers } from "@/components/recommended-users";
-import { UnfollowSection } from "@/components/unfollow-section";
 import { UserProfile } from "@/components/user-profile";
 import { getAuthenticatedUser } from "@/lib/auth/server";
 import { Tabs } from "@ost-cas-fea-25-26/pp-design-system";
@@ -43,7 +43,10 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
           </>
         ) : (
           <>
-            <UnfollowSection userId={userId} />
+            <FollowToggleSection
+              selfId={authenticatedUser.id}
+              targetUserId={userId}
+            />
             <PostList filterByCreatorsIds={[userId]} />
           </>
         )}
