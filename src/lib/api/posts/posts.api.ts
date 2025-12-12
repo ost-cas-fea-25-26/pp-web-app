@@ -11,6 +11,10 @@ export class PostsApi {
     return this.client.get<PaginatedPost>(`/posts${query}`);
   }
 
+  getById(id: string) {
+    return this.client.get<Post>(`/posts/${id}`);
+  }
+
   create(text: string) {
     const form = new FormData();
     form.append("text", text);
@@ -24,5 +28,16 @@ export class PostsApi {
 
   unlike(postId: string) {
     return this.client.delete(`/posts/${postId}/likes`);
+  }
+
+  getRepliesByPostId(postId: string) {
+    return this.client.get<PaginatedPost>(`/posts/${postId}/replies`);
+  }
+
+  createReplyForPost(postId: string, text: string) {
+    const form = new FormData();
+    form.append("text", text);
+
+    return this.client.post(`/posts/${postId}/replies`, form);
   }
 }
