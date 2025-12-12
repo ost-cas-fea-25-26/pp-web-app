@@ -9,7 +9,7 @@ export const getUserByIdAction = async (userId: string) => {
 
 export const updateAvatarAction = async (
   userId: string,
-  formData: FormData,
+  formData: FormData
 ) => {
   const result = await api.users.updateAvatar(formData);
 
@@ -40,8 +40,8 @@ export const unfollowUserAction = async (userId: string) => {
   return result;
 };
 
-export const getAllUnfollowedUsersAction = async () => {
-  return api.users.getAllUnfollowedUsers();
+export const getUnfollowedUserSuggestionsAction = async (limit?: number) => {
+  return api.users.getUnfollowedUserSuggestions(limit);
 };
 
 export const getFolloweeIdsAction = async () => {

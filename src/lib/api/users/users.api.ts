@@ -25,7 +25,11 @@ export class UsersApi {
     return this.client.delete<void>(`/users/${userId}/followers`);
   }
 
-  async getAllUnfollowedUsers(): Promise<User[]> {
+  async getUnfollowedUserSuggestions(limit = 6): Promise<User[]> {
+    const ownUser = await getAuthenticatedUser();
+    if (!ownUser?.id) {
+      return [];
+    }
     const usersRes = await this.getMany();
     const followeeIds = await this.getFolloweeIds();
 
@@ -34,9 +38,10 @@ export class UsersApi {
     }
 
     return (
-      usersRes.payload.data?.filter(
-        (user: User) => !followeeIds.includes(user.id ?? ""),
-      ) ?? []
+      usersRes.payload.data
+        ?.filter((user: User) => !followeeIds.includes(user.id ?? ""))
+        .filter((user: User) => user.id !== ownUser.id)
+        .slice(0, limit) ?? []
     );
   }
 
