@@ -1,6 +1,6 @@
 import { FollowToggleSection } from "@/components/follow-toggle-section";
 import { PostList } from "@/components/post-list";
-import { RecommendedUsers } from "@/components/recommended-users";
+import { RecommendedUsersLoader } from "@/components/recommended-users-loader";
 import { UserProfileLoader } from "@/components/user-profile-loader";
 import { getAuthenticatedUser } from "@/lib/auth/server";
 import { Tabs } from "@ost-cas-fea-25-26/pp-design-system";
@@ -23,7 +23,7 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
         <UserProfileLoader userId={userId} isEditable={isOwnProfile} />
         {isOwnProfile ? (
           <>
-            <RecommendedUsers />
+            <RecommendedUsersLoader />
             <Tabs
               tabs={[
                 {
