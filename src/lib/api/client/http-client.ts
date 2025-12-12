@@ -31,7 +31,10 @@ export class HttpClient {
       const response = await fetch(`${this.baseUrl}${path}`, init);
 
       if (!response.ok) {
-        return { success: false, error: `Status ${response.status}` };
+        return {
+          success: false,
+          error: `Status ${response.status}`,
+        };
       }
 
       const contentType = response.headers.get("content-type");
@@ -39,38 +42,61 @@ export class HttpClient {
       if (contentType?.includes("application/json")) {
         const json = (await response.json()) as T;
 
-        return { success: true, data: json };
+        return {
+          success: true,
+          payload: json,
+        };
       }
 
       const text = (await response.text()) as unknown as T;
 
-      return { success: true, data: text };
+      return {
+        success: true,
+        payload: text,
+      };
     } catch (err) {
-      return { success: false, error: (err as Error).message };
+      return {
+        success: false,
+        error: (err as Error).message,
+      };
     }
   }
 
   async get<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    return this.execute<T>(path, { method: "GET", headers });
+    return this.execute<T>(path, {
+      method: "GET",
+      headers,
+    });
   }
 
   async post<T>(path: string, body: BodyInit): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    return this.execute<T>(path, { method: "POST", body, headers });
+    return this.execute<T>(path, {
+      method: "POST",
+      body,
+      headers,
+    });
   }
 
   async put<T>(path: string, body?: BodyInit): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    return this.execute<T>(path, { method: "PUT", body, headers });
+    return this.execute<T>(path, {
+      method: "PUT",
+      body,
+      headers,
+    });
   }
 
   async delete<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    return this.execute<T>(path, { method: "DELETE", headers });
+    return this.execute<T>(path, {
+      method: "DELETE",
+      headers,
+    });
   }
 }

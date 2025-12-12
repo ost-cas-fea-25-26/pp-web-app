@@ -14,11 +14,11 @@ export const getAuthenticatedUser = async () => {
   }
 
   const currentUser = await api.users.getUserById(id);
-  if (!currentUser.success || !currentUser.data) {
+  if (!currentUser.success || !currentUser.payload) {
     return null;
   }
 
-  return currentUser.data;
+  return currentUser.payload;
 };
 
 export const getAccessToken = async () => {

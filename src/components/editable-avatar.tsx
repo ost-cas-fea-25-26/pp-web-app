@@ -31,7 +31,7 @@ export const EditableAvatar: FC<EditableAvatarProps> = ({
       // e.g. https://ui.shadcn.com/docs/components/sonner
 
       // eslint-disable-next-line no-alert
-      alert(`Failed to update avatar: ${result.error ?? "Unknown error"}`);
+      alert(`Failed to update avatar: ${result.error}`);
 
       return;
     }

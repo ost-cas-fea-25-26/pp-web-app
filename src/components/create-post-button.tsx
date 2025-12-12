@@ -13,7 +13,7 @@ export const CreatePostButton: FC = () => {
       // e.g. https://ui.shadcn.com/docs/components/sonner
 
       // eslint-disable-next-line no-alert
-      alert(`Failed to create post: ${result.error ?? "Unknown error"}`);
+      alert(`Failed to create post: ${result.error}`);
     }
   };
 

@@ -13,11 +13,37 @@ export const updateAvatarAction = async (
 ) => {
   const result = await api.users.updateAvatar(formData);
 
-  if (!result.success) {
-    return result;
+  if (result.success) {
+    revalidatePath(`/users/${userId}`);
   }
 
-  revalidatePath(`/users/${userId}`);
+  return result;
+};
 
-  return { success: true };
+export const followUserAction = async (userId: string) => {
+  const result = await api.users.followUser(userId);
+
+  if (result.success) {
+    revalidatePath(`/users/${userId}`);
+  }
+
+  return result;
+};
+
+export const unfollowUserAction = async (userId: string) => {
+  const result = await api.users.unfollowUser(userId);
+
+  if (result.success) {
+    revalidatePath(`/users/${userId}`);
+  }
+
+  return result;
+};
+
+export const getAllUnfollowedUsersAction = async () => {
+  return api.users.getAllUnfollowedUsers();
+};
+
+export const getFolloweeIdsAction = async () => {
+  return api.users.getFolloweeIds();
 };

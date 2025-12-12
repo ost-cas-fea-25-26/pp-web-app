@@ -1,5 +1,7 @@
+import { FollowToggleSection } from "@/components/follow-toggle-section";
 import { PostList } from "@/components/post-list";
-import { UserProfile } from "@/components/user-profile";
+import { RecommendedUsersLoader } from "@/components/recommended-users-loader";
+import { UserProfileLoader } from "@/components/user-profile-loader";
 import { getAuthenticatedUser } from "@/lib/auth/server";
 import { Tabs } from "@ost-cas-fea-25-26/pp-design-system";
 import { Suspense } from "react";
@@ -18,19 +20,29 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
   return (
     <Suspense>
       <div className="gap-10 flex flex-col">
-        <UserProfile userId={userId} isEditable={isOwnProfile} />
-        <Tabs
-          tabs={[
-            {
-              text: "Your Mumbles",
-              content: <PostList filterByCreatorsIds={[userId]} />,
-            },
-            {
-              text: "Your Likes",
-              content: <PostList filterLikedBy={[userId]} />,
-            },
-          ]}
-        />
+        <UserProfileLoader userId={userId} isEditable={isOwnProfile} />
+        {isOwnProfile ? (
+          <>
+            <RecommendedUsersLoader />
+            <Tabs
+              tabs={[
+                {
+                  text: "Your Mumbles",
+                  content: <PostList filterByCreatorsIds={[userId]} />,
+                },
+                {
+                  text: "Your Likes",
+                  content: <PostList filterLikedBy={[userId]} />,
+                },
+              ]}
+            />
+          </>
+        ) : (
+          <>
+            <FollowToggleSection userId={userId} />
+            <PostList filterByCreatorsIds={[userId]} />
+          </>
+        )}
       </div>
     </Suspense>
   );

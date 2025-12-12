@@ -10,13 +10,12 @@ export const getPostsAction = async (params: PostsGetManyQueryParams) => {
 
 export const createPostAction = async (text: string) => {
   const result = await api.posts.create(text);
-  if (!result.success) {
-    return result;
+
+  if (result.success) {
+    revalidatePath("/");
   }
 
-  revalidatePath("/");
-
-  return { success: true };
+  return result;
 };
 
 export const likePostAction = async (postId: string) => {

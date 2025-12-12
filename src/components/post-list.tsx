@@ -1,7 +1,7 @@
 import { getPostsAction } from "@/lib/actions/posts.actions";
-import { FC } from "react";
+import type { FC } from "react";
 import { PostItem } from "./post-item";
-import { Post } from "@/lib/api/posts/posts.types";
+import type { Post } from "@/lib/api/posts/posts.types";
 
 type PostListProps = {
   filterByTags?: string[];
@@ -14,15 +14,21 @@ export const PostList: FC<PostListProps> = async ({
   filterLikedBy,
   filterByCreatorsIds,
 }) => {
-  const posts = await getPostsAction({
+  const postsResult = await getPostsAction({
     creators: filterByCreatorsIds,
     tags: filterByTags,
     likedBy: filterLikedBy,
   });
 
+  if (!postsResult.success) {
+    return <p>Failed to load posts</p>;
+  }
+
+  const posts = postsResult.payload.data ?? [];
+
   return (
     <div className="flex flex-col gap-2">
-      {posts?.data?.data?.map((post: Post) => (
+      {posts.map((post: Post) => (
         <PostItem
           key={post.id ?? "key"}
           id={post.id ?? "id"}
