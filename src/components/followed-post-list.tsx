@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { getFolloweesAction } from "@/lib/actions/users.actions";
+import { getFolloweeIdsAction } from "@/lib/actions/users.actions";
 import { getAuthenticatedUser } from "@/lib/auth/server";
 import { PostList } from "./post-list";
 
@@ -10,13 +10,7 @@ export const FollowedPostList: FC = async () => {
     return <p>Please log in to view followed posts.</p>;
   }
 
-  const followees = await getFolloweesAction(authenticatedUser.id);
-
-  const followeeIds: string[] = followees.success
-    ? (followees.data?.data
-        ?.map((u) => u.id)
-        .filter((id): id is string => typeof id === "string") ?? [])
-    : [];
+  const followeeIds = await getFolloweeIdsAction(authenticatedUser.id);
 
   return (
     <PostList filterByCreatorsIds={[...followeeIds, authenticatedUser.id]} />

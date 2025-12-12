@@ -3,10 +3,6 @@
 import { revalidatePath } from "next/cache";
 import { api } from "../api";
 
-export const getUsersAction = async () => {
-  return api.users.getMany();
-};
-
 export const getUserByIdAction = async (userId: string) => {
   return api.users.getUserById(userId);
 };
@@ -17,43 +13,37 @@ export const updateAvatarAction = async (
 ) => {
   const result = await api.users.updateAvatar(formData);
 
-  if (!result.success) {
-    return result;
+  if (result.success) {
+    revalidatePath(`/users/${userId}`);
   }
 
-  revalidatePath(`/users/${userId}`);
-
-  return { success: true };
+  return result;
 };
 
 export const followUserAction = async (userId: string) => {
   const result = await api.users.followUser(userId);
 
-  if (!result.success) {
-    return result;
+  if (result.success) {
+    revalidatePath(`/users/${userId}`);
   }
 
-  revalidatePath(`/users/${userId}`);
-
-  return { success: true };
+  return result;
 };
 
 export const unfollowUserAction = async (userId: string) => {
   const result = await api.users.unfollowUser(userId);
 
-  if (!result.success) {
-    return result;
+  if (result.success) {
+    revalidatePath(`/users/${userId}`);
   }
 
-  revalidatePath(`/users/${userId}`);
-
-  return { success: true };
+  return result;
 };
 
 export const getAllUnfollowedUsersAction = async (selfId: string) => {
   return api.users.getAllUnfollowedUsers(selfId);
 };
 
-export const getFolloweesAction = async (userId: string) => {
-  return api.users.getFollowees(userId);
+export const getFolloweeIdsAction = async (userId: string) => {
+  return api.users.getFolloweeIds(userId);
 };

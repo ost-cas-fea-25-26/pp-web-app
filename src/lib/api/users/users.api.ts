@@ -24,25 +24,36 @@ export class UsersApi {
     return this.client.delete<void>(`/users/${userId}/followers`);
   }
 
-  async getAllUnfollowedUsers(selfId: string) {
-    const allRes = await this.client.get<PaginatedUser>("/users");
-    const followeesRes = await this.client.get<PaginatedUser>(
-      `/users/${selfId}/followees`,
-    );
+  async getAllUnfollowedUsers(userId: string): Promise<User[]> {
+    const usersRes = await this.getMany();
+    const followeeIds = await this.getFolloweeIds(userId);
 
-    const allUsers = Array.isArray(allRes.data?.data) ? allRes.data.data : [];
-    const followees = Array.isArray(followeesRes.data?.data)
-      ? followeesRes.data.data
-      : [];
+    if (!usersRes.success) {
+      return [];
+    }
 
-    const followedIds = new Set(followees.map((u) => u.id));
+    const unfollowedUsers =
+      usersRes.payload.data?.filter((u) => !followeeIds.includes(u.id ?? "")) ??
+      [];
 
-    return allUsers.filter(
-      (u) => u.id && u.id !== selfId && !followedIds.has(u.id)
-    );
+    return unfollowedUsers;
   }
 
   async getFollowees(userId: string) {
     return this.client.get<PaginatedUser>(`/users/${userId}/followees`);
+  }
+
+  async getFolloweeIds(userId: string): Promise<string[]> {
+    const res = await this.getFollowees(userId);
+
+    if (!res.success) {
+      return [];
+    }
+
+    return (
+      res.payload.data
+        ?.map((f) => f.id)
+        .filter((id): id is string => typeof id === "string") ?? []
+    );
   }
 }
