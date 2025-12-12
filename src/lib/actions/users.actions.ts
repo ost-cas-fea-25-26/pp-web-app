@@ -40,10 +40,10 @@ export const unfollowUserAction = async (userId: string) => {
   return result;
 };
 
-export const getAllUnfollowedUsersAction = async (selfId: string) => {
-  return api.users.getAllUnfollowedUsers(selfId);
+export const getAllUnfollowedUsersAction = async () => {
+  return api.users.getAllUnfollowedUsers();
 };
 
-export const getFolloweeIdsAction = async (userId: string) => {
-  return api.users.getFolloweeIds(userId);
+export const getFolloweeIdsAction = async () => {
+  return api.users.getFolloweeIds();
 };

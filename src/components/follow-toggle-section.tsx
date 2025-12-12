@@ -2,18 +2,14 @@ import { getFolloweeIdsAction } from "@/lib/actions/users.actions";
 import { FollowToggleClient } from "./follow-toggle-client";
 
 type FollowToggleSectionProps = {
-  selfId: string;
-  targetUserId: string;
+  userId: string;
 };
 
 export const FollowToggleSection = async ({
-  selfId,
-  targetUserId,
+  userId,
 }: FollowToggleSectionProps) => {
-  const followeeIds = await getFolloweeIdsAction(selfId);
-  const isFollowing = followeeIds.includes(targetUserId);
+  const followeeIds = await getFolloweeIdsAction();
+  const isFollowing = followeeIds.includes(userId);
 
-  return (
-    <FollowToggleClient targetUserId={targetUserId} isFollowing={isFollowing} />
-  );
+  return <FollowToggleClient targetUserId={userId} isFollowing={isFollowing} />;
 };

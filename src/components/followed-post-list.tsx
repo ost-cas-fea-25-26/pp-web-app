@@ -10,7 +10,7 @@ export const FollowedPostList: FC = async () => {
     return <p>Please log in to view followed posts.</p>;
   }
 
-  const followeeIds = await getFolloweeIdsAction(authenticatedUser.id);
+  const followeeIds = await getFolloweeIdsAction();
 
   return (
     <PostList filterByCreatorsIds={[...followeeIds, authenticatedUser.id]} />

@@ -4,14 +4,8 @@ import { FC } from "react";
 import Image from "next/image";
 import { FollowButton } from "./follow-button";
 
-type RecommendedUsersProps = {
-  selfId: string;
-};
-
-export const RecommendedUsers: FC<RecommendedUsersProps> = async ({
-  selfId,
-}) => {
-  const unfollowedUsers = await getAllUnfollowedUsersAction(selfId);
+export const RecommendedUsers: FC = async () => {
+  const unfollowedUsers = await getAllUnfollowedUsersAction();
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">

@@ -1,3 +1,4 @@
+import { getAuthenticatedUser } from "@/lib/auth/server";
 import type { HttpClient } from "../client/http-client";
 import { PaginatedUser, User } from "./users.types";
 
@@ -24,9 +25,9 @@ export class UsersApi {
     return this.client.delete<void>(`/users/${userId}/followers`);
   }
 
-  async getAllUnfollowedUsers(userId: string): Promise<User[]> {
+  async getAllUnfollowedUsers(): Promise<User[]> {
     const usersRes = await this.getMany();
-    const followeeIds = await this.getFolloweeIds(userId);
+    const followeeIds = await this.getFolloweeIds();
 
     if (!usersRes.success) {
       return [];
@@ -43,15 +44,21 @@ export class UsersApi {
     return this.client.get<PaginatedUser>(`/users/${userId}/followees`);
   }
 
-  async getFolloweeIds(userId: string): Promise<string[]> {
-    const res = await this.getFollowees(userId);
+  async getFolloweeIds(): Promise<string[]> {
+    const authenticatedUser = await getAuthenticatedUser();
+    if (!authenticatedUser?.id) {
+      return [];
+    }
 
-    if (!res.success) {
+    const userId = authenticatedUser.id;
+    const result = await this.getFollowees(userId);
+
+    if (!result.success) {
       return [];
     }
 
     return (
-      res.payload.data
+      result.payload.data
         ?.map((f) => f.id)
         .filter((id): id is string => typeof id === "string") ?? []
     );
