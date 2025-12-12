@@ -1,4 +1,3 @@
-import { getUserByIdAction } from "@/lib/actions/users.actions";
 import { FC } from "react";
 import Image from "next/image";
 import {
@@ -10,41 +9,29 @@ import {
   ProfileIcon,
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
-import { getAvatarFallbackLetters } from "@/lib/utils";
 import { EditableAvatar } from "./editable-avatar";
 
-type UserProfileProps = {
+type UserProfileViewProps = {
+  bannerUrl: string;
+  avatarUrl: string | null;
+  name: string;
+  handle: string;
+  bio: string;
+  fallbackLetters: string;
   userId: string;
   isEditable: boolean;
 };
 
-export const UserProfile: FC<UserProfileProps> = async ({
+export const UserProfileView: FC<UserProfileViewProps> = ({
+  bannerUrl,
+  avatarUrl,
+  name,
+  handle,
+  bio,
+  fallbackLetters,
   userId,
   isEditable,
 }) => {
-  const userResult = await getUserByIdAction(userId);
-
-  if (!userResult.success) {
-    return <p>User not found</p>;
-  }
-
-  const user = userResult.payload;
-
-  const bannerUrl = "/banners/rory-mcilroy.jpg";
-  const avatarUrl = user.avatarUrl ?? null;
-
-  const name =
-    `${user.firstname ?? ""} ${user.lastname ?? ""}`.trim() || "Unknown User";
-
-  const handle = user.username ?? "unknown";
-  const bio =
-    "Unschnöseliger Golfer, Drummer, Lieblings-Superheld: Tony Stark, Escape Room Fan, der einzige Informatiker ohne Kaffeesucht. Oft mit Kinderwagen am Bodensee anzutreffen.";
-
-  const fallbackLetters = getAvatarFallbackLetters(
-    user.firstname,
-    user.lastname,
-  );
-
   return (
     <ProfileHeader
       bannerImageElement={

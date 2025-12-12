@@ -1,7 +1,7 @@
 import { FollowToggleSection } from "@/components/follow-toggle-section";
 import { PostList } from "@/components/post-list";
 import { RecommendedUsers } from "@/components/recommended-users";
-import { UserProfile } from "@/components/user-profile";
+import { UserProfileLoader } from "@/components/user-profile-loader";
 import { getAuthenticatedUser } from "@/lib/auth/server";
 import { Tabs } from "@ost-cas-fea-25-26/pp-design-system";
 import { Suspense } from "react";
@@ -20,7 +20,7 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
   return (
     <Suspense>
       <div className="gap-10 flex flex-col">
-        <UserProfile userId={userId} isEditable={isOwnProfile} />
+        <UserProfileLoader userId={userId} isEditable={isOwnProfile} />
         {isOwnProfile ? (
           <>
             <RecommendedUsers />
