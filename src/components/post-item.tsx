@@ -1,6 +1,8 @@
 "use client";
 
 import { FC, ReactNode, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Mumble, MumbleActions } from "@ost-cas-fea-25-26/pp-design-system";
 import { likePostAction, unlikePostAction } from "@/lib/actions/posts.actions";
 
@@ -13,6 +15,7 @@ type PostItemProps = {
   comments: number;
   likes: number;
   liked: boolean;
+  profileUrl: string;
 };
 
 type LikeStateProps = {
@@ -29,6 +32,7 @@ export const PostItem: FC<PostItemProps> = ({
   comments,
   likes,
   liked,
+  profileUrl,
 }) => {
   const [likedState, setLikedState] = useState<LikeStateProps>({
     liked: liked,
@@ -48,9 +52,16 @@ export const PostItem: FC<PostItemProps> = ({
   return (
     <Mumble
       content={content}
-      avatarSrc={avatarSrc}
       userName={userName}
       userHandle={userHandle}
+      profileUrl={profileUrl}
+      avatar={
+        avatarSrc && (
+          <Link href={profileUrl}>
+            <Image src={avatarSrc} alt={userName} fill />
+          </Link>
+        )
+      }
       timestamp="2 hours ago"
       size="m"
       actions={

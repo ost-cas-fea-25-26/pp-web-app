@@ -39,6 +39,7 @@ export const PostList: FC<PostListProps> = async ({
           comments={post.replies ?? 0}
           likes={post.likes ?? 0}
           liked={!!post.likedBySelf}
+          profileUrl={`/users/${post.creator?.id}`}
         />
       ))}
     </div>

@@ -13,6 +13,7 @@ export const RecommendedUsersLoader = async () => {
         user.firstname && user.lastname
           ? `${user.firstname} ${user.lastname}`
           : "Unknown User",
+      profileUrl: `/users/${user.id}`,
     })) ?? [];
 
   return <RecommendedUsersView users={items} />;
