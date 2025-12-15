@@ -30,7 +30,7 @@ export const FollowToggleClient: FC<FollowToggleClientProps> = ({
     if (!result.success) {
       // eslint-disable-next-line no-alert
       alert(
-        `Failed to ${isFollowing ? "unfollow" : "follow"} user: ${result.error}`
+        `Failed to ${isFollowing ? "unfollow" : "follow"} user: ${result.error}`,
       );
     }
   };
