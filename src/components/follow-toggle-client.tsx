@@ -28,6 +28,9 @@ export const FollowToggleClient: FC<FollowToggleClientProps> = ({
       : await followUserAction(targetUserId);
 
     if (!result.success) {
+      // TODO: Replace with a nice toast notification
+      // e.g. https://ui.shadcn.com/docs/components/sonner
+
       // eslint-disable-next-line no-alert
       alert(
         `Failed to ${isFollowing ? "unfollow" : "follow"} user: ${result.error}`,
