@@ -5,8 +5,8 @@
   "scripts": {
     "predev": "npm run db:up && npm run db:migrate",
     "dev": "next dev --turbopack",
-    "build": "npm run db:migrate && next build --turbopack",
-    "build:test": "next build --turbopack",
+    "prebuild": "npm run db:migrate",
+    "build": "next build --turbopack",
     "start": "next start",
     "check:unused": "knip --config knip.config.ts",
     "type-check": "tsc --noEmit",

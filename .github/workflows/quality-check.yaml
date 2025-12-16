@@ -124,4 +124,3 @@ jobs:
         with:
           name: playwright-report-${{ matrix.browser }}-${{ matrix.shard }}
           path: playwright-report/
-
