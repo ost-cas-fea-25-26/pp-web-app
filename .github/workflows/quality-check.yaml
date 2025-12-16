@@ -12,34 +12,30 @@ jobs:
   lint:
     name: "✨ Lint"
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v5
-
       - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
-
       - run: npm ci --no-audit --no-fund
       - run: npm run lint
 
-  unit:
-    name: "🧪 Unit Tests + Coverage"
+  test:
+    name: "🧪 Unit Test + Coverage"
     runs-on: ubuntu-latest
-
+    outputs:
+      coverage: ${{ steps.coverage.outputs.path }}
     steps:
       - uses: actions/checkout@v5
-
       - uses: actions/setup-node@v6
         with:
           node-version: 24
           cache: npm
-
       - run: npm ci --no-audit --no-fund
       - run: npm run test:unit:coverage
 
-      - name: Upload coverage report
+      - name: Upload Coverage Report
         uses: actions/upload-artifact@v5
         with:
           name: coverage-report
@@ -104,11 +100,8 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Generate DB client
-        run: npm run db:generate-client
-
       - name: Apply database migrations
-        run: npm run db:apply-migrations
+        run: npm run db:migrate
 
       - name: Build app
         run: npm run build:test
@@ -131,3 +124,4 @@ jobs:
         with:
           name: playwright-report-${{ matrix.browser }}-${{ matrix.shard }}
           path: playwright-report/
+
