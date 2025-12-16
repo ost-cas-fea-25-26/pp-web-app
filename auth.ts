@@ -36,6 +36,7 @@ export const auth = betterAuth({
       config: [
         {
           providerId: CUSTOM_PROVIDER_ID,
+          prompt: "login",
           clientId: requireEnv("AUTH_CLIENT_ID"),
           clientSecret: "", // PKCE doesn't require client secret
           discoveryUrl:
