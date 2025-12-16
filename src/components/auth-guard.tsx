@@ -1,15 +1,15 @@
 import { getAuthenticatedUser } from "@/lib/auth/server";
-import { LoginRedirect } from "./login-redirect";
+import { LoginButton } from "./login-button";
 
-type ProtectedLayoutProps = {
+export const AuthGuard = async ({
+  children,
+}: {
   children: React.ReactNode;
-};
-
-export const AuthGuard = async ({ children }: ProtectedLayoutProps) => {
+}) => {
   const user = await getAuthenticatedUser();
 
   if (!user) {
-    return <LoginRedirect />;
+    return <LoginButton />;
   }
 
   return <div data-testid="auth-guard-authenticated">{children}</div>;

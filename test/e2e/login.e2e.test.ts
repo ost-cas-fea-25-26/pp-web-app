@@ -5,6 +5,7 @@ import { test, expect } from "@playwright/test";
 
 test("login", async ({ page }) => {
   await page.goto("/");
+  await page.getByText("login du mongo scheiss").click();
   await page
     .getByTestId("username-text-input")
     .fill(requireEnv("PLAYWRIGHT_TEST_USER_1_EMAIL"));
