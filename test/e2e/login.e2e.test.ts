@@ -14,5 +14,7 @@ test("login", async ({ page }) => {
     .getByTestId("password-text-input")
     .fill(requireEnv("PLAYWRIGHT_TEST_USER_1_PASSWORD"));
   await page.getByTestId("submit-button").click();
+  await page.waitForURL("http://localhost:3000", {});
+
   await expect(page.getByText("Rory McIlroy").first()).toBeVisible();
 });
