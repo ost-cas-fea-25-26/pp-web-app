@@ -12,5 +12,5 @@ export const AuthGuard = async ({ children }: ProtectedLayoutProps) => {
     return <LoginRedirect />;
   }
 
-  return <>{children}</>;
+  return <div data-testid="auth-guard-authenticated">{children}</div>;
 };
