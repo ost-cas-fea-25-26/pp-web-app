@@ -1,26 +1,9 @@
 import { headers } from "next/headers";
 import { auth } from "../../../auth";
-import { api } from "../api";
 import { CUSTOM_PROVIDER_ID } from "./client";
 
 export const getSession = async () =>
   auth.api.getSession({ headers: await headers() });
-
-export const getApiUser = async () => {
-  const session = await getSession();
-
-  const id = session?.user?.id;
-  if (!id) {
-    return null;
-  }
-
-  const currentUser = await api.users.getUserById(id);
-  if (!currentUser.success || !currentUser.payload) {
-    return null;
-  }
-
-  return currentUser.payload;
-};
 
 export const getAccessToken = async () => {
   const reqHeaders = await headers();

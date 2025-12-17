@@ -13,6 +13,15 @@ export class UsersApi {
     return this.client.get<User>(`/users/${id}`);
   }
 
+  async getMe() {
+    const session = await getSession();
+    if (!session?.user?.id) {
+      return null;
+    }
+
+    return this.getUserById(session.user.id);
+  }
+
   updateAvatar(formData: FormData) {
     return this.client.put<string>("/users/avatar", formData);
   }
