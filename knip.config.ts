@@ -1,12 +1,18 @@
 import type { KnipConfig } from "knip";
 
 const config: KnipConfig = {
-  ignore: [".prettier.config.js", "auth-client.ts", "src/lib/api/generated/**"],
+  ignore: [
+    ".prettier.config.js",
+    "auth-client.ts",
+    "src/lib/api/generated/**",
+    "test/e2e/auth.setup.ts",
+  ],
   ignoreDependencies: [
     "@smartive/prettier-config",
     "prettier-plugin-tailwindcss",
     "@testing-library/jest-dom",
     "@testing-library/react",
+    "dotenv",
   ],
   ignoreBinaries: ["tail"],
 };
