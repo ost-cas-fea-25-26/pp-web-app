@@ -12,10 +12,13 @@ type RootLayoutProps = {
   children: ReactNode;
 };
 
-const RootLayout = ({ children }: RootLayoutProps) => (
-  <html lang="en">
-    <body>{children}</body>
-  </html>
-);
+const RootLayout = ({ children }: RootLayoutProps) => {
+  console.log("Rendering RootLayout");
+  return (
+    <html lang="en">
+      <body>{children}</body>
+    </html>
+  );
+};
 
 export default RootLayout;

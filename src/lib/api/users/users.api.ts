@@ -9,8 +9,11 @@ export class UsersApi {
     return this.client.get<PaginatedUser>("/users");
   }
 
-  getUserById(id: string) {
-    return this.client.get<User>(`/users/${id}`);
+  async getUserById(id: string) {
+    const user = await this.client.get<User>(`/users/${id}`);
+    console.log("getUserById:", id, JSON.stringify(user));
+
+    return user;
   }
 
   updateAvatar(formData: FormData) {
@@ -35,7 +38,7 @@ export class UsersApi {
 
     return (
       usersRes.payload.data?.filter(
-        (user: User) => !followeeIds.includes(user.id ?? ""),
+        (user: User) => !followeeIds.includes(user.id ?? "")
       ) ?? []
     );
   }
