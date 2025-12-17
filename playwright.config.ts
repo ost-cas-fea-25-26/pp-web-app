@@ -1,4 +1,7 @@
 import { defineConfig, devices } from "@playwright/test";
+import * as dotenv from "dotenv";
+
+dotenv.config({ path: ".env.test", quiet: true });
 
 export default defineConfig({
   testDir: "./test",
@@ -24,6 +27,9 @@ export default defineConfig({
       animations: "disabled",
     },
   },
+
+  globalSetup: "./test/e2e/setup/global-setup.ts",
+  globalTeardown: "./test/e2e/setup/global-teardown.ts",
 
   projects: [
     {
