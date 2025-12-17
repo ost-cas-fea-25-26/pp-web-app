@@ -3,7 +3,7 @@ import "dotenv/config";
 import { requireEnv } from "@/lib/utils";
 import { test, expect } from "@playwright/test";
 
-test("login", async ({ page }) => {
+test("auth as mr playwright", async ({ page }) => {
   await page.goto("/");
   await page
     .getByTestId("username-text-input")
@@ -15,5 +15,6 @@ test("login", async ({ page }) => {
     .fill(requireEnv("PLAYWRIGHT_TEST_USER_1_PASSWORD"));
   await page.getByTestId("submit-button").click();
   await page.waitForURL("http://localhost:3000/");
-  await expect(page.getByText("Rory McIlroy").first()).toBeVisible();
+  await expect(page.getByTestId("auth-guard-authenticated")).toBeVisible();
+  await page.context().storageState({ path: "playwright/.auth/user.json" });
 });
