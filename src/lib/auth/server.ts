@@ -3,13 +3,8 @@ import { auth } from "../../../auth";
 import { api } from "../api";
 import { CUSTOM_PROVIDER_ID } from "./client";
 
-export const getSession = async () => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  return session;
-};
+export const getSession = async () =>
+  auth.api.getSession({ headers: await headers() });
 
 export const getAuthenticatedUser = async () => {
   const session = await getSession();

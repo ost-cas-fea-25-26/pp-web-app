@@ -10,9 +10,7 @@ export class UsersApi {
   }
 
   async getUserById(id: string) {
-    const user = await this.client.get<User>(`/users/${id}`);
-
-    return user;
+    return this.client.get<User>(`/users/${id}`);
   }
 
   updateAvatar(formData: FormData) {
