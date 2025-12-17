@@ -87,7 +87,7 @@ export const auth = betterAuth({
   ],
   secret: requireEnv("AUTH_SECRET"),
   advanced: {
-    useSecureCookies: process.env.NODE_ENV === "production",
+    useSecureCookies: process.env.VERCEL_URL?.startsWith("https://"),
     cookiePrefix: "better-auth",
   },
 });

@@ -71,38 +71,54 @@ export class HttpClient {
   async get<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    return this.execute<T>(path, {
+    const response = await this.execute<T>(path, {
       method: "GET",
       headers,
     });
+
+    console.log("API:GET", path, "response:", JSON.stringify(response));
+
+    return response;
   }
 
   async post<T>(path: string, body: BodyInit): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    return this.execute<T>(path, {
+    const response = await this.execute<T>(path, {
       method: "POST",
       body,
       headers,
     });
+
+    console.log("API:POST", path, "response:", JSON.stringify(response));
+
+    return response;
   }
 
   async put<T>(path: string, body?: BodyInit): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    return this.execute<T>(path, {
+    const response = await this.execute<T>(path, {
       method: "PUT",
       body,
       headers,
     });
+
+    console.log("API:PUT", path, "response:", JSON.stringify(response));
+
+    return response;
   }
 
   async delete<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    return this.execute<T>(path, {
+    const response = await this.execute<T>(path, {
       method: "DELETE",
       headers,
     });
+
+    console.log("API:DELETE", path, "response:", JSON.stringify(response));
+
+    return response;
   }
 }
