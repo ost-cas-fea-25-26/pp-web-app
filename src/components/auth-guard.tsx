@@ -1,4 +1,4 @@
-import { getAuthenticatedUser } from "@/lib/auth/server";
+import { getSession } from "@/lib/auth/server";
 import { LoginRedirect } from "./login-redirect";
 
 type ProtectedLayoutProps = {
@@ -6,9 +6,9 @@ type ProtectedLayoutProps = {
 };
 
 export const AuthGuard = async ({ children }: ProtectedLayoutProps) => {
-  const user = await getAuthenticatedUser();
+  const session = await getSession();
 
-  if (!user) {
+  if (!session?.user) {
     return <LoginRedirect />;
   }
 
