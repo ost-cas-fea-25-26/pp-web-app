@@ -5,7 +5,7 @@ const config: KnipConfig = {
     ".prettier.config.js",
     "auth-client.ts",
     "src/lib/api/generated/**",
-    "test/e2e/setup/auth.setup.ts",
+    "test/e2e/setup/auth-setup.ts",
   ],
   ignoreDependencies: [
     "@smartive/prettier-config",
