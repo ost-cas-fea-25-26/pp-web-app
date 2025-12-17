@@ -14,10 +14,16 @@ export class HttpClient {
 
   private async buildAuthorizationHeaders(): Promise<HeadersInit> {
     const tokenResult = await getAccessToken();
+    console.log(
+      "buildAuthorizationHeaders tokenResult:",
+      JSON.stringify(tokenResult)
+    );
     const headers: HeadersInit = {};
 
     if (tokenResult?.accessToken) {
       headers.Authorization = `Bearer ${tokenResult.accessToken}`;
+    } else {
+      console.log("PANIC! No access token available for HttpClient request.");
     }
 
     return headers;
@@ -64,10 +70,6 @@ export class HttpClient {
 
   async get<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
-
-    console.log("HttpClient GET headers:", JSON.stringify(headers));
-    console.log("HttpClient GET path:", path);
-    console.log("HttpClient GET url:", `${this.baseUrl}${path}`);
 
     return this.execute<T>(path, {
       method: "GET",

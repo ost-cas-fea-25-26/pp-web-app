@@ -11,7 +11,6 @@ export class UsersApi {
 
   async getUserById(id: string) {
     const user = await this.client.get<User>(`/users/${id}`);
-    console.log("getUserById:", id, JSON.stringify(user));
 
     return user;
   }

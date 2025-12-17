@@ -31,6 +31,8 @@ export const getAccessToken = async () => {
   const reqHeaders = await headers();
   const session = await auth.api.getSession({ headers: reqHeaders });
 
+  console.log("getAccessToken session:", JSON.stringify(session));
+
   if (!session?.user) {
     return null;
   }
@@ -41,6 +43,8 @@ export const getAccessToken = async () => {
       providerId: CUSTOM_PROVIDER_ID,
     },
   });
+
+  console.log("getAccessToken token:", JSON.stringify(token));
 
   if (!token?.accessToken) {
     return null;
