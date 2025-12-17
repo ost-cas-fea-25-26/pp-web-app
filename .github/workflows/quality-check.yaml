@@ -93,8 +93,9 @@ jobs:
 
       - name: Run Playwright Tests (sharded)
         run: npx playwright test --project=${{ matrix.browser }} --shard=${{ matrix.shard }}
-        env:
-          DEBUG: pw:webserver
+        # Enable to see server logs during tests
+        # env:
+        #   DEBUG: pw:webserver
 
       - name: Upload Test Report (only if failure)
         if: failure()

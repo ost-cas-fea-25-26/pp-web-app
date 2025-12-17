@@ -1,4 +1,4 @@
-import { getAuthenticatedUser } from "@/lib/auth/server";
+import { getSession } from "@/lib/auth/server";
 import type { HttpClient } from "../client/http-client";
 import { PaginatedUser, User } from "./users.types";
 
@@ -37,7 +37,7 @@ export class UsersApi {
 
     return (
       usersRes.payload.data?.filter(
-        (user: User) => !followeeIds.includes(user.id ?? "")
+        (user: User) => !followeeIds.includes(user.id ?? ""),
       ) ?? []
     );
   }
@@ -47,12 +47,12 @@ export class UsersApi {
   }
 
   async getFolloweeIds(): Promise<string[]> {
-    const authenticatedUser = await getAuthenticatedUser();
-    if (!authenticatedUser?.id) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return [];
     }
 
-    const userId = authenticatedUser.id;
+    const userId = session.user.id;
     const result = await this.getFollowees(userId);
 
     if (!result.success) {
