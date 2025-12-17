@@ -7,11 +7,11 @@ import {
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { getAvatarFallbackLetters } from "@/lib/utils";
-import { getAuthenticatedUser } from "@/lib/auth/server";
+import { getApiUser } from "@/lib/auth/server";
 import { LogoutButton } from "./logout-button";
 
 export const HeaderActions: FC = async () => {
-  const user = await getAuthenticatedUser();
+  const user = await getApiUser();
 
   if (!user) {
     return null;

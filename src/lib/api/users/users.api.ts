@@ -9,7 +9,7 @@ export class UsersApi {
     return this.client.get<PaginatedUser>("/users");
   }
 
-  async getUserById(id: string) {
+  getUserById(id: string) {
     return this.client.get<User>(`/users/${id}`);
   }
 

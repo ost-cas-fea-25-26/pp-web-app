@@ -6,7 +6,7 @@ import { CUSTOM_PROVIDER_ID } from "./client";
 export const getSession = async () =>
   auth.api.getSession({ headers: await headers() });
 
-export const getAuthenticatedUser = async () => {
+export const getApiUser = async () => {
   const session = await getSession();
 
   const id = session?.user?.id;
