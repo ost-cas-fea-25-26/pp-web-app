@@ -35,8 +35,8 @@ export class UsersApi {
   }
 
   async getUnfollowedUserSuggestions(limit = 6): Promise<User[]> {
-    const ownUserResult = await this.getMe();
-    if (!ownUserResult?.success) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return [];
     }
 
@@ -50,7 +50,7 @@ export class UsersApi {
     return (
       usersResult.payload.data
         ?.filter((user: User) => !followeeIds.includes(user.id ?? ""))
-        .filter((user: User) => user.id !== ownUserResult.payload.id)
+        .filter((user: User) => user.id !== session.user.id)
         .slice(0, limit) ?? []
     );
   }
