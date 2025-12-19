@@ -5,7 +5,7 @@ import {
   UploadImageModal,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import Image from "next/image";
-import { FC, useEffect, useState } from "react";
+import { FC, useState } from "react";
 import { updateBannerAction } from "@/lib/actions/users.actions";
 
 type BannerProps = {
@@ -24,11 +24,7 @@ export const Banner: FC<BannerProps> = ({
   userId,
 }) => {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState<string>(bannerUrl);
-
-  useEffect(() => {
-    setCurrentSrc(bannerUrl);
-  }, [bannerUrl]);
+  const [src, setSrc] = useState(bannerUrl);
 
   const saveNewBannerImage = async (file: File) => {
     const formData = new FormData();
@@ -44,7 +40,7 @@ export const Banner: FC<BannerProps> = ({
       return;
     }
 
-    setCurrentSrc(`${bannerUrl}?t=${Date.now()}`);
+    setSrc(`${bannerUrl}?t=${Date.now()}`);
     setIsOpenEditModal(false);
   };
 
@@ -54,12 +50,12 @@ export const Banner: FC<BannerProps> = ({
         onClick={isEditable ? () => setIsOpenEditModal(true) : undefined}
         imageElement={
           <Image
-            src={currentSrc}
+            src={src}
             alt={alt}
             fill
             className="object-cover"
             priority
-            onError={() => setCurrentSrc(FALLBACK_BANNER)}
+            onError={() => setSrc(FALLBACK_BANNER)}
           />
         }
       />
