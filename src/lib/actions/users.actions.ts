@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { api } from "../api";
-import { updateBannerImage } from "../storage/users.storage";
+import { usersStorage } from "../storage/users.storage";
 
 export const getUserByIdAction = async (userId: string) => {
   return api.users.getUserById(userId);
@@ -21,11 +21,8 @@ export const updateAvatarAction = async (
   return result;
 };
 
-export const updateBannerAction = async (
-  userId: string,
-  formData: FormData,
-) => {
-  const result = await updateBannerImage(formData);
+export const updateBannerAction = async (userId: string, file: File) => {
+  const result = await usersStorage.updateBannerImage(file);
 
   if (result.success) {
     revalidatePath(`/users/${userId}`);

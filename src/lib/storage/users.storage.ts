@@ -1,47 +1,41 @@
-import { getSession } from "../auth/server";
 import { put } from "@vercel/blob";
+import { getSession } from "../auth/server";
+import { StorageResponse } from "./types";
 
-type StorageResponse =
-  | {
-      success: true;
-      url: string;
+class UsersStorage {
+  private readonly blobHost = "14ljzsprd3eqftgf.public.blob.vercel-storage.com";
+
+  async updateBannerImage(file: File): Promise<StorageResponse> {
+    const session = await getSession();
+    if (!session?.user?.id) {
+      return { success: false, error: "User not authenticated" };
     }
-  | {
-      success: false;
-      error: string;
-    };
 
-export const updateBannerImage = async (
-  formData: FormData,
-): Promise<StorageResponse> => {
-  const session = await getSession();
-  if (!session?.user?.id) {
-    return {
-      success: false,
-      error: "User not authenticated",
-    };
+    try {
+      const { url } = await this.uploadToVercel(
+        `users/${session.user.id}/banner`,
+        file,
+      );
+
+      return { success: true, url };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "Upload failed",
+      };
+    }
   }
 
-  const userId = session.user.id;
-
-  try {
-    const { url } = await put(
-      `users/${userId}/banner`,
-      formData.get("media") as Blob,
-      { access: "public", allowOverwrite: true },
-    );
-
-    return {
-      success: true,
-      url,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      error: (error as Error).message,
-    };
+  getBannerUrl(userId: string): string {
+    return `https://${this.blobHost}/users/${userId}/banner`;
   }
-};
 
-export const getBannerUrl = (userId: string) =>
-  `https://14ljzsprd3eqftgf.public.blob.vercel-storage.com/users/${userId}/banner`;
+  private uploadToVercel(key: string, file: Blob) {
+    return put(key, file, {
+      access: "public",
+      allowOverwrite: true,
+    });
+  }
+}
+
+export const usersStorage = new UsersStorage();

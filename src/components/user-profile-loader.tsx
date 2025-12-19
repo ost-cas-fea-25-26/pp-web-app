@@ -1,7 +1,7 @@
 import { getUserByIdAction } from "@/lib/actions/users.actions";
 import { getAvatarFallbackLetters } from "@/lib/utils";
 import { UserProfileView } from "./user-profile-view";
-import { getBannerUrl } from "@/lib/storage/users.storage";
+import { usersStorage } from "@/lib/storage/users.storage";
 
 type UserProfileLoaderProps = {
   userId: string;
@@ -20,7 +20,7 @@ export const UserProfileLoader = async ({
 
   const user = userResult.payload;
 
-  const bannerUrl = getBannerUrl(userId);
+  const bannerUrl = usersStorage.getBannerUrl(userId);
   const avatarUrl = user.avatarUrl ?? null;
 
   const name =

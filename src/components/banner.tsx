@@ -27,10 +27,7 @@ export const Banner: FC<BannerProps> = ({
   const [src, setSrc] = useState(bannerUrl);
 
   const saveNewBannerImage = async (file: File) => {
-    const formData = new FormData();
-    formData.append("media", file);
-
-    const result = await updateBannerAction(userId, formData);
+    const result = await updateBannerAction(userId, file);
 
     if (!result.success) {
       // TODO: replace with toast
