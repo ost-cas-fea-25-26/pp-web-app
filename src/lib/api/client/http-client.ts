@@ -1,21 +1,17 @@
 import { getAccessToken } from "@/lib/auth/server";
 import type { ApiResponse } from "./api-response";
 
-const logRequest = (method: string, path: string) => {
+const logRequest = (method: string, path: string) =>
   console.info(`[API] → ${method} ${path}`);
-};
 
-const logSuccess = (status: number, durationMs: number) => {
+const logSuccess = (status: number, durationMs: number) =>
   console.info(`[API] ✓ ${status} OK (${durationMs} ms)`);
-};
 
 const logError = (
   status: number | "ERR",
   message: string,
   durationMs: number,
-) => {
-  console.error(`[API] ✗ ${status} ${message} (${durationMs} ms)`);
-};
+) => console.error(`[API] ✗ ${status} ${message} (${durationMs} ms)`);
 
 export class HttpClient {
   private baseUrl: string;
