@@ -35,21 +35,22 @@ export class UsersApi {
   }
 
   async getUnfollowedUserSuggestions(limit = 6): Promise<User[]> {
-    const ownUser = await getAuthenticatedUser();
-    if (!ownUser?.id) {
+    const ownUserResult = await this.getMe();
+    if (!ownUserResult?.success) {
       return [];
     }
-    const usersRes = await this.getMany();
+
+    const usersResult = await this.getMany();
+    if (!usersResult.success) {
+      return [];
+    }
+
     const followeeIds = await this.getFolloweeIds();
 
-    if (!usersRes.success) {
-      return [];
-    }
-
     return (
-      usersRes.payload.data
+      usersResult.payload.data
         ?.filter((user: User) => !followeeIds.includes(user.id ?? ""))
-        .filter((user: User) => user.id !== ownUser.id)
+        .filter((user: User) => user.id !== ownUserResult.payload.id)
         .slice(0, limit) ?? []
     );
   }

@@ -34,7 +34,7 @@ export const mockGetPosts = async (): Promise<void> => {
   const posts: Post[] = [
     {
       id: "post-1",
-      text: "Par 3. One on the green. Already celebrating the birdie… four-putted. Golf is a cruel sport.",
+      text: "Just made a birdie on the 18th hole!",
       likes: 8,
     },
     {
