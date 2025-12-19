@@ -1,4 +1,4 @@
-import { getAuthenticatedUser } from "@/lib/auth/server";
+import { getSession } from "@/lib/auth/server";
 import type { HttpClient } from "../client/http-client";
 import { PaginatedUser, User } from "./users.types";
 
@@ -11,6 +11,15 @@ export class UsersApi {
 
   getUserById(id: string) {
     return this.client.get<User>(`/users/${id}`);
+  }
+
+  async getMe() {
+    const session = await getSession();
+    if (!session?.user?.id) {
+      return null;
+    }
+
+    return this.getUserById(session.user.id);
   }
 
   updateAvatar(formData: FormData) {
@@ -26,21 +35,22 @@ export class UsersApi {
   }
 
   async getUnfollowedUserSuggestions(limit = 6): Promise<User[]> {
-    const ownUser = await getAuthenticatedUser();
-    if (!ownUser?.id) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return [];
     }
-    const usersRes = await this.getMany();
+
+    const usersResult = await this.getMany();
+    if (!usersResult.success) {
+      return [];
+    }
+
     const followeeIds = await this.getFolloweeIds();
 
-    if (!usersRes.success) {
-      return [];
-    }
-
     return (
-      usersRes.payload.data
+      usersResult.payload.data
         ?.filter((user: User) => !followeeIds.includes(user.id ?? ""))
-        .filter((user: User) => user.id !== ownUser.id)
+        .filter((user: User) => user.id !== session.user.id)
         .slice(0, limit) ?? []
     );
   }
@@ -50,12 +60,12 @@ export class UsersApi {
   }
 
   async getFolloweeIds(): Promise<string[]> {
-    const authenticatedUser = await getAuthenticatedUser();
-    if (!authenticatedUser?.id) {
+    const session = await getSession();
+    if (!session?.user?.id) {
       return [];
     }
 
-    const userId = authenticatedUser.id;
+    const userId = session.user.id;
     const result = await this.getFollowees(userId);
 
     if (!result.success) {

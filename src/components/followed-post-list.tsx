@@ -1,18 +1,16 @@
 import { FC } from "react";
 import { getFolloweeIdsAction } from "@/lib/actions/users.actions";
-import { getAuthenticatedUser } from "@/lib/auth/server";
+import { getSession } from "@/lib/auth/server";
 import { PostList } from "./post-list";
 
 export const FollowedPostList: FC = async () => {
-  const authenticatedUser = await getAuthenticatedUser();
+  const session = await getSession();
 
-  if (!authenticatedUser?.id) {
+  if (!session?.user?.id) {
     return <p>Please log in to view followed posts.</p>;
   }
 
   const followeeIds = await getFolloweeIdsAction();
 
-  return (
-    <PostList filterByCreatorsIds={[...followeeIds, authenticatedUser.id]} />
-  );
+  return <PostList filterByCreatorsIds={[...followeeIds, session.user.id]} />;
 };
