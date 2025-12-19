@@ -24,11 +24,8 @@ export const Banner: FC<BannerProps> = ({
   userId,
 }) => {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
-
-  // current image source (handles fallback + cache busting)
   const [currentSrc, setCurrentSrc] = useState<string>(bannerUrl);
 
-  // keep in sync if parent bannerUrl changes
   useEffect(() => {
     setCurrentSrc(bannerUrl);
   }, [bannerUrl]);
@@ -47,9 +44,7 @@ export const Banner: FC<BannerProps> = ({
       return;
     }
 
-    // force reload of same blob path (overwrite-safe)
     setCurrentSrc(`${bannerUrl}?t=${Date.now()}`);
-
     setIsOpenEditModal(false);
   };
 
@@ -64,16 +59,10 @@ export const Banner: FC<BannerProps> = ({
             fill
             className="object-cover"
             priority
-            onError={() => {
-              console.warn(
-                "Banner image failed to load, using fallback banner.",
-              );
-              setCurrentSrc(FALLBACK_BANNER);
-            }}
+            onError={() => setCurrentSrc(FALLBACK_BANNER)}
           />
         }
       />
-
       {isEditable && (
         <UploadImageModal
           open={isOpenEditModal}
