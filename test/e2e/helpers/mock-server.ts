@@ -13,7 +13,7 @@ const JSON_HEADERS = {
 export const startMockServer = async (): Promise<void> => {
   await start_mockserver({
     serverPort: MOCKSERVER_PORT,
-    verbose: true,
+    verbose: false,
   });
 };
 
