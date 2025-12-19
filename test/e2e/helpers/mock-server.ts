@@ -8,12 +8,13 @@ const MOCKSERVER_RESET_PATH = "/mockserver/reset";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
-} as const;
+};
+
+JSON_HEADERS["Content-Type"] = "something else";
 
 export const startMockServer = async (): Promise<void> => {
   await start_mockserver({
     serverPort: MOCKSERVER_PORT,
-    // verbose: true,
   });
 };
 
@@ -33,7 +34,7 @@ export const mockGetPosts = async (): Promise<void> => {
   const posts: Post[] = [
     {
       id: "post-1",
-      text: "Just made a birdie on the 18th hole!",
+      text: "Par 3. One on the green. Already celebrating the birdie… four-putted. Golf is a cruel sport.",
       likes: 8,
     },
     {

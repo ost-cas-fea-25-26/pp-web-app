@@ -25,7 +25,7 @@ export class HttpClient {
 
   private async execute<T>(
     path: string,
-    init: RequestInit,
+    init: RequestInit
   ): Promise<ApiResponse<T>> {
     try {
       const response = await fetch(`${this.baseUrl}${path}`, init);
@@ -71,7 +71,7 @@ export class HttpClient {
     });
 
     //eslint-disable-next-line no-console
-    console.log("API:GET", path, "response:", JSON.stringify(response));
+    console.info("API:GET", path, "response:", JSON.stringify(response));
 
     return response;
   }
@@ -86,7 +86,7 @@ export class HttpClient {
     });
 
     //eslint-disable-next-line no-console
-    console.log("API:POST", path, "response:", JSON.stringify(response));
+    console.info("API:POST", path, "response:", JSON.stringify(response));
 
     return response;
   }
@@ -101,7 +101,7 @@ export class HttpClient {
     });
 
     //eslint-disable-next-line no-console
-    console.log("API:PUT", path, "response:", JSON.stringify(response));
+    console.info("API:PUT", path, "response:", JSON.stringify(response));
 
     return response;
   }
@@ -115,7 +115,7 @@ export class HttpClient {
     });
 
     //eslint-disable-next-line no-console
-    console.log("API:DELETE", path, "response:", JSON.stringify(response));
+    console.info("API:DELETE", path, "response:", JSON.stringify(response));
 
     return response;
   }
