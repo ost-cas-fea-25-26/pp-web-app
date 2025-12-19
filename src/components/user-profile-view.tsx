@@ -4,12 +4,12 @@ import {
   Avatar,
   IconButton,
   Link,
-  ProfileBanner,
   ProfileHeader,
   ProfileIcon,
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { EditableAvatar } from "./editable-avatar";
+import { Banner } from "./banner";
 
 type UserProfileViewProps = {
   bannerUrl: string;
@@ -35,16 +35,11 @@ export const UserProfileView: FC<UserProfileViewProps> = ({
   return (
     <ProfileHeader
       bannerImageElement={
-        <ProfileBanner
-          imageElement={
-            <Image
-              src={bannerUrl}
-              alt={`${name} banner`}
-              fill
-              className="object-cover"
-              priority
-            />
-          }
+        <Banner
+          isEditable={isEditable}
+          bannerUrl={bannerUrl}
+          alt={`${name} banner`}
+          userId={userId}
         />
       }
       avatarImageElement={
