@@ -8,13 +8,12 @@ const MOCKSERVER_RESET_PATH = "/mockserver/reset";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json",
-};
-
-JSON_HEADERS["Content-Type"] = "something else";
+} as const;
 
 export const startMockServer = async (): Promise<void> => {
   await start_mockserver({
     serverPort: MOCKSERVER_PORT,
+    verbose: true,
   });
 };
 
