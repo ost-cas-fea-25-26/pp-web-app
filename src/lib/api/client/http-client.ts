@@ -1,6 +1,22 @@
 import { getAccessToken } from "@/lib/auth/server";
 import type { ApiResponse } from "./api-response";
 
+const logRequest = (method: string, path: string) => {
+  console.info(`[API] → ${method} ${path}`);
+};
+
+const logSuccess = (status: number, durationMs: number) => {
+  console.info(`[API] ✓ ${status} OK (${durationMs} ms)`);
+};
+
+const logError = (
+  status: number | "ERR",
+  message: string,
+  durationMs: number,
+) => {
+  console.error(`[API] ✗ ${status} ${message} (${durationMs} ms)`);
+};
+
 export class HttpClient {
   private baseUrl: string;
 
@@ -27,10 +43,18 @@ export class HttpClient {
     path: string,
     init: RequestInit,
   ): Promise<ApiResponse<T>> {
+    const method = init.method ?? "GET";
+    const start = Date.now();
+
+    logRequest(method, path);
+
     try {
       const response = await fetch(`${this.baseUrl}${path}`, init);
+      const duration = Date.now() - start;
 
       if (!response.ok) {
+        logError(response.status, response.statusText, duration);
+
         return {
           success: false,
           error: `Status ${response.status}`,
@@ -38,23 +62,25 @@ export class HttpClient {
       }
 
       const contentType = response.headers.get("content-type");
+      let payload: T;
 
       if (contentType?.includes("application/json")) {
-        const json = (await response.json()) as T;
-
-        return {
-          success: true,
-          payload: json,
-        };
+        payload = (await response.json()) as T;
+      } else {
+        payload = (await response.text()) as unknown as T;
       }
 
-      const text = (await response.text()) as unknown as T;
+      logSuccess(response.status, duration);
 
       return {
         success: true,
-        payload: text,
+        payload,
       };
     } catch (err) {
+      const duration = Date.now() - start;
+
+      logError("ERR", (err as Error).message, duration);
+
       return {
         success: false,
         error: (err as Error).message,
@@ -65,54 +91,38 @@ export class HttpClient {
   async get<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    const response = await this.execute<T>(path, {
+    return this.execute<T>(path, {
       method: "GET",
       headers,
     });
-
-    console.info("API:GET", path, "response:", JSON.stringify(response));
-
-    return response;
   }
 
   async post<T>(path: string, body: BodyInit): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    const response = await this.execute<T>(path, {
+    return this.execute<T>(path, {
       method: "POST",
       body,
       headers,
     });
-
-    console.info("API:POST", path, "response:", JSON.stringify(response));
-
-    return response;
   }
 
   async put<T>(path: string, body?: BodyInit): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    const response = await this.execute<T>(path, {
+    return this.execute<T>(path, {
       method: "PUT",
       body,
       headers,
     });
-
-    console.info("API:PUT", path, "response:", JSON.stringify(response));
-
-    return response;
   }
 
   async delete<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 
-    const response = await this.execute<T>(path, {
+    return this.execute<T>(path, {
       method: "DELETE",
       headers,
     });
-
-    console.info("API:DELETE", path, "response:", JSON.stringify(response));
-
-    return response;
   }
 }
