@@ -37,6 +37,7 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
             commentCounter={mumble.replies}
             deepLink="/mumbles/" // TODO: replace with actual link
             likeCounter={mumble.likes ?? 0}
+            liked={!!mumble.likedBySelf}
           />
         ),
         avatarSrc: mumble.creator?.avatarUrl,
