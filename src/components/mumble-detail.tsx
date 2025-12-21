@@ -48,6 +48,7 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
       }}
       replies={replies.map((reply: Post) => {
         return {
+          id: reply.id,
           content: reply.text,
           userName: reply.creator?.username,
           userHandle: reply.creator?.username,
@@ -57,8 +58,29 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
       })}
       replyForm={{
         errorMessage: "Field is required",
-        onSubmitHandler: async (data: unknown) => {
-          await createReplyForPostAction(mumble.id, data.replyContent);
+        onSubmitHandler: async (data: {
+          media: File | null | undefined;
+          replyContent: string;
+        }) => {
+          if (!mumble.id) {
+            throw new Error("Mumble id is required");
+          }
+
+          let mediaBlob: Blob | undefined = undefined;
+          let fileName: string | undefined = undefined;
+
+          if (data?.media instanceof File) {
+            fileName = data.media.name;
+            const buffer = await data.media.arrayBuffer();
+            mediaBlob = new Blob([buffer], { type: data.media.type });
+          }
+
+          await createReplyForPostAction(
+            mumble.id,
+            data.replyContent,
+            mediaBlob,
+            fileName,
+          );
         },
         placeholder: "Write your reply...",
         submitButtonText: "Send Reply",

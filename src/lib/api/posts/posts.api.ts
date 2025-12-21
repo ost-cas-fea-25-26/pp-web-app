@@ -34,9 +34,19 @@ export class PostsApi {
     return this.client.get<PaginatedPost>(`/posts/${postId}/replies`);
   }
 
-  createReplyForPost(postId: string, text: string) {
+  createReplyForPost(
+    postId: string,
+    text: string,
+    mediaBlob?: Blob,
+    fileName?: string,
+  ) {
     const form = new FormData();
+
     form.append("text", text);
+
+    if (mediaBlob) {
+      form.append("media", mediaBlob, fileName);
+    }
 
     return this.client.post(`/posts/${postId}/replies`, form);
   }

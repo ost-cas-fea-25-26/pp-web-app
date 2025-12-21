@@ -37,8 +37,15 @@ export const getRepliesByPostIdAction = async (postId: string) => {
 export const createReplyForPostAction = async (
   postId: string,
   text: string,
+  blob?: Blob,
+  fileName?: string,
 ) => {
-  const result = await api.posts.createReplyForPost(postId, text);
+  const result = await api.posts.createReplyForPost(
+    postId,
+    text,
+    blob,
+    fileName,
+  );
 
   if (result.success) {
     revalidatePath(`/mumble/${postId}`);
