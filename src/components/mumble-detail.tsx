@@ -45,6 +45,9 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
         timestamp: "2h ago",
         userHandle: mumble.creator?.username,
         userName: "Rory McIlroy", // TODO: replace with actual name
+        mediaElement: mumble.mediaUrl ? ( // TODO: next.js img component
+          <img src={mumble.mediaUrl} alt={"Reply Media"} />
+        ) : null,
       }}
       replies={replies.map((reply: Post) => {
         return {
@@ -54,6 +57,9 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
           userHandle: reply.creator?.username,
           avatarSrc: reply.creator?.avatarUrl,
           timestamp: "1h ago",
+          mediaElement: reply.mediaUrl ? ( // TODO: next.js img component
+            <img src={reply.mediaUrl} alt={"Reply Media"} />
+          ) : null,
         };
       })}
       replyForm={{

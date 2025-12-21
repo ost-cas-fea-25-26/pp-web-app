@@ -5,7 +5,6 @@ import {
 } from "@/lib/actions/posts.actions";
 import { getAuthenticatedUser } from "@/lib/auth/server";
 import { MumbleDetail } from "@/components/mumble-detail";
-import { Post } from "@/lib/api/posts/posts.types";
 
 type MumbleDetailPageProps = {
   params: Promise<{
