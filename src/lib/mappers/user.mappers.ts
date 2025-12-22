@@ -1,14 +1,16 @@
 import { getUserByIdAction } from "@/lib/actions/users.actions";
 import { User } from "@/lib/api/users/users.types";
+import { getAvatarFallbackLetters } from "@/lib/utils";
 
 export type MumbleUser = {
   id: string;
   fullName: string;
   handle: string;
   avatarUrl?: string;
+  fallbackText?: string;
 };
 
-export const mapUserPayloadToUser = (user: User): MumbleUser => {
+const mapUser = (user: User): MumbleUser => {
   if (!user.id) {
     throw new Error("User id is required");
   }
@@ -22,7 +24,12 @@ export const mapUserPayloadToUser = (user: User): MumbleUser => {
     fullName: user.firstname + " " + user.lastname,
     handle: user.username,
     avatarUrl: user.avatarUrl ?? undefined,
+    fallbackText: getAvatarFallbackLetters(user.firstname, user.lastname),
   };
+};
+
+export const mapUserPayloadToUser = (user: User): MumbleUser => {
+  return mapUser(user);
 };
 
 export const mapCreatorUserToUser = async (creator: {
@@ -37,18 +44,6 @@ export const mapCreatorUserToUser = async (creator: {
   }
 
   const user = userResult.payload;
-  if (!user.id) {
-    throw new Error("User id is required");
-  }
 
-  if (!user.username) {
-    throw new Error("User username is required");
-  }
-
-  return {
-    id: user.id,
-    fullName: user.firstname + " " + user.lastname,
-    handle: user.username,
-    avatarUrl: user.avatarUrl ?? undefined,
-  };
+  return mapUser(user);
 };
