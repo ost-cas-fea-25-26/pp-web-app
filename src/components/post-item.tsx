@@ -9,10 +9,12 @@ type PostItemProps = {
   content: ReactNode;
   userName: string;
   userHandle: string;
-  avatarSrc?: string;
+  avatar?: ReactNode;
   comments: number;
   likes: number;
   liked: boolean;
+  timestamp: string;
+  deepLink: string;
 };
 
 type LikeStateProps = {
@@ -25,10 +27,12 @@ export const PostItem: FC<PostItemProps> = ({
   content,
   userName,
   userHandle,
-  avatarSrc,
+  avatar,
   comments,
   likes,
   liked,
+  timestamp,
+  deepLink,
 }) => {
   const [likedState, setLikedState] = useState<LikeStateProps>({
     liked: liked,
@@ -47,17 +51,19 @@ export const PostItem: FC<PostItemProps> = ({
 
   return (
     <Mumble
+      id={id}
+      profileUrl={"TODO"}
       content={content}
-      avatarSrc={avatarSrc}
+      avatar={avatar}
       userName={userName}
       userHandle={userHandle}
-      timestamp="2 hours ago"
+      timestamp={timestamp}
       size="m"
       actions={
         <MumbleActions
           commentCounter={comments}
           likeCounter={likedState.likes}
-          deepLink={`/mumble/${id}`}
+          deepLink={deepLink}
           onLikeToggleHandler={handleLikeToggle}
           liked={likedState.liked}
         />
