@@ -67,7 +67,7 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
         errorMessage: "Field is required",
         onSubmitHandler: async (data: {
           media: File | null | undefined;
-          replyContent: string;
+          text: string;
         }) => {
           if (!mumble.id) {
             throw new Error("Mumble id is required");
@@ -84,7 +84,7 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
 
           await createReplyForPostAction(
             mumble.id,
-            data.replyContent,
+            data.text,
             mediaBlob,
             fileName,
           );
