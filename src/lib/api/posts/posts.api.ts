@@ -15,9 +15,12 @@ export class PostsApi {
     return this.client.get<Post>(`/posts/${id}`);
   }
 
-  create(text: string) {
+  create(text: string, mediaBlob?: Blob, fileName?: string) {
     const form = new FormData();
     form.append("text", text);
+    if (mediaBlob) {
+      form.append("media", mediaBlob, fileName);
+    }
 
     return this.client.post<Post>("/posts", form);
   }

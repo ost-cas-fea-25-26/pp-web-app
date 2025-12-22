@@ -12,8 +12,12 @@ export const getPostByIdAction = async (id: string) => {
   return api.posts.getById(id);
 };
 
-export const createPostAction = async (text: string) => {
-  const result = await api.posts.create(text);
+export const createPostAction = async (
+  text: string,
+  blob?: Blob,
+  fileName?: string,
+) => {
+  const result = await api.posts.create(text, blob, fileName);
 
   if (result.success) {
     revalidatePath("/");

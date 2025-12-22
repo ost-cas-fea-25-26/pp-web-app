@@ -1,11 +1,11 @@
-import { CreatePostButton } from "@/components/create-post-button";
 import { FollowedPostList } from "@/components/followed-post-list";
 import { Suspense } from "react";
+import { PostSubmissionWrapper } from "@/components/post-submission-wrapper";
 
 const HomePage = () => {
   return (
     <main>
-      <CreatePostButton />
+      <PostSubmissionWrapper />
       <Suspense fallback={<p>Loading posts...</p>}>
         <FollowedPostList />
       </Suspense>
