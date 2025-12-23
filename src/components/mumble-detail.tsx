@@ -8,61 +8,52 @@ import {
   ProfileIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { Post } from "@/lib/api/posts/posts.types";
-import { User } from "@/lib/api/users/users.types";
 import { createReplyForPostAction } from "@/lib/actions/posts.actions";
+import { MumbleUser } from "@/lib/mappers/user.mappers";
 
 type MumbleDetailTypeProps = {
   mumble: Post;
-  currentUser: User;
+  author: MumbleUser;
   replies: Post[];
+  deepLink: string;
+  currentUser: MumbleUser;
 };
 
 export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
   mumble,
+  author,
   currentUser,
   replies,
+  deepLink,
 }) => {
   if (!mumble.id) {
     throw new Error("Mumble id is required");
   }
 
-  const currentUserFullName =
-    currentUser.firstname + " " + currentUser.lastname;
-
   return (
     <MumbleDetailView
       mumble={{
+        id: mumble.id,
         actions: (
           <MumbleActions
             commentCounter={mumble.replies}
-            deepLink="/mumbles/" // TODO: replace with actual link
+            deepLink={deepLink}
             likeCounter={mumble.likes ?? 0}
             liked={!!mumble.likedBySelf}
           />
         ),
-        avatarSrc: mumble.creator?.avatarUrl,
+        avatarSrc: author.avatarUrl,
         content: mumble.text,
-        size: "l",
         timestamp: "2h ago",
-        userHandle: mumble.creator?.username,
-        userName: "Rory McIlroy", // TODO: replace with actual name
-        mediaElement: mumble.mediaUrl ? ( // TODO: next.js img component
+        userHandle: author.handle,
+        userName: author.fullName,
+        mediaElement: mumble.mediaUrl ? (
           <img src={mumble.mediaUrl} alt={"Reply Media"} />
         ) : null,
+        profileUrl: "/users/" + author.id,
+        size: "l" as const,
       }}
-      replies={replies.map((reply: Post) => {
-        return {
-          id: reply.id,
-          content: reply.text,
-          userName: reply.creator?.username,
-          userHandle: reply.creator?.username,
-          avatarSrc: reply.creator?.avatarUrl,
-          timestamp: "1h ago",
-          mediaElement: reply.mediaUrl ? ( // TODO: next.js img component
-            <img src={reply.mediaUrl} alt={"Reply Media"} />
-          ) : null,
-        };
-      })}
+      replies={replies}
       replyForm={{
         errorMessage: "Field is required",
         onSubmitHandler: async (data: {
@@ -96,21 +87,21 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
       user={{
         avatarImageElement: (
           <img // TODO: next.js img component
-            alt={currentUserFullName}
+            alt={currentUser.fullName}
             className="object-cover w-full h-full"
-            src={currentUser.avatarUrl ?? ""}
+            src={currentUser.avatarUrl}
           />
         ),
-        handle: "tommy",
+        handle: currentUser.handle,
         iconButtons: (
           <IconButton
             IconComponent={ProfileIcon}
             color="primary"
-            label={currentUser.username ?? "User"}
+            label={currentUser.handle}
             layout="horizontal"
           />
         ),
-        name: currentUserFullName,
+        name: currentUser.fullName,
         showAvatar: true,
         size: "s",
       }}
