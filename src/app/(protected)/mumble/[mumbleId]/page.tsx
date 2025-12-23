@@ -3,8 +3,9 @@ import {
   getPostByIdAction,
   getRepliesByPostIdAction,
 } from "@/lib/actions/posts.actions";
-import { getAuthenticatedUser } from "@/lib/auth/server";
+import { getAuthenticatedUser, getSession } from "@/lib/auth/server";
 import { MumbleDetail } from "@/components/mumble-detail";
+import { getUserByIdAction } from "@/lib/actions/users.actions";
 
 type MumbleDetailPageProps = {
   params: Promise<{
@@ -15,9 +16,14 @@ type MumbleDetailPageProps = {
 const MumbleDetailPage = async ({ params }: MumbleDetailPageProps) => {
   const { mumbleId } = await params;
 
-  const authenticatedUser = await getAuthenticatedUser();
+  const session = await getSession();
+  const authenticatedUser = session?.user;
   if (!authenticatedUser) {
     throw new Error("User not authenticated");
+  }
+  const mumbleUser = await getUserByIdAction(authenticatedUser.id);
+  if (!mumbleUser.success) {
+    throw new Error("Failed to fetch user from mumble");
   }
 
   const mumble = await getPostByIdAction(mumbleId);
@@ -35,7 +41,7 @@ const MumbleDetailPage = async ({ params }: MumbleDetailPageProps) => {
       <div className="gap-10 flex flex-col">
         <MumbleDetail
           mumble={mumble.payload}
-          currentUser={authenticatedUser}
+          currentUser={mumbleUser.payload}
           replies={replies.payload.data ?? []}
         />
       </div>
