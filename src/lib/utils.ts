@@ -20,7 +20,7 @@ export const getAvatarFallbackLetters = (
 };
 
 export const getTimestampLabelFromUlid = (ulid: string): string => {
-  const timestamp = decodeTime(ulid);
+  const timestamp = Number((decodeTime as (id: string) => number)(ulid));
   const date = new Date(timestamp);
 
   return date.toLocaleDateString(undefined, {
