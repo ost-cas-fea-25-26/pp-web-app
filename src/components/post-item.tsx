@@ -1,7 +1,6 @@
 "use client";
 
 import { FC, ReactNode, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { Mumble, MumbleActions } from "@ost-cas-fea-25-26/pp-design-system";
 import { likePostAction, unlikePostAction } from "@/lib/actions/posts.actions";
@@ -11,10 +10,16 @@ type PostItemProps = {
   content: ReactNode;
   userName: string;
   userHandle: string;
-  avatarSrc?: string;
+  avatar?: ReactNode;
   comments: number;
   likes: number;
   liked: boolean;
+  timestamp: string;
+  deepLink: string;
+  mediaElement?: {
+    alt: string;
+    src: string;
+  };
   profileUrl: string;
 };
 
@@ -28,10 +33,13 @@ export const PostItem: FC<PostItemProps> = ({
   content,
   userName,
   userHandle,
-  avatarSrc,
+  avatar,
   comments,
   likes,
   liked,
+  timestamp,
+  deepLink,
+  mediaElement,
   profileUrl,
 }) => {
   const [likedState, setLikedState] = useState<LikeStateProps>({
@@ -51,27 +59,31 @@ export const PostItem: FC<PostItemProps> = ({
 
   return (
     <Mumble
+      id={id}
       content={content}
       userName={userName}
       userHandle={userHandle}
       profileUrl={profileUrl}
-      avatar={
-        avatarSrc && (
-          <Link href={profileUrl}>
-            <Image src={avatarSrc} alt={userName} fill />
-          </Link>
-        )
-      }
-      timestamp="2 hours ago"
+      avatar={avatar && <Link href={profileUrl}>{avatar}</Link>}
+      timestamp={timestamp}
       size="m"
       actions={
         <MumbleActions
           commentCounter={comments}
           likeCounter={likedState.likes}
-          deepLink={`/mumble/${id}`}
+          deepLink={deepLink}
           onLikeToggleHandler={handleLikeToggle}
           liked={likedState.liked}
         />
+      }
+      mediaElement={
+        mediaElement && (
+          <img
+            alt={mediaElement.alt}
+            className="object-cover w-full h-full"
+            src={mediaElement.src}
+          />
+        )
       }
     />
   );
