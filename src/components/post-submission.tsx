@@ -33,7 +33,7 @@ export const PostSubmission: FC<PostSubmissionProps> = ({ user }) => {
         form={
           <MumbleForm
             errorMessage="Text is required"
-            onSubmitHandler={(data) => createMumble(data)}
+            onSubmitHandler={createMumble}
             placeholder="What's happening?"
             submitButtonText="submit"
             title="Share your thoughts"

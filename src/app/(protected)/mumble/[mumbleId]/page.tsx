@@ -3,7 +3,7 @@ import {
   getPostByIdAction,
   getRepliesByPostIdAction,
 } from "@/lib/actions/posts.actions";
-import { getAuthenticatedUser, getSession } from "@/lib/auth/server";
+import { getSession } from "@/lib/auth/server";
 import { MumbleDetail } from "@/components/mumble-detail";
 import { getUserByIdAction } from "@/lib/actions/users.actions";
 
