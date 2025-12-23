@@ -37,7 +37,7 @@ export const PostList: FC<PostListProps> = async ({
   );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-4">
       {posts.map((post: Post, postIndex: number) => (
         <PostItem
           key={post.id}
