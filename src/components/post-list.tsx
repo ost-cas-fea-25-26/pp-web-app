@@ -67,6 +67,7 @@ export const PostList: FC<PostListProps> = async ({
                 }
               : undefined
           }
+          profileUrl={`/users/${post.creator?.id}`}
         />
       ))}
     </div>

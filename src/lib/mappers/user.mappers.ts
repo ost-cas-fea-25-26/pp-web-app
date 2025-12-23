@@ -11,6 +11,7 @@ export type MumbleUser = {
 };
 
 const mapUser = (user: User): MumbleUser => {
+  console.info(user);
   if (!user.id) {
     throw new Error("User id is required");
   }

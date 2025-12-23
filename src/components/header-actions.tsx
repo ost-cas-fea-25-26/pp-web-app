@@ -7,15 +7,17 @@ import {
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { getAvatarFallbackLetters } from "@/lib/utils";
-import { getAuthenticatedUser } from "@/lib/auth/server";
 import { LogoutButton } from "./logout-button";
+import { api } from "@/lib/api";
 
 export const HeaderActions: FC = async () => {
-  const user = await getAuthenticatedUser();
+  const result = await api.users.getMe();
 
-  if (!user) {
+  if (!result?.success) {
     return null;
   }
+
+  const user = result.payload;
 
   const userLink = `/users/${user.id}`;
   const avatarUrl = user.avatarUrl;
