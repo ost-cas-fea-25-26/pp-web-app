@@ -59,6 +59,14 @@ export const PostList: FC<PostListProps> = async ({
           timestamp={getTimestampLabelFromUlid(post.id!)}
           content={<p>{post.text}</p>}
           deepLink={getDeepLinkUrlByMumbleId(post.id!)}
+          mediaElement={
+            post.mediaUrl
+              ? {
+                  src: post.mediaUrl,
+                  alt: post.text ?? post.mediaUrl,
+                }
+              : undefined
+          }
         />
       ))}
     </div>

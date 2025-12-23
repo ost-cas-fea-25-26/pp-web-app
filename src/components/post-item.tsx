@@ -15,6 +15,10 @@ type PostItemProps = {
   liked: boolean;
   timestamp: string;
   deepLink: string;
+  mediaElement?: {
+    alt: string;
+    src: string;
+  };
 };
 
 type LikeStateProps = {
@@ -33,6 +37,7 @@ export const PostItem: FC<PostItemProps> = ({
   liked,
   timestamp,
   deepLink,
+  mediaElement,
 }) => {
   const [likedState, setLikedState] = useState<LikeStateProps>({
     liked: liked,
@@ -67,6 +72,15 @@ export const PostItem: FC<PostItemProps> = ({
           onLikeToggleHandler={handleLikeToggle}
           liked={likedState.liked}
         />
+      }
+      mediaElement={
+        mediaElement && (
+          <img
+            alt={mediaElement.alt}
+            className="object-cover w-full h-full"
+            src={mediaElement.src}
+          />
+        )
       }
     />
   );
