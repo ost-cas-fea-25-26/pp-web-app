@@ -15,10 +15,6 @@ import {
   getDeepLinkUrlByMumbleId,
   getTimestampLabelFromUlid,
 } from "@/lib/utils";
-import {
-  AvatarButton,
-  MumbleActions,
-} from "@ost-cas-fea-25-26/pp-design-system";
 import Image from "next/image";
 import Link from "next/link";
 
