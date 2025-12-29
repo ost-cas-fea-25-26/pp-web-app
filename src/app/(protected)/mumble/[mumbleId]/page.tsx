@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import { PostDetailPage } from "@/components/post-detail-page";
+import { PostListSkeleton } from "@/components/post-list-skeleton";
 
 type MumblePageProps = {
   params: Promise<{
@@ -12,7 +13,7 @@ const MumblePage = async ({ params }: MumblePageProps) => {
 
   return (
     <main>
-      <Suspense fallback={<p>Loading post...</p>}>
+      <Suspense fallback={<PostListSkeleton count={1} />}>
         <PostDetailPage id={mumbleId} />
       </Suspense>
     </main>
