@@ -66,7 +66,7 @@ export const PostItem: FC<PostItemProps> = ({
       profileUrl={profileUrl}
       avatar={avatar && <Link href={profileUrl}>{avatar}</Link>}
       timestamp={timestamp}
-      size="m"
+      size="l"
       actions={
         <MumbleActions
           commentCounter={comments}
