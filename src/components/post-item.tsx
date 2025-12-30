@@ -1,9 +1,8 @@
 "use client";
 
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode } from "react";
 import Link from "next/link";
-import { Mumble, MumbleActions } from "@ost-cas-fea-25-26/pp-design-system";
-import { likePostAction, unlikePostAction } from "@/lib/actions/posts.actions";
+import { Mumble } from "@ost-cas-fea-25-26/pp-design-system";
 import { PostActions } from "@/components/post-actions";
 
 type PostItemProps = {

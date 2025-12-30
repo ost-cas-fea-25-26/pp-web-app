@@ -3,7 +3,6 @@
 import type { FC } from "react";
 import {
   IconButton,
-  MumbleActions,
   MumbleDetailView,
   ProfileIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
@@ -12,10 +11,7 @@ import { createReplyForPostAction } from "@/lib/actions/posts.actions";
 import { MumbleUser } from "@/lib/mappers/user.mappers";
 import { PostActions } from "@/components/post-actions";
 import Image from "next/image";
-import {
-  getDeepLinkUrlByMumbleId,
-  getTimestampLabelFromUlid,
-} from "@/lib/utils";
+import { getTimestampLabelFromUlid } from "@/lib/utils";
 import { ErrorOverlay } from "@/components/error-overlay";
 import Link from "next/link";
 
