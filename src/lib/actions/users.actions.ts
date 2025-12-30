@@ -12,7 +12,7 @@ export const getUserByIdAction = async (userId: string) => {
 
 export const updateAvatarAction = async (
   userId: string,
-  formData: FormData,
+  formData: FormData
 ) => {
   const result = await api.users.updateAvatar(formData);
 
@@ -61,6 +61,7 @@ export const getFolloweeIdsAction = async () => {
   return api.users.getFolloweeIds();
 };
 
+// The API does not support update the bio, so we use our own DB repository
 export type UpdateMeActionInput = UpdateUserData & {
   bio?: string;
 };
