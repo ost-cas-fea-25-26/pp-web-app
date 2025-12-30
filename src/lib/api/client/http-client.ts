@@ -130,7 +130,6 @@ export class HttpClient {
 
   async delete<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
-    //set content type to application/json
 
     return this.execute<T>(path, {
       method: "DELETE",
