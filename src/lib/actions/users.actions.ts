@@ -12,7 +12,7 @@ export const getUserByIdAction = async (userId: string) => {
 
 export const updateAvatarAction = async (
   userId: string,
-  formData: FormData
+  formData: FormData,
 ) => {
   const result = await api.users.updateAvatar(formData);
 
