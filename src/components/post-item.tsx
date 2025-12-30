@@ -51,6 +51,7 @@ export const PostItem: FC<PostItemProps> = ({
 
   return (
     <Mumble
+      id={id}
       content={content}
       userName={userName}
       userHandle={userHandle}

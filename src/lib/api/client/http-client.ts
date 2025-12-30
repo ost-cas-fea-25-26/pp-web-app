@@ -113,6 +113,21 @@ export class HttpClient {
     });
   }
 
+  async patch<T>(path: string, body: BodyInit): Promise<ApiResponse<T>> {
+    const baseHeaders = await this.buildAuthorizationHeaders();
+    const headers = new Headers(baseHeaders);
+
+    if (typeof body === "string") {
+      headers.set("Content-Type", "application/json");
+    }
+
+    return this.execute<T>(path, {
+      method: "PATCH",
+      body,
+      headers,
+    });
+  }
+
   async delete<T>(path: string): Promise<ApiResponse<T>> {
     const headers = await this.buildAuthorizationHeaders();
 

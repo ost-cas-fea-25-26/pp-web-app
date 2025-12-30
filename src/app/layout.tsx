@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { ReactNode } from "react";
+import { Toaster } from "@/components/toaster";
 
 export const metadata: Metadata = {
   title: "Mumble",
@@ -14,7 +15,10 @@ type RootLayoutProps = {
 
 const RootLayout = ({ children }: RootLayoutProps) => (
   <html lang="en">
-    <body>{children}</body>
+    <body>
+      <Toaster />
+      {children}
+    </body>
   </html>
 );
 
