@@ -17,6 +17,7 @@ import {
 } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { PostActions } from "@/components/post-actions";
 
 type PostDetailPageProps = {
   id: string;
@@ -69,7 +70,6 @@ export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
     content: reply.text,
     userName: replyAuthors[idx]?.fullName,
     userHandle: replyAuthors[idx]?.handle,
-    avatarSrc: replyAuthors[idx]?.avatarUrl,
     avatar: replyAuthors[idx]?.avatarUrl ? (
       <Link href={`/users/${replyAuthors[idx]?.id}`}>
         <Image
@@ -85,6 +85,7 @@ export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
     mediaElement: reply.mediaUrl ? (
       <img src={reply.mediaUrl} alt="Reply Media" />
     ) : null,
+    actions: undefined, // TODO,
   }));
 
   return (

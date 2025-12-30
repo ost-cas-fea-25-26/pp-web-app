@@ -10,6 +10,9 @@ import {
 import { Post } from "@/lib/api/posts/posts.types";
 import { createReplyForPostAction } from "@/lib/actions/posts.actions";
 import { MumbleUser } from "@/lib/mappers/user.mappers";
+import { PostActions } from "@/components/post-actions";
+import Image from "next/image";
+import { getTimestampLabelFromUlid } from "@/lib/utils";
 
 type MumbleDetailTypeProps = {
   mumble: Post;
@@ -35,16 +38,25 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
       mumble={{
         id: mumble.id,
         actions: (
-          <MumbleActions
-            commentCounter={mumble.replies}
-            deepLink={deepLink}
-            likeCounter={mumble.likes ?? 0}
+          <PostActions
             liked={!!mumble.likedBySelf}
+            likes={mumble.likes ?? 0}
+            deepLink={deepLink}
+            mumbleId={mumble.id}
+            comments={mumble.replies ?? 0}
           />
         ),
-        avatarSrc: author.avatarUrl,
+        avatar: (
+          <Image
+            src={author.avatarUrl ?? "/avatars/default.png"}
+            alt={author.fullName}
+            width={64}
+            height={64}
+            className="object-cover w-full h-full"
+          />
+        ),
         content: mumble.text,
-        timestamp: "2h ago",
+        timestamp: getTimestampLabelFromUlid(mumble.id),
         userHandle: author.handle,
         userName: author.fullName,
         mediaElement: mumble.mediaUrl ? (
@@ -86,10 +98,12 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
       }}
       user={{
         avatarImageElement: (
-          <img // TODO: next.js img component
+          <Image
             alt={currentUser.fullName}
             className="object-cover w-full h-full"
-            src={currentUser.avatarUrl}
+            src={currentUser.avatarUrl ?? "/avatars/default.png"}
+            width={40}
+            height={40}
           />
         ),
         handle: currentUser.handle,

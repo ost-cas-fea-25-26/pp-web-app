@@ -4,6 +4,7 @@ import { FC, ReactNode, useState } from "react";
 import Link from "next/link";
 import { Mumble, MumbleActions } from "@ost-cas-fea-25-26/pp-design-system";
 import { likePostAction, unlikePostAction } from "@/lib/actions/posts.actions";
+import { PostActions } from "@/components/post-actions";
 
 type PostItemProps = {
   id: string;
@@ -23,11 +24,6 @@ type PostItemProps = {
   profileUrl: string;
 };
 
-type LikeStateProps = {
-  liked: boolean;
-  likes: number;
-};
-
 export const PostItem: FC<PostItemProps> = ({
   id,
   content,
@@ -42,21 +38,6 @@ export const PostItem: FC<PostItemProps> = ({
   mediaElement,
   profileUrl,
 }) => {
-  const [likedState, setLikedState] = useState<LikeStateProps>({
-    liked: liked,
-    likes: likes,
-  });
-
-  const handleLikeToggle = async (nextState: boolean) => {
-    if (nextState) {
-      await likePostAction(id);
-      setLikedState({ liked: true, likes: likedState.likes + 1 });
-    } else {
-      await unlikePostAction(id);
-      setLikedState({ liked: false, likes: likedState.likes - 1 });
-    }
-  };
-
   return (
     <Mumble
       id={id}
@@ -68,12 +49,12 @@ export const PostItem: FC<PostItemProps> = ({
       timestamp={timestamp}
       size="l"
       actions={
-        <MumbleActions
-          commentCounter={comments}
-          likeCounter={likedState.likes}
+        <PostActions
+          liked={liked}
+          likes={likes}
           deepLink={deepLink}
-          onLikeToggleHandler={handleLikeToggle}
-          liked={likedState.liked}
+          mumbleId={id}
+          comments={comments}
         />
       }
       mediaElement={
