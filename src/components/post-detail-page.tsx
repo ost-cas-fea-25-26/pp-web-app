@@ -69,6 +69,7 @@ export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
     content: reply.text,
     userName: replyAuthors[idx]?.fullName,
     userHandle: replyAuthors[idx]?.handle,
+    profileUrl: `/users/${replyAuthors[idx]?.id}`,
     avatar: replyAuthors[idx]?.avatarUrl ? (
       <Link href={`/users/${replyAuthors[idx]?.id}`}>
         <Image

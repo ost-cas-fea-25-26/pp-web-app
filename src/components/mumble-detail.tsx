@@ -17,6 +17,7 @@ import {
   getTimestampLabelFromUlid,
 } from "@/lib/utils";
 import { ErrorOverlay } from "@/components/error-overlay";
+import Link from "next/link";
 
 type MumbleDetailTypeProps = {
   mumble: Post;
@@ -124,12 +125,14 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
         ),
         handle: currentUser.handle,
         iconButtons: (
-          <IconButton
-            IconComponent={ProfileIcon}
-            color="primary"
-            label={currentUser.handle}
-            layout="horizontal"
-          />
+          <Link href={"/users/" + currentUser.id} title="View user profile">
+            <IconButton
+              IconComponent={ProfileIcon}
+              color="primary"
+              label={currentUser.handle}
+              layout="horizontal"
+            />
+          </Link>
         ),
         name: currentUser.fullName,
         showAvatar: true,
