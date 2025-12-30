@@ -63,11 +63,10 @@ export const getFolloweeIdsAction = async () => {
 
 export type UpdateMeActionInput = UpdateUserData & {
   bio?: string;
-  userId: string;
 };
 
 export const updateMeAction = async (data: UpdateMeActionInput) => {
-  const { userId, bio, ...updateApiData } = data;
+  const { bio, ...updateApiData } = data;
 
   const [apiResult, bioResult] = await Promise.all([
     api.users.updateMe(updateApiData),
@@ -82,7 +81,7 @@ export const updateMeAction = async (data: UpdateMeActionInput) => {
     return bioResult;
   }
 
-  revalidatePath(`/users/${userId}`);
+  revalidatePath("/", "layout");
 
   return { success: true };
 };

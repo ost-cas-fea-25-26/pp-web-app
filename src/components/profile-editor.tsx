@@ -4,26 +4,24 @@ import {
   updateMeAction,
   UpdateMeActionInput,
 } from "@/lib/actions/users.actions";
-import {
-  EditProfileModal,
-  SettingsIcon,
-} from "@ost-cas-fea-25-26/pp-design-system";
+import { EditProfileModal } from "@ost-cas-fea-25-26/pp-design-system";
 import { FC, useState } from "react";
 import { toastAction } from "@/components/toaster";
-
-type ProfileEditorProps = UpdateMeActionInput;
+type ProfileEditorProps = UpdateMeActionInput & {
+  trigger: React.ReactElement;
+};
 
 export const ProfileEditor: FC<ProfileEditorProps> = ({
-  userId,
   firstname,
   lastname,
   username,
   bio,
+  trigger,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const saveProfileData = async (data: Omit<UpdateMeActionInput, "userId">) => {
-    await toastAction(updateMeAction({ ...data, userId }), {
+  const saveProfileData = async (data: UpdateMeActionInput) => {
+    await toastAction(updateMeAction(data), {
       loading: "Saving profile…",
       success: "Profile updated successfully",
       error: "Failed to update profile",
@@ -34,9 +32,9 @@ export const ProfileEditor: FC<ProfileEditorProps> = ({
 
   return (
     <>
-      <button className="cursor-pointer" onClick={() => setIsOpen(true)}>
-        <SettingsIcon color="primary" size="m" />
-      </button>
+      <span onClick={() => setIsOpen(true)} className="cursor-pointer">
+        {trigger}
+      </span>
 
       <EditProfileModal
         key={`${firstname}-${lastname}-${username}-${bio}`}

@@ -1,7 +1,9 @@
 "use client";
 
-import { Toaster as ToasterComponent } from "@ost-cas-fea-25-26/pp-design-system";
-import { toast } from "@ost-cas-fea-25-26/pp-design-system";
+import {
+  Toaster as ToasterComponent,
+  toast,
+} from "@ost-cas-fea-25-26/pp-design-system";
 
 export const toastAction = (
   promise: Promise<{ success: boolean; error?: string }>,

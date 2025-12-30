@@ -5,6 +5,7 @@ import {
   IconButton,
   ProfileHeader,
   ProfileIcon,
+  SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { EditableAvatar } from "./editable-avatar";
 import { Banner } from "./banner";
@@ -85,11 +86,11 @@ export const UserProfileView: FC<UserProfileViewProps> = ({
       settingsLinkElement={
         isEditable && (
           <ProfileEditor
-            userId={userId}
             firstname={firstname}
             lastname={lastname}
             username={handle}
             bio={bio}
+            trigger={<SettingsIcon color="primary" size="m" />}
           />
         )
       }
