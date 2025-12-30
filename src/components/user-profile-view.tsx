@@ -3,18 +3,18 @@ import Image from "next/image";
 import {
   Avatar,
   IconButton,
-  Link,
   ProfileHeader,
   ProfileIcon,
-  SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { EditableAvatar } from "./editable-avatar";
 import { Banner } from "./banner";
+import { ProfileEditor } from "./profile-editor";
 
 type UserProfileViewProps = {
   bannerUrl: string;
   avatarUrl: string | null;
-  name: string;
+  firstname: string;
+  lastname: string;
   handle: string;
   bio: string;
   fallbackLetters: string;
@@ -25,13 +25,16 @@ type UserProfileViewProps = {
 export const UserProfileView: FC<UserProfileViewProps> = ({
   bannerUrl,
   avatarUrl,
-  name,
+  firstname,
+  lastname,
   handle,
   bio,
   fallbackLetters,
   userId,
   isEditable,
 }) => {
+  const name = `${firstname} ${lastname}`.trim() || handle;
+
   return (
     <ProfileHeader
       bannerImageElement={
@@ -81,9 +84,13 @@ export const UserProfileView: FC<UserProfileViewProps> = ({
       }
       settingsLinkElement={
         isEditable && (
-          <Link href="/settings" title="Settings">
-            <SettingsIcon color="primary" size="m" />
-          </Link>
+          <ProfileEditor
+            userId={userId}
+            firstname={firstname}
+            lastname={lastname}
+            username={handle}
+            bio={bio}
+          />
         )
       }
     />

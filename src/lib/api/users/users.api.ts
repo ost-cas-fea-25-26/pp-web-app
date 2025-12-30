@@ -1,6 +1,6 @@
 import { getSession } from "@/lib/auth/server";
 import type { HttpClient } from "../client/http-client";
-import { PaginatedUser, User } from "./users.types";
+import { PaginatedUser, UpdateUserData, User } from "./users.types";
 
 export class UsersApi {
   constructor(private client: HttpClient) {}
@@ -77,5 +77,9 @@ export class UsersApi {
         ?.map((f) => f.id)
         .filter((id): id is string => typeof id === "string") ?? []
     );
+  }
+
+  updateMe(data: UpdateUserData) {
+    return this.client.patch<void>("/users", JSON.stringify(data));
   }
 }

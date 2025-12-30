@@ -23,9 +23,6 @@ export const UserProfileLoader = async ({
   const bannerUrl = usersStorage.getBannerUrl(userId);
   const avatarUrl = user.avatarUrl ?? null;
 
-  const name =
-    `${user.firstname ?? ""} ${user.lastname ?? ""}`.trim() || "Unknown User";
-
   const handle = user.username ?? "unknown";
 
   const bio =
@@ -40,7 +37,8 @@ export const UserProfileLoader = async ({
     <UserProfileView
       bannerUrl={bannerUrl}
       avatarUrl={avatarUrl}
-      name={name}
+      firstname={user.firstname ?? ""}
+      lastname={user.lastname ?? ""}
       handle={handle}
       bio={bio}
       fallbackLetters={fallbackLetters}

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { api } from "../api";
 import { usersStorage } from "../storage/users.storage";
+import { Profile } from "@/components/profile-editor";
 
 export const getUserByIdAction = async (userId: string) => {
   return api.users.getUserById(userId);
@@ -57,4 +58,17 @@ export const getUnfollowedUserSuggestionsAction = async (limit?: number) => {
 
 export const getFolloweeIdsAction = async () => {
   return api.users.getFolloweeIds();
+};
+
+type ProfileWithUserId = Profile & { userId: string };
+
+export const updateMeAction = async (data: ProfileWithUserId) => {
+  const result = await api.users.updateMe(data);
+  //todo handle bio
+
+  if (result.success) {
+    revalidatePath(`/users/${data.userId}`);
+  }
+
+  return result;
 };
