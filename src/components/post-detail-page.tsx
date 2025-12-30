@@ -17,7 +17,7 @@ import {
 } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { PostActions } from "@/components/post-actions";
+import { ErrorOverlay } from "@/components/error-overlay";
 
 type PostDetailPageProps = {
   id: string;
@@ -27,39 +27,38 @@ export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
   const session = await getSession();
   const authenticatedUser = session?.user;
   if (!authenticatedUser) {
-    throw new Error("User not authenticated");
+    return (
+      <ErrorOverlay message="You must be logged in to comment on a mumble." />
+    );
   }
 
   const currentUser = await getUserByIdAction(authenticatedUser.id);
   if (!currentUser.success) {
-    throw new Error("Failed to fetch user from session");
+    return <ErrorOverlay message="Failed to fetch user, try again." />;
   }
 
   const mumbleResponse = await getPostByIdAction(id);
   if (!mumbleResponse.success) {
-    throw new Error("Failed to load mumble");
+    return <ErrorOverlay message="Failed to load mumble, try again." />;
   }
 
   const mumblePayload = mumbleResponse.payload;
-  if (!mumblePayload.id) {
-    throw new Error("Mumble id is required");
-  }
-
-  if (!mumblePayload.creator?.id) {
-    throw new Error("Mumble creator is required");
+  if (!mumblePayload.id || !mumblePayload.creator?.id) {
+    return <ErrorOverlay message="Invalid response from server, try again." />;
   }
 
   const author = await getUserByIdAction(mumblePayload.creator.id);
   if (!author.success) {
-    throw new Error("Failed to fetch user from mumble");
+    return (
+      <ErrorOverlay message="Failed to fetch user from mumble, try again." />
+    );
   }
 
   const repliesPayload = await getRepliesByPostIdAction(id);
-  if (!repliesPayload.success) {
-    throw new Error("Failed to load replies");
-  }
-  const replies =
-    repliesPayload.payload.data?.filter((reply: Post) => !!reply.creator) ?? [];
+  const replies = repliesPayload.success
+    ? (repliesPayload.payload.data?.filter((reply: Post) => !!reply.creator) ??
+      [])
+    : [];
 
   const replyAuthors = await Promise.all(
     replies.map((reply: Post) => mapCreatorUserToUser(reply.creator ?? {})),

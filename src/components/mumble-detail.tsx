@@ -16,6 +16,7 @@ import {
   getDeepLinkUrlByMumbleId,
   getTimestampLabelFromUlid,
 } from "@/lib/utils";
+import { ErrorOverlay } from "@/components/error-overlay";
 
 type MumbleDetailTypeProps = {
   mumble: Post;
@@ -33,7 +34,7 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
   deepLink,
 }) => {
   if (!mumble.id) {
-    throw new Error("Mumble id is required");
+    return <ErrorOverlay message="Failed to load mumble, try again." />;
   }
 
   return (
@@ -88,7 +89,7 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
           text: string;
         }) => {
           if (!mumble.id) {
-            throw new Error("Mumble id is required");
+            return <ErrorOverlay message="Failed to load mumble, try again." />;
           }
 
           let mediaBlob: Blob | undefined = undefined;
