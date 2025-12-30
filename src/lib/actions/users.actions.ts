@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { api } from "../api";
 import { usersStorage } from "../storage/users.storage";
-import { Profile } from "@/components/profile-editor";
+import type { UpdateUserData } from "@/lib/api/users/users.types";
 
 export const getUserByIdAction = async (userId: string) => {
   return api.users.getUserById(userId);
@@ -60,14 +60,19 @@ export const getFolloweeIdsAction = async () => {
   return api.users.getFolloweeIds();
 };
 
-type ProfileWithUserId = Profile & { userId: string };
+export type UpdateMeActionInput = UpdateUserData & {
+  bio?: string;
+  userId: string;
+};
 
-export const updateMeAction = async (data: ProfileWithUserId) => {
-  const result = await api.users.updateMe(data);
+export const updateMeAction = async (data: UpdateMeActionInput) => {
+  const { userId, ...updateData } = data;
+
+  const result = await api.users.updateMe(updateData);
   //todo handle bio
 
   if (result.success) {
-    revalidatePath(`/users/${data.userId}`);
+    revalidatePath(`/users/${userId}`);
   }
 
   return result;

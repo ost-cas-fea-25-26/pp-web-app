@@ -1,27 +1,16 @@
 "use client";
 
-import { updateMeAction } from "@/lib/actions/users.actions";
+import {
+  updateMeAction,
+  UpdateMeActionInput,
+} from "@/lib/actions/users.actions";
 import {
   EditProfileModal,
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { FC, useState } from "react";
 
-export type Profile = {
-  firstname: string;
-  lastname: string;
-  username: string;
-  bio?: string;
-};
-
-type ProfileEditorProps = {
-  userId: string;
-  firstname: string;
-  lastname: string;
-  username: string;
-  bio: string;
-  children?: React.ReactNode;
-};
+type ProfileEditorProps = UpdateMeActionInput;
 
 export const ProfileEditor: FC<ProfileEditorProps> = ({
   userId,
@@ -32,13 +21,15 @@ export const ProfileEditor: FC<ProfileEditorProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const saveProfileData = async (data: Profile) => {
+  const saveProfileData = async (data: Omit<UpdateMeActionInput, "userId">) => {
     const result = await updateMeAction({ ...data, userId });
+
     if (!result.success) {
       console.error("Failed to update profile:", result.error);
 
       return;
     }
+
     setIsOpen(false);
   };
 
@@ -52,7 +43,12 @@ export const ProfileEditor: FC<ProfileEditorProps> = ({
         open={isOpen}
         onOpenChange={setIsOpen}
         onSave={saveProfileData}
-        defaultValues={{ firstname, lastname, username, bio }}
+        defaultValues={{
+          firstname: firstname ?? "",
+          lastname: lastname ?? "",
+          username: username ?? "",
+          bio: bio ?? "",
+        }}
       />
     </>
   );
