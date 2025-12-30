@@ -12,7 +12,10 @@ import { createReplyForPostAction } from "@/lib/actions/posts.actions";
 import { MumbleUser } from "@/lib/mappers/user.mappers";
 import { PostActions } from "@/components/post-actions";
 import Image from "next/image";
-import { getTimestampLabelFromUlid } from "@/lib/utils";
+import {
+  getDeepLinkUrlByMumbleId,
+  getTimestampLabelFromUlid,
+} from "@/lib/utils";
 
 type MumbleDetailTypeProps = {
   mumble: Post;
@@ -65,7 +68,19 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
         profileUrl: "/users/" + author.id,
         size: "l" as const,
       }}
-      replies={replies}
+      replies={replies.map((reply: Post) => ({
+        ...reply,
+        actions: (
+          <PostActions
+            mumbleId={reply.id!}
+            comments={reply.replies ?? 0}
+            likes={reply.likes ?? 0}
+            liked={!!reply.likedBySelf}
+            deepLink={deepLink}
+            isReply={true}
+          />
+        ),
+      }))}
       replyForm={{
         errorMessage: "Field is required",
         onSubmitHandler: async (data: {

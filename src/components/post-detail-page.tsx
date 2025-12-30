@@ -85,7 +85,6 @@ export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
     mediaElement: reply.mediaUrl ? (
       <img src={reply.mediaUrl} alt="Reply Media" />
     ) : null,
-    actions: undefined, // TODO,
   }));
 
   return (

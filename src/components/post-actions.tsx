@@ -14,6 +14,7 @@ type PostActionsProps = {
   likes: number;
   liked: boolean;
   deepLink: string;
+  isReply?: boolean;
 };
 
 type LikeStateProps = {
@@ -27,6 +28,7 @@ export const PostActions: FC<PostActionsProps> = ({
   likes,
   liked,
   deepLink,
+  isReply = false,
 }) => {
   const [likedState, setLikedState] = useState<LikeStateProps>({
     liked: liked,
@@ -57,13 +59,15 @@ export const PostActions: FC<PostActionsProps> = ({
       <ReplyFilledIcon color="primary" />
     );
 
+  const commentButton = isReply ? null : (
+    <Link title="View Comments" href={deepLink}>
+      <CommentButton label={commentLabel} icon={commentIcon} />
+    </Link>
+  );
+
   return (
     <MumbleActions
-      commentButton={
-        <Link title="View Comments" href={deepLink}>
-          <CommentButton label={commentLabel} icon={commentIcon} />
-        </Link>
-      }
+      commentButton={commentButton}
       likeCounter={likedState.likes}
       deepLink={deepLink}
       onLikeToggleHandler={handleLikeToggle}
