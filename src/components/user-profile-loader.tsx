@@ -2,6 +2,7 @@ import { getUserByIdAction } from "@/lib/actions/users.actions";
 import { getAvatarFallbackLetters } from "@/lib/utils";
 import { UserProfileView } from "./user-profile-view";
 import { usersStorage } from "@/lib/storage/users.storage";
+import { usersRepository } from "@/lib/db/repositories/users.repository";
 
 type UserProfileLoaderProps = {
   userId: string;
@@ -18,6 +19,11 @@ export const UserProfileLoader = async ({
     return <p>User not found</p>;
   }
 
+  const bioResult = await usersRepository.getBioByUserId(userId);
+  if (!bioResult.success) {
+    return <p>User not found</p>;
+  }
+
   const user = userResult.payload;
 
   const bannerUrl = usersStorage.getBannerUrl(userId);
@@ -25,8 +31,7 @@ export const UserProfileLoader = async ({
 
   const handle = user.username ?? "unknown";
 
-  const bio =
-    "Unschnöseliger Golfer, Drummer, Lieblings-Superheld: Tony Stark, Escape Room Fan, der einzige Informatiker ohne Kaffeesucht. Oft mit Kinderwagen am Bodensee anzutreffen.";
+  const bio = bioResult.payload ?? "";
 
   const fallbackLetters = getAvatarFallbackLetters(
     user.firstname,

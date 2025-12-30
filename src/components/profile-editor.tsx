@@ -25,7 +25,8 @@ export const ProfileEditor: FC<ProfileEditorProps> = ({
     const result = await updateMeAction({ ...data, userId });
 
     if (!result.success) {
-      console.error("Failed to update profile:", result.error);
+      // TODO: Replace with a nice toast notification
+      console.error("Failed to update profile:", result);
 
       return;
     }

@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { api } from "../api";
 import { usersStorage } from "../storage/users.storage";
 import type { UpdateUserData } from "@/lib/api/users/users.types";
+import { usersRepository } from "../db/repositories/users.repository";
 
 export const getUserByIdAction = async (userId: string) => {
   return api.users.getUserById(userId);
@@ -66,14 +67,22 @@ export type UpdateMeActionInput = UpdateUserData & {
 };
 
 export const updateMeAction = async (data: UpdateMeActionInput) => {
-  const { userId, ...updateData } = data;
+  const { userId, bio, ...updateApiData } = data;
 
-  const result = await api.users.updateMe(updateData);
-  //todo handle bio
+  const [apiResult, bioResult] = await Promise.all([
+    api.users.updateMe(updateApiData),
+    bio !== undefined ? usersRepository.updateBio(bio) : undefined,
+  ]);
 
-  if (result.success) {
-    revalidatePath(`/users/${userId}`);
+  if (!apiResult.success) {
+    return apiResult;
   }
 
-  return result;
+  if (bioResult && !bioResult.success) {
+    return bioResult;
+  }
+
+  revalidatePath(`/users/${userId}`);
+
+  return { success: true };
 };
