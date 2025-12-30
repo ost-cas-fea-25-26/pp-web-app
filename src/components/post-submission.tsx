@@ -5,6 +5,7 @@ import {
   Avatar,
   MumbleForm,
   MumbleSubmission,
+  Toaster,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { MumbleUser } from "@/lib/mappers/user.mappers";
 import { createMumble } from "@/lib/helpers/create-mumble.helpers";
@@ -16,6 +17,7 @@ type PostSubmissionProps = {
 export const PostSubmission: FC<PostSubmissionProps> = ({ user }) => {
   return (
     <div className="mb-4">
+      <Toaster />
       <MumbleSubmission
         avatar={
           <Avatar

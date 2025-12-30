@@ -1,4 +1,5 @@
 import { createPostAction } from "@/lib/actions/posts.actions";
+import { toast } from "@ost-cas-fea-25-26/pp-design-system";
 
 export const createMumble = async (data?: {
   media?: File | null;
@@ -17,5 +18,9 @@ export const createMumble = async (data?: {
     mediaBlob = new Blob([buffer], { type: data.media.type });
   }
 
-  await createPostAction(data.text, mediaBlob, fileName);
+  await toast.promise(createPostAction(data.text, mediaBlob, fileName), {
+    loading: "Creating your post...",
+    success: "Your mumble has been posted. 🎉",
+    error: "Something went wrong 😵",
+  });
 };
