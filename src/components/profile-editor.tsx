@@ -39,6 +39,7 @@ export const ProfileEditor: FC<ProfileEditorProps> = ({
       </button>
 
       <EditProfileModal
+        key={`${firstname}-${lastname}-${username}-${bio}`}
         open={isOpen}
         onOpenChange={setIsOpen}
         onSave={saveProfileData}
