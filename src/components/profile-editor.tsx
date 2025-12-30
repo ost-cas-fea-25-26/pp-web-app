@@ -9,6 +9,7 @@ import {
   SettingsIcon,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { FC, useState } from "react";
+import { toastAction } from "@/components/toaster";
 
 type ProfileEditorProps = UpdateMeActionInput;
 
@@ -22,14 +23,11 @@ export const ProfileEditor: FC<ProfileEditorProps> = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const saveProfileData = async (data: Omit<UpdateMeActionInput, "userId">) => {
-    const result = await updateMeAction({ ...data, userId });
-
-    if (!result.success) {
-      // TODO: Replace with a nice toast notification
-      console.error("Failed to update profile:", result);
-
-      return;
-    }
+    await toastAction(updateMeAction({ ...data, userId }), {
+      loading: "Saving profile…",
+      success: "Profile updated successfully",
+      error: "Failed to update profile",
+    });
 
     setIsOpen(false);
   };
