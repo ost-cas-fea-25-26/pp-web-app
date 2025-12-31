@@ -1,3 +1,5 @@
+import { decodeTime } from "ulid";
+
 export const requireEnv = (name: string): string => {
   const value = process.env[name];
   if (!value) {
@@ -15,4 +17,19 @@ export const getAvatarFallbackLetters = (
   const lastInitial = lastName?.[0] ?? "";
 
   return `${firstInitial}${lastInitial}`.toUpperCase();
+};
+
+export const getTimestampLabelFromUlid = (ulid: string): string => {
+  const timestamp = Number((decodeTime as (id: string) => number)(ulid));
+  const date = new Date(timestamp);
+
+  return date.toLocaleDateString("en", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+};
+
+export const getDeepLinkUrlByMumbleId = (mumbleId: string): string => {
+  return `${requireEnv("VERCEL_URL")}/mumble/${mumbleId}`;
 };
