@@ -45,12 +45,12 @@ export const PostActions: FC<PostActionsProps> = ({
     }
   };
 
-  const commentLabel =
-    comments === 1
-      ? "1 Comment"
-      : comments > 1
-        ? `${comments} Comments`
-        : "Comment";
+  let commentLabel = "Comment";
+  if (comments === 1) {
+    commentLabel = "1 Comment";
+  } else if (comments > 1) {
+    commentLabel = `${comments} Comments`;
+  }
 
   const commentIcon =
     comments === 0 ? (

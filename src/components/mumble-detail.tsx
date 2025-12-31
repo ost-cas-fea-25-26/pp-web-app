@@ -2,25 +2,27 @@
 
 import type { FC } from "react";
 import {
+  Avatar,
   IconButton,
   MumbleDetailView,
   ProfileIcon,
-  toast,
-  Toaster,
 } from "@ost-cas-fea-25-26/pp-design-system";
-import { Post } from "@/lib/api/posts/posts.types";
+import { MumbleWithId } from "@/lib/api/posts/posts.types";
 import { createReplyForPostAction } from "@/lib/actions/posts.actions";
 import { MumbleUser } from "@/lib/mappers/user.mappers";
 import { PostActions } from "@/components/post-actions";
 import Image from "next/image";
-import { getTimestampLabelFromUlid } from "@/lib/utils";
+import {
+  getAvatarFallbackLetters,
+  getTimestampLabelFromUlid,
+} from "@/lib/utils";
 import { ErrorOverlay } from "@/components/error-overlay";
 import Link from "next/link";
 
 type MumbleDetailTypeProps = {
-  mumble: Post;
+  mumble: MumbleWithId;
   author: MumbleUser;
-  replies: Post[];
+  replies: MumbleWithId[];
   deepLink: string;
   currentUser: MumbleUser;
 };
@@ -38,7 +40,6 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
 
   return (
     <>
-      <Toaster />
       <MumbleDetailView
         mumble={{
           id: mumble.id,
@@ -52,29 +53,36 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
             />
           ),
           avatar: (
-            <Image
-              src={author.avatarUrl ?? "/avatars/default.png"}
-              alt={author.fullName}
-              width={64}
-              height={64}
-              className="object-cover w-full h-full"
-            />
+            <Link href={`/users/${author.id}`} title={author.fullName}>
+              <Image
+                src={author.avatarUrl ?? "/avatars/default.png"}
+                alt={author.fullName}
+                width={64}
+                height={64}
+                className="object-cover w-full h-full"
+              />
+            </Link>
           ),
           content: mumble.text,
           timestamp: getTimestampLabelFromUlid(mumble.id),
           userHandle: author.handle,
           userName: author.fullName,
-          mediaElement: mumble.mediaUrl ? (
-            <img src={mumble.mediaUrl} alt={"Reply Media"} />
-          ) : null,
+          mediaElement: mumble.mediaUrl && (
+            <Image
+              src={mumble.mediaUrl}
+              alt="Reply Media"
+              width={600}
+              height={450}
+            />
+          ),
           profileUrl: "/users/" + author.id,
           size: "l" as const,
         }}
-        replies={replies.map((reply: Post) => ({
+        replies={replies.map((reply: MumbleWithId) => ({
           ...reply,
           actions: (
             <PostActions
-              mumbleId={reply.id!}
+              mumbleId={reply.id}
               comments={reply.replies ?? 0}
               likes={reply.likes ?? 0}
               liked={!!reply.likedBySelf}
@@ -104,18 +112,11 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
               mediaBlob = new Blob([buffer], { type: data.media.type });
             }
 
-            await toast.promise(
-              createReplyForPostAction(
-                mumble.id,
-                data.text,
-                mediaBlob,
-                fileName,
-              ),
-              {
-                loading: "Saving your reply...",
-                success: "Your reply has been posted. 🎉",
-                error: "Something went wrong 😵",
-              },
+            await createReplyForPostAction(
+              mumble.id,
+              data.text,
+              mediaBlob,
+              fileName,
             );
           },
           placeholder: "Write your reply...",
@@ -124,13 +125,27 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
         }}
         user={{
           avatarImageElement: (
-            <Image
-              alt={currentUser.fullName}
-              className="object-cover w-full h-full"
-              src={currentUser.avatarUrl ?? "/avatars/default.png"}
-              width={40}
-              height={40}
-            />
+            <Link
+              href={`/users/${currentUser.id}`}
+              title={currentUser.fullName}
+            >
+              <Avatar
+                fallbackText={getAvatarFallbackLetters(
+                  currentUser.firstName,
+                  currentUser.lastName,
+                )}
+                imageElement={
+                  currentUser.avatarUrl ? (
+                    <Image
+                      src={currentUser.avatarUrl}
+                      alt={author.fullName}
+                      fill
+                    />
+                  ) : null
+                }
+                size="s"
+              />
+            </Link>
           ),
           handle: currentUser.handle,
           iconButtons: (

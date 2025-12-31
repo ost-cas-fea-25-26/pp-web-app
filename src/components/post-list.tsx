@@ -1,7 +1,7 @@
 import { getPostsAction } from "@/lib/actions/posts.actions";
 import type { FC } from "react";
 import { PostItem } from "./post-item";
-import type { Post } from "@/lib/api/posts/posts.types";
+import { MumbleWithId, Post } from "@/lib/api/posts/posts.types";
 import { mapCreatorUserToUser } from "@/lib/mappers/user.mappers";
 import {
   getDeepLinkUrlByMumbleId,
@@ -30,7 +30,9 @@ export const PostList: FC<PostListProps> = async ({
     return <p>Failed to load posts</p>;
   }
 
-  const posts = (postsResult.payload.data ?? []).filter((post) => !!post.id);
+  const posts: MumbleWithId[] = (postsResult.payload.data ?? []).filter(
+    (reply: Post): reply is MumbleWithId => reply.id !== undefined,
+  );
 
   const users = await Promise.all(
     posts.map((post) => mapCreatorUserToUser(post.creator ?? {})),
@@ -38,10 +40,10 @@ export const PostList: FC<PostListProps> = async ({
 
   return (
     <div className="flex flex-col gap-4">
-      {posts.map((post: Post, postIndex: number) => (
+      {posts.map((post: MumbleWithId, postIndex: number) => (
         <PostItem
           key={post.id}
-          id={post.id!}
+          id={post.id}
           userName={users[postIndex].fullName}
           userHandle={users[postIndex].handle}
           avatar={
@@ -56,9 +58,9 @@ export const PostList: FC<PostListProps> = async ({
           comments={post.replies ?? 0}
           likes={post.likes ?? 0}
           liked={!!post.likedBySelf}
-          timestamp={getTimestampLabelFromUlid(post.id!)}
+          timestamp={getTimestampLabelFromUlid(post.id)}
           content={<p>{post.text}</p>}
-          deepLink={getDeepLinkUrlByMumbleId(post.id!)}
+          deepLink={getDeepLinkUrlByMumbleId(post.id)}
           mediaElement={
             post.mediaUrl
               ? {

@@ -4,6 +4,7 @@ import { FC, ReactNode } from "react";
 import Link from "next/link";
 import { Mumble } from "@ost-cas-fea-25-26/pp-design-system";
 import { PostActions } from "@/components/post-actions";
+import Image from "next/image";
 
 type PostItemProps = {
   id: string;
@@ -58,10 +59,12 @@ export const PostItem: FC<PostItemProps> = ({
       }
       mediaElement={
         mediaElement && (
-          <img
-            alt={mediaElement.alt}
+          <Image
+            alt="Mumble media"
             className="object-cover w-full h-full"
             src={mediaElement.src}
+            width={600}
+            height={450}
           />
         )
       }

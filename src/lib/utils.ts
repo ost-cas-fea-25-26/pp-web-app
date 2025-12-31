@@ -31,5 +31,5 @@ export const getTimestampLabelFromUlid = (ulid: string): string => {
 };
 
 export const getDeepLinkUrlByMumbleId = (mumbleId: string): string => {
-  return requireEnv("VERCEL_URL") + "/mumble/" + mumbleId;
+  return `${requireEnv("VERCEL_URL")}/mumble/${mumbleId}`;
 };

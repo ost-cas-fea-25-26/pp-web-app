@@ -1,4 +1,3 @@
-import { getSession } from "@/lib/auth/server";
 import { getUserByIdAction } from "@/lib/actions/users.actions";
 import {
   getPostByIdAction,
@@ -6,11 +5,8 @@ import {
 } from "@/lib/actions/posts.actions";
 import { MumbleDetail } from "@/components/mumble-detail";
 import { FC } from "react";
-import {
-  mapCreatorUserToUser,
-  mapUserPayloadToUser,
-} from "@/lib/mappers/user.mappers";
-import { Post } from "@/lib/api/posts/posts.types";
+import { mapCreatorUserToUser, mapUser } from "@/lib/mappers/user.mappers";
+import { Post, MumbleWithId } from "@/lib/api/posts/posts.types";
 import {
   getDeepLinkUrlByMumbleId,
   getTimestampLabelFromUlid,
@@ -18,22 +14,15 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { ErrorOverlay } from "@/components/error-overlay";
+import { api } from "@/lib/api";
 
 type PostDetailPageProps = {
   id: string;
 };
 
 export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
-  const session = await getSession();
-  const authenticatedUser = session?.user;
-  if (!authenticatedUser) {
-    return (
-      <ErrorOverlay message="You must be logged in to comment on a mumble." />
-    );
-  }
-
-  const currentUser = await getUserByIdAction(authenticatedUser.id);
-  if (!currentUser.success) {
+  const currentUser = await api.users.getMe();
+  if (!currentUser?.success) {
     return <ErrorOverlay message="Failed to fetch user, try again." />;
   }
 
@@ -46,6 +35,7 @@ export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
   if (!mumblePayload.id || !mumblePayload.creator?.id) {
     return <ErrorOverlay message="Invalid response from server, try again." />;
   }
+  const mumbleWithId = mumblePayload as MumbleWithId;
 
   const author = await getUserByIdAction(mumblePayload.creator.id);
   if (!author.success) {
@@ -55,16 +45,20 @@ export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
   }
 
   const repliesPayload = await getRepliesByPostIdAction(id);
+
   const replies = repliesPayload.success
-    ? (repliesPayload.payload.data?.filter((reply: Post) => !!reply.creator) ??
-      [])
+    ? (repliesPayload.payload.data ?? [])
     : [];
 
-  const replyAuthors = await Promise.all(
-    replies.map((reply: Post) => mapCreatorUserToUser(reply.creator ?? {})),
+  const filteredReplies: MumbleWithId[] = replies.filter(
+    (reply: Post): reply is MumbleWithId => reply.id !== undefined,
   );
 
-  const mappedReplies = replies.map((reply: Post, idx: number) => ({
+  const replyAuthors = await Promise.all(
+    filteredReplies.map((reply) => mapCreatorUserToUser(reply.creator ?? {})),
+  );
+
+  const mappedReplies = filteredReplies.map((reply, idx) => ({
     id: reply.id,
     content: reply.text,
     userName: replyAuthors[idx]?.fullName,
@@ -81,20 +75,26 @@ export const PostDetailPage: FC<PostDetailPageProps> = async ({ id }) => {
         />
       </Link>
     ) : undefined,
-    timestamp: getTimestampLabelFromUlid(reply.id!), // or use your timestamp util
-    mediaElement: reply.mediaUrl ? (
-      <img src={reply.mediaUrl} alt="Reply Media" />
-    ) : null,
+    timestamp: getTimestampLabelFromUlid(reply.id),
+    mediaElement: reply.mediaUrl && (
+      <Image
+        alt="Mumble media"
+        className="object-cover w-full h-full"
+        src={reply.mediaUrl}
+        width={800}
+        height={600}
+      />
+    ),
   }));
 
   return (
     <div className="gap-10 flex flex-col">
       <MumbleDetail
-        mumble={mumblePayload}
-        currentUser={mapUserPayloadToUser(currentUser.payload)}
-        author={mapUserPayloadToUser(author.payload)}
+        mumble={mumbleWithId}
+        currentUser={mapUser(currentUser.payload)}
+        author={mapUser(author.payload)}
         replies={mappedReplies}
-        deepLink={getDeepLinkUrlByMumbleId(mumblePayload.id)}
+        deepLink={getDeepLinkUrlByMumbleId(mumbleWithId.id)}
       />
     </div>
   );

@@ -5,10 +5,12 @@ import {
   Avatar,
   MumbleForm,
   MumbleSubmission,
-  Toaster,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { MumbleUser } from "@/lib/mappers/user.mappers";
 import { createMumble } from "@/lib/helpers/create-mumble.helpers";
+import { getAvatarFallbackLetters } from "@/lib/utils";
+import Image from "next/image";
+import Link from "next/link";
 
 type PostSubmissionProps = {
   user: MumbleUser;
@@ -17,20 +19,22 @@ type PostSubmissionProps = {
 export const PostSubmission: FC<PostSubmissionProps> = ({ user }) => {
   return (
     <div className="mb-4">
-      <Toaster />
       <MumbleSubmission
         avatar={
-          <Avatar
-            fallbackText="RM"
-            imageElement={
-              <img
-                alt={user.fullName}
-                className="object-cover w-full h-full"
-                src={user.avatarUrl}
-              />
-            }
-            size="m"
-          />
+          <Link href={`/users/${user.id}`} title={user.fullName}>
+            <Avatar
+              fallbackText={getAvatarFallbackLetters(
+                user.firstName,
+                user.lastName,
+              )}
+              imageElement={
+                user.avatarUrl ? (
+                  <Image src={user.avatarUrl} alt={user.fullName} fill />
+                ) : null
+              }
+              size="m"
+            />
+          </Link>
         }
         form={
           <MumbleForm
