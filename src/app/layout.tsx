@@ -16,8 +16,11 @@ type RootLayoutProps = {
 const RootLayout = ({ children }: RootLayoutProps) => (
   <html lang="en">
     <body>
-      <Toaster />
-      {children}
+      <main>
+        <h1 className="sr-only">Mumble</h1>
+        <Toaster />
+        {children}
+      </main>
     </body>
   </html>
 );
