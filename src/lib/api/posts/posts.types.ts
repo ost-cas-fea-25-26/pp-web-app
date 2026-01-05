@@ -5,3 +5,6 @@ export type PaginatedPost = components["schemas"]["PostPaginatedResult"];
 export type PostsGetManyQueryParams = NonNullable<
   NonNullable<paths["/posts"]["get"]["parameters"]>["query"]
 >;
+export interface MumbleWithId extends Post {
+  id: string;
+}

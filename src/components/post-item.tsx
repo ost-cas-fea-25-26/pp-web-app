@@ -1,26 +1,27 @@
 "use client";
 
-import { FC, ReactNode, useState } from "react";
-import Image from "next/image";
+import { FC, ReactNode } from "react";
 import Link from "next/link";
-import { Mumble, MumbleActions } from "@ost-cas-fea-25-26/pp-design-system";
-import { likePostAction, unlikePostAction } from "@/lib/actions/posts.actions";
+import { Mumble } from "@ost-cas-fea-25-26/pp-design-system";
+import { PostActions } from "@/components/post-actions";
+import Image from "next/image";
 
 type PostItemProps = {
   id: string;
   content: ReactNode;
   userName: string;
   userHandle: string;
-  avatarSrc?: string;
+  avatar?: ReactNode;
   comments: number;
   likes: number;
   liked: boolean;
+  timestamp: string;
+  deepLink: string;
+  mediaElement?: {
+    alt: string;
+    src: string;
+  };
   profileUrl: string;
-};
-
-type LikeStateProps = {
-  liked: boolean;
-  likes: number;
 };
 
 export const PostItem: FC<PostItemProps> = ({
@@ -28,27 +29,15 @@ export const PostItem: FC<PostItemProps> = ({
   content,
   userName,
   userHandle,
-  avatarSrc,
+  avatar,
   comments,
   likes,
   liked,
+  timestamp,
+  deepLink,
+  mediaElement,
   profileUrl,
 }) => {
-  const [likedState, setLikedState] = useState<LikeStateProps>({
-    liked: liked,
-    likes: likes,
-  });
-
-  const handleLikeToggle = async (nextState: boolean) => {
-    if (nextState) {
-      await likePostAction(id);
-      setLikedState({ liked: true, likes: likedState.likes + 1 });
-    } else {
-      await unlikePostAction(id);
-      setLikedState({ liked: false, likes: likedState.likes - 1 });
-    }
-  };
-
   return (
     <Mumble
       id={id}
@@ -56,23 +45,28 @@ export const PostItem: FC<PostItemProps> = ({
       userName={userName}
       userHandle={userHandle}
       profileUrl={profileUrl}
-      avatar={
-        avatarSrc && (
-          <Link href={profileUrl}>
-            <Image src={avatarSrc} alt={userName} fill />
-          </Link>
-        )
-      }
-      timestamp="2 hours ago"
-      size="m"
+      avatar={avatar && <Link href={profileUrl}>{avatar}</Link>}
+      timestamp={timestamp}
+      size="l"
       actions={
-        <MumbleActions
-          commentCounter={comments}
-          likeCounter={likedState.likes}
-          deepLink={`/mumble/${id}`}
-          onLikeToggleHandler={handleLikeToggle}
-          liked={likedState.liked}
+        <PostActions
+          liked={liked}
+          likes={likes}
+          deepLink={deepLink}
+          mumbleId={id}
+          comments={comments}
         />
+      }
+      mediaElement={
+        mediaElement && (
+          <Image
+            alt="Mumble media"
+            className="object-cover w-full h-full"
+            src={mediaElement.src}
+            width={600}
+            height={450}
+          />
+        )
       }
     />
   );
