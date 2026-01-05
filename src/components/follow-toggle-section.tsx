@@ -3,6 +3,7 @@ import {
   getUserByIdAction,
 } from "@/lib/actions/users.actions";
 import { FollowToggleClient } from "./follow-toggle-client";
+import { ErrorOverlay } from "./error-overlay";
 
 type FollowToggleSectionProps = {
   userId: string;
@@ -17,7 +18,7 @@ export const FollowToggleSection = async ({
   const userResult = await getUserByIdAction(userId);
 
   if (!userResult.success) {
-    return <p>User not found</p>;
+    return <ErrorOverlay message="User not found"></ErrorOverlay>;
   }
 
   const user = userResult.payload;

@@ -9,6 +9,9 @@ import {
 import { getAvatarFallbackLetters } from "@/lib/utils";
 import { LogoutButton } from "./logout-button";
 import { api } from "@/lib/api";
+import { ProfileEditor } from "./profile-editor";
+import { usersRepository } from "@/lib/db/repositories/users.repository";
+import { ErrorOverlay } from "./error-overlay";
 
 export const HeaderActions: FC = async () => {
   const result = await api.users.getMe();
@@ -18,6 +21,17 @@ export const HeaderActions: FC = async () => {
   }
 
   const user = result.payload;
+
+  if (!user.id) {
+    return null;
+  }
+
+  const bioResult = await usersRepository.getBioByUserId(user.id);
+  if (!bioResult.success) {
+    return <ErrorOverlay message="User not found"></ErrorOverlay>;
+  }
+
+  const bio = bioResult.payload ?? "";
 
   const userLink = `/users/${user.id}`;
   const avatarUrl = user.avatarUrl;
@@ -46,12 +60,20 @@ export const HeaderActions: FC = async () => {
         />
       </Link>
 
-      <IconButton
-        label="Settings"
-        IconComponent={SettingsIcon}
-        animation="rotate"
-        color="primary"
-        layout="stacked"
+      <ProfileEditor
+        firstname={user.firstname ?? ""}
+        lastname={user.lastname ?? ""}
+        username={user.username ?? ""}
+        bio={bio}
+        trigger={
+          <IconButton
+            label="Settings"
+            IconComponent={SettingsIcon}
+            animation="rotate"
+            color="primary"
+            layout="stacked"
+          />
+        }
       />
       <LogoutButton />
     </>

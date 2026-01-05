@@ -3,6 +3,8 @@
 import { revalidatePath } from "next/cache";
 import { api } from "../api";
 import { usersStorage } from "../storage/users.storage";
+import type { UpdateUserData } from "@/lib/api/users/users.types";
+import { usersRepository } from "../db/repositories/users.repository";
 
 export const getUserByIdAction = async (userId: string) => {
   return api.users.getUserById(userId);
@@ -57,4 +59,30 @@ export const getUnfollowedUserSuggestionsAction = async (limit?: number) => {
 
 export const getFolloweeIdsAction = async () => {
   return api.users.getFolloweeIds();
+};
+
+// The API does not support update the bio, so we use our own DB repository
+export type UpdateMeActionInput = UpdateUserData & {
+  bio?: string;
+};
+
+export const updateMeAction = async (data: UpdateMeActionInput) => {
+  const { bio, ...updateApiData } = data;
+
+  const [apiResult, bioResult] = await Promise.all([
+    api.users.updateMe(updateApiData),
+    bio !== undefined ? usersRepository.updateBio(bio) : undefined,
+  ]);
+
+  if (!apiResult.success) {
+    return apiResult;
+  }
+
+  if (bioResult && !bioResult.success) {
+    return bioResult;
+  }
+
+  revalidatePath("/", "layout");
+
+  return { success: true };
 };
