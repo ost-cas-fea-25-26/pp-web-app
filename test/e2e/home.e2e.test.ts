@@ -20,7 +20,7 @@ test("home page displays posts", async ({ page }) => {
   await page.goto("/");
 
   await expect(
-    page.getByText("Just made a birdie on the 18th hole!")
+    page.getByText("Just made a birdie on the 18th hole!"),
   ).toBeVisible();
 
   await expect(page.getByText("Loving this new putter I got!")).toBeVisible();
