@@ -16,6 +16,7 @@
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest run --coverage",
     "test:e2e": "playwright test",
+    "test:e2e:update": "docker compose -f docker-compose.e2e.yml up --abort-on-container-exit --build",
     "test:e2e:debug": "DEBUG=pw:webserver npm run test:e2e",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:ui:debug": "DEBUG=pw:webserver playwright test --ui",
