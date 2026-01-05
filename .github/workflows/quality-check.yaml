@@ -109,7 +109,7 @@ jobs:
     env:
       AUTH_CLIENT_ID: ${{ secrets.AUTH_CLIENT_ID }}
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-      API_URL: https://qwacker-api-http-prod-927407260649.europe-west6.run.app
+      API_URL: http://localhost:1080
       NEON_DATABASE_URL: postgresql://pp-user:pp-password@postgres:5432/pp-database
       VERCEL_URL: http://localhost:3000
       PLAYWRIGHT_TEST_USER_1_EMAIL: mr_playwright@test.com

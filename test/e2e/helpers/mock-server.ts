@@ -45,7 +45,6 @@ const posts: Post[] = [
     creator: {
       id: tigerUser.id,
       username: tigerUser.username,
-      avatarUrl: tigerUser.avatarUrl,
     },
   },
   {
@@ -57,7 +56,6 @@ const posts: Post[] = [
     creator: {
       id: currentUser.id,
       username: currentUser.username,
-      avatarUrl: currentUser.avatarUrl,
     },
   },
 ];
