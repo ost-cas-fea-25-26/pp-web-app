@@ -3,6 +3,7 @@ import { getAvatarFallbackLetters } from "@/lib/utils";
 import { UserProfileView } from "./user-profile-view";
 import { usersStorage } from "@/lib/storage/users.storage";
 import { usersRepository } from "@/lib/db/repositories/users.repository";
+import { ErrorOverlay } from "./error-overlay";
 
 type UserProfileLoaderProps = {
   userId: string;
@@ -16,12 +17,12 @@ export const UserProfileLoader = async ({
   const userResult = await getUserByIdAction(userId);
 
   if (!userResult.success) {
-    return <p>User not found</p>;
+    return <ErrorOverlay message="User not found"></ErrorOverlay>;
   }
 
   const bioResult = await usersRepository.getBioByUserId(userId);
   if (!bioResult.success) {
-    return <p>User not found</p>;
+    return <ErrorOverlay message="User not found"></ErrorOverlay>;
   }
 
   const user = userResult.payload;

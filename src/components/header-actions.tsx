@@ -11,6 +11,7 @@ import { LogoutButton } from "./logout-button";
 import { api } from "@/lib/api";
 import { ProfileEditor } from "./profile-editor";
 import { usersRepository } from "@/lib/db/repositories/users.repository";
+import { ErrorOverlay } from "./error-overlay";
 
 export const HeaderActions: FC = async () => {
   const result = await api.users.getMe();
@@ -27,7 +28,7 @@ export const HeaderActions: FC = async () => {
 
   const bioResult = await usersRepository.getBioByUserId(user.id);
   if (!bioResult.success) {
-    return <p>User not found</p>;
+    return <ErrorOverlay message="User not found"></ErrorOverlay>;
   }
 
   const bio = bioResult.payload ?? "";
