@@ -24,12 +24,10 @@ services:
       - .:/app
 
     environment:
-      # ---- App / DB ----
       NEON_DATABASE_URL: postgresql://pp-user:pp-password@postgres:5432/pp-database
       VERCEL_URL: http://localhost:3000
       HOME: /root
 
-      # ---- Auth / API (reuse your CI values or .env.test) ----
       AUTH_CLIENT_ID: ${AUTH_CLIENT_ID}
       AUTH_SECRET: ${AUTH_SECRET}
       API_URL: http://localhost:1080

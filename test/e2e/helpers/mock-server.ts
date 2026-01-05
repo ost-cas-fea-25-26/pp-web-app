@@ -26,7 +26,6 @@ const currentUser: User = {
   firstname: "Rory",
   lastname: "McIlroy",
   username: "rory_mcilroy",
-  avatarUrl: "https://storage.googleapis.com/mumble-api-data/rory.png",
 };
 
 const tigerUser: User = {
@@ -34,7 +33,6 @@ const tigerUser: User = {
   firstname: "Tiger",
   lastname: "Woods",
   username: "tiger_woods",
-  avatarUrl: "https://storage.googleapis.com/mumble-api-data/tiger.png",
 };
 
 const posts: Post[] = [
