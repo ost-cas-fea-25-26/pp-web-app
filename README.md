@@ -18,7 +18,7 @@
 
 ## 🚀 Overview
 
-**PP Web App** is the main Next.js application of the Put & Push platform.
+**PP Web App** is the main Next.js application of the Putt & Push platform.
 It consumes the **PP Design System**, integrates authentication, database access, and APIs, and represents the production-ready web frontend.
 
 The app is built with scalability, type safety, and automation in mind, featuring a fully automated CI/CD pipeline and comprehensive test coverage.
@@ -185,4 +185,4 @@ npm run design-system:link
 
 ---
 
-Made with ❤️ for Put & Push.
+Made with ❤️ for Putt & Push.
