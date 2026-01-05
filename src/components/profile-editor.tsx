@@ -7,6 +7,7 @@ import {
 import { EditProfileModal } from "@ost-cas-fea-25-26/pp-design-system";
 import { FC, useState } from "react";
 import { toastAction } from "@/components/toaster";
+
 type ProfileEditorProps = UpdateMeActionInput & {
   trigger: React.ReactElement;
 };
@@ -32,9 +33,13 @@ export const ProfileEditor: FC<ProfileEditorProps> = ({
 
   return (
     <>
-      <span onClick={() => setIsOpen(true)} className="cursor-pointer">
+      <button
+        type="button"
+        onClick={() => setIsOpen(true)}
+        className="cursor-pointer bg-transparent p-0 border-none"
+      >
         {trigger}
-      </span>
+      </button>
 
       <EditProfileModal
         key={`${firstname}-${lastname}-${username}-${bio}`}

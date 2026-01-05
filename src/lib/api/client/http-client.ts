@@ -14,7 +14,7 @@ const logError = (
 ) => console.error(`[API] ✗ ${status} ${message} (${durationMs} ms)`);
 
 export class HttpClient {
-  private baseUrl: string;
+  private readonly baseUrl: string;
 
   constructor(baseUrl?: string) {
     if (!baseUrl) {
