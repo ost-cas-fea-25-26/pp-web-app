@@ -5,11 +5,13 @@ import {
   UpdateMeActionInput,
 } from "@/lib/actions/users.actions";
 import { EditProfileModal } from "@ost-cas-fea-25-26/pp-design-system";
-import { FC, useState } from "react";
+import { FC, useState, cloneElement } from "react";
 import { toastAction } from "@/components/toaster";
 
 type ProfileEditorProps = UpdateMeActionInput & {
-  trigger: React.ReactElement;
+  trigger: React.ReactElement<{
+    onClick: React.MouseEventHandler<HTMLElement>;
+  }>;
 };
 
 export const ProfileEditor: FC<ProfileEditorProps> = ({
@@ -33,13 +35,9 @@ export const ProfileEditor: FC<ProfileEditorProps> = ({
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setIsOpen(true)}
-        className="cursor-pointer bg-transparent p-0 border-none"
-      >
-        {trigger}
-      </button>
+      {cloneElement(trigger, {
+        onClick: () => setIsOpen(true),
+      })}
 
       <EditProfileModal
         key={`${firstname}-${lastname}-${username}-${bio}`}
