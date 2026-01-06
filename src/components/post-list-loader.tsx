@@ -94,7 +94,7 @@ export const PostListLoader: FC<PostListProps> = ({
     }
 
     const newPosts: MumbleWithId[] = (result.payload.data ?? []).filter(
-      (post: Post): post is MumbleWithId => post.id !== undefined
+      (post: Post): post is MumbleWithId => post.id !== undefined,
     );
 
     if (newPosts.length < LIMIT) {
@@ -102,7 +102,7 @@ export const PostListLoader: FC<PostListProps> = ({
     }
 
     const newUsers = await Promise.all(
-      newPosts.map((post) => mapCreatorUserToUser(post.creator ?? {}))
+      newPosts.map((post) => mapCreatorUserToUser(post.creator ?? {})),
     );
 
     dispatch({
