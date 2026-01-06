@@ -12,11 +12,9 @@ const MumblePage = async ({ params }: MumblePageProps) => {
   const { mumbleId } = await params;
 
   return (
-    <main>
-      <Suspense fallback={<PostListSkeleton count={1} />}>
-        <PostDetailPage id={mumbleId} />
-      </Suspense>
-    </main>
+    <Suspense fallback={<PostListSkeleton count={1} />}>
+      <PostDetailPage id={mumbleId} />
+    </Suspense>
   );
 };
 
