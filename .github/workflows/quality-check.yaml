@@ -122,6 +122,9 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Install Java (required)
         run: |
           apt-get update
