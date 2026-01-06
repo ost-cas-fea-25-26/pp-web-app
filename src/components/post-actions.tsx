@@ -60,7 +60,7 @@ export const PostActions: FC<PostActionsProps> = ({
     );
 
   const commentButton = isReply ? null : (
-    <Link title="View Comments" href={deepLink}>
+    <Link title="View Comments" href={`/mumble/${mumbleId}`}>
       <CommentButton label={commentLabel} icon={commentIcon} />
     </Link>
   );
