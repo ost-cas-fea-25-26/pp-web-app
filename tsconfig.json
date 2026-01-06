@@ -14,7 +14,7 @@
     "jsx": "react-jsx",
     "incremental": true,
     "typeRoots": ["./types", "./node_modules/@types"],
-    "types": ["@serwist/next/typings"],
+    "types": ["@serwist/next/typings/sw"],
     "plugins": [
       {
         "name": "next"
