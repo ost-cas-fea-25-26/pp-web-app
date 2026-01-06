@@ -12,7 +12,7 @@ import { Banner } from "./banner";
 import { ProfileEditor } from "./profile-editor";
 
 type UserProfileViewProps = {
-  bannerUrl: string;
+  bannerUrl: string | null;
   avatarUrl: string | null;
   firstname: string;
   lastname: string;

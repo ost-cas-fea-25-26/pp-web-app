@@ -11,9 +11,11 @@ class UsersStorage {
       return { success: false, error: "User not authenticated" };
     }
 
+    const version = crypto.randomUUID();
+
     try {
       const { url } = await this.uploadToVercel(
-        `users/${session.user.id}/banner`,
+        `users/${session.user.id}/banner-${version}`,
         file,
       );
 
@@ -26,14 +28,9 @@ class UsersStorage {
     }
   }
 
-  getBannerUrl(userId: string): string {
-    return `https://${this.blobHost}/users/${userId}/banner`;
-  }
-
   private uploadToVercel(key: string, file: Blob) {
     return put(key, file, {
       access: "public",
-      allowOverwrite: true,
     });
   }
 }

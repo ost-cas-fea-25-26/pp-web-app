@@ -11,7 +11,7 @@ import { toastAction } from "@/components/toaster";
 
 type BannerProps = {
   isEditable?: boolean;
-  bannerUrl: string;
+  bannerUrl: string | null;
   alt: string;
   userId: string;
 };
@@ -25,7 +25,6 @@ export const Banner: FC<BannerProps> = ({
   userId,
 }) => {
   const [isOpenEditModal, setIsOpenEditModal] = useState(false);
-  const [src, setSrc] = useState(bannerUrl);
 
   const saveNewBannerImage = async (file: File) => {
     const result = await toastAction(updateBannerAction(userId, file), {
@@ -38,7 +37,6 @@ export const Banner: FC<BannerProps> = ({
       return;
     }
 
-    setSrc(`${bannerUrl}?t=${Date.now()}`);
     setIsOpenEditModal(false);
   };
 
@@ -48,12 +46,11 @@ export const Banner: FC<BannerProps> = ({
         onClick={isEditable ? () => setIsOpenEditModal(true) : undefined}
         imageElement={
           <Image
-            src={src}
+            src={bannerUrl ?? FALLBACK_BANNER}
             alt={alt}
             fill
             className="object-cover"
             priority
-            onError={() => setSrc(FALLBACK_BANNER)}
           />
         }
       />
