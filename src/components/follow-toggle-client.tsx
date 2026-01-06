@@ -10,6 +10,7 @@ import {
   followUserAction,
   unfollowUserAction,
 } from "@/lib/actions/users.actions";
+import { toastAction } from "@/components/toaster";
 
 type FollowToggleClientProps = {
   targetUserId: string;
@@ -23,19 +24,17 @@ export const FollowToggleClient: FC<FollowToggleClientProps> = ({
   isFollowing,
 }) => {
   const handleClick = async () => {
-    const result = isFollowing
-      ? await unfollowUserAction(targetUserId)
-      : await followUserAction(targetUserId);
+    const action = isFollowing
+      ? unfollowUserAction(targetUserId)
+      : followUserAction(targetUserId);
 
-    if (!result.success) {
-      // TODO: Replace with a nice toast notification
-      // e.g. https://ui.shadcn.com/docs/components/sonner
-
-      // eslint-disable-next-line no-alert
-      alert(
-        `Failed to ${isFollowing ? "unfollow" : "follow"} user: ${result.error}`,
-      );
-    }
+    await toastAction(action, {
+      loading: isFollowing ? "Unfollowing user…" : "Following user…",
+      success: isFollowing
+        ? "User unfollowed successfully"
+        : "User followed successfully",
+      error: isFollowing ? "Failed to unfollow user" : "Failed to follow user",
+    });
   };
 
   return (
@@ -48,14 +47,12 @@ export const FollowToggleClient: FC<FollowToggleClientProps> = ({
         onClick={handleClick}
         variant={isFollowing ? "neutral" : "primary"}
       >
-        <>
-          {isFollowing ? "Unfollow" : "Follow"}
-          {isFollowing ? (
-            <CancelIcon color="white" />
-          ) : (
-            <MumbleIcon color="white" />
-          )}
-        </>
+        {isFollowing ? "Unfollow" : "Follow"}
+        {isFollowing ? (
+          <CancelIcon color="white" />
+        ) : (
+          <MumbleIcon color="white" />
+        )}
       </Button>
     </div>
   );

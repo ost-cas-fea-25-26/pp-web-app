@@ -90,7 +90,15 @@ export const UserProfileView: FC<UserProfileViewProps> = ({
             lastname={lastname}
             username={handle}
             bio={bio}
-            trigger={<SettingsIcon color="primary" size="m" />}
+            trigger={
+              <button
+                type="button"
+                aria-label="Edit profile"
+                className="cursor-pointer"
+              >
+                <SettingsIcon color="primary" size="m" />
+              </button>
+            }
           />
         )
       }

@@ -1,9 +1,13 @@
 import { FollowToggleSection } from "@/components/follow-toggle-section";
 import { PostList } from "@/components/post-list";
+import { PostListSkeleton } from "@/components/post-list-skeleton";
 import { RecommendedUsersLoader } from "@/components/recommended-users-loader";
 import { UserProfileLoader } from "@/components/user-profile-loader";
 import { getSession } from "@/lib/auth/server";
-import { Tabs } from "@ost-cas-fea-25-26/pp-design-system";
+import {
+  ProfileHeaderSkeleton,
+  Tabs,
+} from "@ost-cas-fea-25-26/pp-design-system";
 import { Suspense } from "react";
 
 type ProfilePageProps = {
@@ -18,9 +22,17 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
   const isOwnProfile = session?.user?.id === userId;
 
   return (
-    <Suspense>
+    <Suspense
+      fallback={
+        <div className="gap-10 flex flex-col">
+          <ProfileHeaderSkeleton />
+          <PostListSkeleton count={5} />
+        </div>
+      }
+    >
       <div className="gap-10 flex flex-col">
         <UserProfileLoader userId={userId} isEditable={isOwnProfile} />
+
         {isOwnProfile ? (
           <>
             <RecommendedUsersLoader />

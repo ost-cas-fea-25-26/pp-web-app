@@ -3,7 +3,7 @@ import type { HttpClient } from "../client/http-client";
 import { PaginatedUser, UpdateUserData, User } from "./users.types";
 
 export class UsersApi {
-  constructor(private client: HttpClient) {}
+  constructor(private readonly client: HttpClient) {}
 
   getMany() {
     return this.client.get<PaginatedUser>("/users");
