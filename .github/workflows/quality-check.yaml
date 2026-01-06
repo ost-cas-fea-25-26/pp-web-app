@@ -122,9 +122,6 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
       - name: Run Playwright Tests (sharded)
         run: npx playwright test --project=${{ matrix.browser }} --shard=${{ matrix.shard }}
         # Enable to see server logs during tests
