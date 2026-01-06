@@ -18,6 +18,7 @@ import {
 } from "@/lib/utils";
 import { ErrorOverlay } from "@/components/error-overlay";
 import Link from "next/link";
+import { toastAction } from "@/components/toaster";
 
 type MumbleDetailTypeProps = {
   mumble: MumbleWithId;
@@ -109,11 +110,13 @@ export const MumbleDetail: FC<MumbleDetailTypeProps> = ({
             mediaBlob = new Blob([buffer], { type: data.media.type });
           }
 
-          await createReplyForPostAction(
-            mumble.id,
-            data.text,
-            mediaBlob,
-            fileName,
+          await toastAction(
+            createReplyForPostAction(mumble.id, data.text, mediaBlob, fileName),
+            {
+              loading: "Posting reply…",
+              success: "Reply posted successfully",
+              error: "Failed to post reply",
+            },
           );
         },
         placeholder: "Write your reply...",

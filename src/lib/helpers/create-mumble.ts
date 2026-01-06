@@ -1,4 +1,5 @@
 import { createPostAction } from "@/lib/actions/posts.actions";
+import { toastAction } from "@/components/toaster";
 
 export const createMumble = async (data?: {
   media?: File | null;
@@ -17,5 +18,9 @@ export const createMumble = async (data?: {
     mediaBlob = new Blob([buffer], { type: data.media.type });
   }
 
-  await createPostAction(data.text, mediaBlob, fileName);
+  await toastAction(createPostAction(data.text, mediaBlob, fileName), {
+    loading: "Creating mumble…",
+    success: "Mumble created successfully",
+    error: "Failed to create mumble",
+  });
 };
