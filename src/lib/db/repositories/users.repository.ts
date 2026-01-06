@@ -88,6 +88,81 @@ class UsersRepository {
       };
     }
   }
+  async updateBannerImage(bannerImage: string): Promise<RepositoryResponse> {
+    const start = Date.now();
+    logRepositoryStart("updateBannerImage");
+
+    const session = await getSession();
+    if (!session?.user?.id) {
+      const duration = Date.now() - start;
+      logRepositoryError(
+        "updateBannerImage",
+        "User not authenticated",
+        duration,
+      );
+
+      return { success: false, error: "User not authenticated" };
+    }
+
+    try {
+      await dbInstance
+        .update(user)
+        .set({ bannerImage })
+        .where(eq(user.zitadelId, session.user.id));
+
+      const duration = Date.now() - start;
+      logRepositorySuccess("updateBannerImage", duration);
+
+      return { success: true };
+    } catch (error) {
+      const duration = Date.now() - start;
+      logRepositoryError(
+        "updateBannerImage",
+        error instanceof Error ? error.message : "DB update failed",
+        duration,
+      );
+
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "DB update failed",
+      };
+    }
+  }
+
+  async getBannerImageByUserId(
+    userId: string,
+  ): Promise<RepositoryResponse<string | null>> {
+    const start = Date.now();
+    logRepositoryStart("getBannerImageByUserId");
+
+    try {
+      const result = await dbInstance
+        .select({ bannerImage: user.bannerImage })
+        .from(user)
+        .where(eq(user.zitadelId, userId))
+        .limit(1);
+
+      const duration = Date.now() - start;
+      logRepositorySuccess("getBannerImageByUserId", duration);
+
+      return {
+        success: true,
+        payload: result[0]?.bannerImage ?? null,
+      };
+    } catch (error) {
+      const duration = Date.now() - start;
+      logRepositoryError(
+        "getBannerImageByUserId",
+        error instanceof Error ? error.message : "DB query failed",
+        duration,
+      );
+
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "DB query failed",
+      };
+    }
+  }
 }
 
 export const usersRepository = new UsersRepository();
