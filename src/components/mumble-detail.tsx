@@ -19,7 +19,6 @@ import {
 import { ErrorOverlay } from "@/components/error-overlay";
 import Link from "next/link";
 import { toastAction } from "@/components/toaster";
-import { updateMeAction } from "@/lib/actions/users.actions";
 
 type MumbleDetailTypeProps = {
   mumble: MumbleWithId;
