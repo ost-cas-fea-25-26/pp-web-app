@@ -4,27 +4,20 @@ import { dbInstance } from "../instance";
 import { user } from "@/lib/db/schema";
 import { RepositoryResponse } from "./types";
 
-const logRepositoryStart = (action: string) =>
-  console.info(`[REPO] → ${action}`);
+const log = {
+  call: (action: string) => console.info(`[REPO] ${action}`),
 
-const logRepositorySuccess = (action: string, durationMs: number) =>
-  console.info(`[REPO] ✓ ${action} (${durationMs} ms)`);
-
-const logRepositoryError = (
-  action: string,
-  message: string,
-  durationMs: number,
-) => console.error(`[REPO] ✗ ${action} ${message} (${durationMs} ms)`);
+  error: (action: string, message: string) =>
+    console.error(`[REPO] ${action} failed: ${message}`),
+};
 
 class UsersRepository {
   async updateBio(bio: string): Promise<RepositoryResponse> {
-    const start = Date.now();
-    logRepositoryStart("updateBio");
+    log.call("updateBio");
 
     const session = await getSession();
     if (!session?.user?.id) {
-      const duration = Date.now() - start;
-      logRepositoryError("updateBio", "User not authenticated", duration);
+      log.error("updateBio", "User not authenticated");
 
       return { success: false, error: "User not authenticated" };
     }
@@ -35,16 +28,11 @@ class UsersRepository {
         .set({ bio })
         .where(eq(user.zitadelId, session.user.id));
 
-      const duration = Date.now() - start;
-      logRepositorySuccess("updateBio", duration);
-
       return { success: true };
     } catch (error) {
-      const duration = Date.now() - start;
-      logRepositoryError(
+      log.error(
         "updateBio",
         error instanceof Error ? error.message : "DB update failed",
-        duration,
       );
 
       return {
@@ -57,8 +45,7 @@ class UsersRepository {
   async getBioByUserId(
     userId: string,
   ): Promise<RepositoryResponse<string | null>> {
-    const start = Date.now();
-    logRepositoryStart("getBioByUserId");
+    log.call("getBioByUserId");
 
     try {
       const result = await dbInstance
@@ -67,19 +54,14 @@ class UsersRepository {
         .where(eq(user.zitadelId, userId))
         .limit(1);
 
-      const duration = Date.now() - start;
-      logRepositorySuccess("getBioByUserId", duration);
-
       return {
         success: true,
         payload: result[0]?.bio ?? null,
       };
     } catch (error) {
-      const duration = Date.now() - start;
-      logRepositoryError(
+      log.error(
         "getBioByUserId",
         error instanceof Error ? error.message : "DB query failed",
-        duration,
       );
 
       return {
@@ -88,18 +70,13 @@ class UsersRepository {
       };
     }
   }
+
   async updateBannerImage(bannerImage: string): Promise<RepositoryResponse> {
-    const start = Date.now();
-    logRepositoryStart("updateBannerImage");
+    log.call("updateBannerImage");
 
     const session = await getSession();
     if (!session?.user?.id) {
-      const duration = Date.now() - start;
-      logRepositoryError(
-        "updateBannerImage",
-        "User not authenticated",
-        duration,
-      );
+      log.error("updateBannerImage", "User not authenticated");
 
       return { success: false, error: "User not authenticated" };
     }
@@ -110,16 +87,11 @@ class UsersRepository {
         .set({ bannerImage })
         .where(eq(user.zitadelId, session.user.id));
 
-      const duration = Date.now() - start;
-      logRepositorySuccess("updateBannerImage", duration);
-
       return { success: true };
     } catch (error) {
-      const duration = Date.now() - start;
-      logRepositoryError(
+      log.error(
         "updateBannerImage",
         error instanceof Error ? error.message : "DB update failed",
-        duration,
       );
 
       return {
@@ -132,8 +104,7 @@ class UsersRepository {
   async getBannerImageByUserId(
     userId: string,
   ): Promise<RepositoryResponse<string | null>> {
-    const start = Date.now();
-    logRepositoryStart("getBannerImageByUserId");
+    log.call("getBannerImageByUserId");
 
     try {
       const result = await dbInstance
@@ -142,19 +113,14 @@ class UsersRepository {
         .where(eq(user.zitadelId, userId))
         .limit(1);
 
-      const duration = Date.now() - start;
-      logRepositorySuccess("getBannerImageByUserId", duration);
-
       return {
         success: true,
         payload: result[0]?.bannerImage ?? null,
       };
     } catch (error) {
-      const duration = Date.now() - start;
-      logRepositoryError(
+      log.error(
         "getBannerImageByUserId",
         error instanceof Error ? error.message : "DB query failed",
-        duration,
       );
 
       return {
