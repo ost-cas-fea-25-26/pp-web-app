@@ -12,24 +12,22 @@ type ProtectedLayoutProps = {
 };
 
 const ProtectedLayout = ({ children }: ProtectedLayoutProps) => (
-  <Suspense>
-    <AuthGuard>
-      <AppShell
-        header={
-          <Header
-            logo={<LogoLink />}
-            actions={
-              <Suspense>
-                <HeaderActions />
-              </Suspense>
-            }
-          />
+  <AppShell
+    header={
+      <Header
+        logo={<LogoLink />}
+        actions={
+          <Suspense fallback={<div className="min-h-14" />}>
+            <HeaderActions />
+          </Suspense>
         }
-      >
-        {children}
-      </AppShell>
-    </AuthGuard>
-  </Suspense>
+      />
+    }
+  >
+    <Suspense>
+      <AuthGuard>{children}</AuthGuard>
+    </Suspense>
+  </AppShell>
 );
 
 export default ProtectedLayout;
