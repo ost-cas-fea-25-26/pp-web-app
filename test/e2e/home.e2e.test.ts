@@ -1,9 +1,19 @@
 import { test, expect } from "@playwright/test";
-import { resetMockServer, mockGetPosts } from "./helpers/mock-server";
+import {
+  resetMockServer,
+  mockGetPosts,
+  mockGetFollowees,
+  mockPostLikes,
+  mockGetUserById,
+} from "./helpers/mock-server";
+import { expectNoA11yViolations } from "./helpers/a11y";
 
 test.beforeEach(async () => {
   await resetMockServer();
+  await mockGetUserById();
+  await mockGetFollowees();
   await mockGetPosts();
+  await mockPostLikes();
 });
 
 test("home page displays posts", async ({ page }) => {
@@ -14,4 +24,16 @@ test("home page displays posts", async ({ page }) => {
   ).toBeVisible();
 
   await expect(page.getByText("Loving this new putter I got!")).toBeVisible();
+});
+
+test("home page match screenshot", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page).toHaveScreenshot({ fullPage: true });
+});
+
+test("home page has no a11y violations", async ({ page }) => {
+  await page.goto("/");
+
+  await expectNoA11yViolations(page);
 });

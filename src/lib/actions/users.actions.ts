@@ -71,7 +71,7 @@ export const updateMeAction = async (data: UpdateMeActionInput) => {
 
   const [apiResult, bioResult] = await Promise.all([
     api.users.updateMe(updateApiData),
-    bio !== undefined ? usersRepository.updateBio(bio) : undefined,
+    bio === undefined ? undefined : usersRepository.updateBio(bio),
   ]);
 
   if (!apiResult.success) {
