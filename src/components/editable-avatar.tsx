@@ -4,6 +4,7 @@ import { Avatar, UploadImageModal } from "@ost-cas-fea-25-26/pp-design-system";
 import { FC, useState } from "react";
 import Image from "next/image";
 import { updateAvatarAction } from "@/lib/actions/users.actions";
+import { toastAction } from "@/components/toaster";
 
 type EditableAvatarProps = {
   avatarUrl: string | null;
@@ -24,15 +25,13 @@ export const EditableAvatar: FC<EditableAvatarProps> = ({
     const formData = new FormData();
     formData.append("media", file);
 
-    const result = await updateAvatarAction(userId, formData);
+    const result = await toastAction(updateAvatarAction(userId, formData), {
+      loading: "Updating avatar…",
+      success: "Avatar updated successfully",
+      error: "Failed to update avatar",
+    });
 
-    if (!result.success) {
-      // TODO: Replace with a nice toast notification
-      // e.g. https://ui.shadcn.com/docs/components/sonner
-
-      // eslint-disable-next-line no-alert
-      alert(`Failed to update avatar: ${result.error}`);
-
+    if (!result?.success) {
       return;
     }
 

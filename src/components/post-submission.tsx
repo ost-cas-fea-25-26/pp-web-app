@@ -7,10 +7,10 @@ import {
   MumbleSubmission,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { MumbleUser } from "@/lib/mappers/user.mappers";
-import { createMumble } from "@/lib/helpers/create-mumble.helpers";
 import { getAvatarFallbackLetters } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import { createMumble } from "@/lib/helpers/create-mumble";
 
 type PostSubmissionProps = {
   user: MumbleUser;

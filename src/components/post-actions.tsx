@@ -31,17 +31,31 @@ export const PostActions: FC<PostActionsProps> = ({
   isReply = false,
 }) => {
   const [likedState, setLikedState] = useState<LikeStateProps>({
-    liked: liked,
-    likes: likes,
+    liked,
+    likes,
   });
+
+  const like = async () => {
+    await likePostAction(mumbleId);
+    setLikedState({
+      liked: true,
+      likes: likedState.likes + 1,
+    });
+  };
+
+  const unlike = async () => {
+    await unlikePostAction(mumbleId);
+    setLikedState({
+      liked: false,
+      likes: likedState.likes - 1,
+    });
+  };
 
   const handleLikeToggle = async (nextState: boolean) => {
     if (nextState) {
-      await likePostAction(mumbleId);
-      setLikedState({ liked: true, likes: likedState.likes + 1 });
+      await like();
     } else {
-      await unlikePostAction(mumbleId);
-      setLikedState({ liked: false, likes: likedState.likes - 1 });
+      await unlike();
     }
   };
 
@@ -60,7 +74,7 @@ export const PostActions: FC<PostActionsProps> = ({
     );
 
   const commentButton = isReply ? null : (
-    <Link title="View Comments" href={deepLink}>
+    <Link title="View Comments" href={`/mumble/${mumbleId}`}>
       <CommentButton label={commentLabel} icon={commentIcon} />
     </Link>
   );

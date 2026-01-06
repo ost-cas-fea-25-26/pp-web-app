@@ -3,7 +3,7 @@ import { PaginatedPost, Post, PostsGetManyQueryParams } from "./posts.types";
 import { buildPostsQueryString } from "@/lib/api/posts/posts.query-builder";
 
 export class PostsApi {
-  constructor(private client: HttpClient) {}
+  constructor(private readonly client: HttpClient) {}
 
   getMany(params?: PostsGetManyQueryParams) {
     const query = buildPostsQueryString(params);
