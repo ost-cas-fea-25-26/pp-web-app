@@ -24,13 +24,21 @@ export const updateAvatarAction = async (
 };
 
 export const updateBannerAction = async (userId: string, file: File) => {
-  const result = await usersStorage.updateBannerImage(file);
+  const uploadResult = await usersStorage.updateBannerImage(file);
 
-  if (result.success) {
-    revalidatePath(`/users/${userId}`);
+  if (!uploadResult.success || !uploadResult.url) {
+    return uploadResult;
   }
 
-  return result;
+  const dbResult = await usersRepository.updateBannerImage(uploadResult.url);
+
+  if (!dbResult.success) {
+    return dbResult;
+  }
+
+  revalidatePath(`/users/${userId}`);
+
+  return { success: true };
 };
 
 export const followUserAction = async (userId: string) => {
