@@ -4,10 +4,10 @@ import "./globals.css";
 import { ReactNode } from "react";
 import { Toaster } from "@/components/toaster";
 
-const APP_NAME = "PWA App";
-const APP_DEFAULT_TITLE = "My Awesome PWA App";
-const APP_TITLE_TEMPLATE = "%s - PWA App";
-const APP_DESCRIPTION = "Best PWA app in the world!";
+const APP_NAME = "Mumble App";
+const APP_DEFAULT_TITLE = "Best Version of Mumble";
+const APP_TITLE_TEMPLATE = "%s - Mumble App";
+const APP_DESCRIPTION = "Best version of Mumble for all your chatting needs.";
 
 export const metadata: Metadata = {
   applicationName: APP_NAME,
