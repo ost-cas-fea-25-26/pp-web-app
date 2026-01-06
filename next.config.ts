@@ -1,17 +1,21 @@
-import type { NextConfig } from "next";
 import path from "path";
+import withSerwist from "@serwist/next";
+import { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
+
   experimental: {
     proxyClientMaxBodySize: "10mb",
     serverActions: {
       bodySizeLimit: "10mb",
     },
   },
+
   turbopack: {
     root: path.join(__dirname, ".."),
   },
+
   images: {
     remotePatterns: [
       {
@@ -28,4 +32,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSerwist({
+  swSrc: "app/sw.ts",
+  swDest: "public/sw.js",
+})(nextConfig);

@@ -45,3 +45,7 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Serwist
+public/sw*
+public/swe-worker*
