@@ -1,3 +1,5 @@
 @import "tailwindcss";
 @import "@ost-cas-fea-25-26/pp-design-system/styles";
+
+/* sonar-ignore css:S4662 -- Tailwind CSS v4 custom at-rule */
 @source "../../node_modules/@ost-cas-fea-25-26/pp-design-system";

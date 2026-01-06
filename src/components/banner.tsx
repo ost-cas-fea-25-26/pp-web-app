@@ -7,6 +7,7 @@ import {
 import Image from "next/image";
 import { FC, useState } from "react";
 import { updateBannerAction } from "@/lib/actions/users.actions";
+import { toastAction } from "@/components/toaster";
 
 type BannerProps = {
   isEditable?: boolean;
@@ -27,13 +28,13 @@ export const Banner: FC<BannerProps> = ({
   const [src, setSrc] = useState(bannerUrl);
 
   const saveNewBannerImage = async (file: File) => {
-    const result = await updateBannerAction(userId, file);
+    const result = await toastAction(updateBannerAction(userId, file), {
+      loading: "Updating banner…",
+      success: "Banner updated successfully",
+      error: "Failed to update banner",
+    });
 
-    if (!result.success) {
-      // TODO: replace with toast
-      // eslint-disable-next-line no-alert
-      alert(`Failed to update banner: ${result.error}`);
-
+    if (!result?.success) {
       return;
     }
 
@@ -56,6 +57,7 @@ export const Banner: FC<BannerProps> = ({
           />
         }
       />
+
       {isEditable && (
         <UploadImageModal
           open={isOpenEditModal}
