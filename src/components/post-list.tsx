@@ -8,26 +8,34 @@ import {
   getTimestampLabelFromUlid,
 } from "@/lib/utils";
 import Image from "next/image";
+import { ErrorOverlay } from "@/components/error-overlay";
+import { PostListLoader } from "./post-list-loader";
 
-type PostListProps = {
+export type PostListProps = {
   filterByTags?: string[];
   filterLikedBy?: string[];
   filterByCreatorsIds?: string[];
+  currentOffset: number;
 };
 
 export const PostList: FC<PostListProps> = async ({
   filterByTags,
   filterLikedBy,
   filterByCreatorsIds,
+  currentOffset = 0,
 }) => {
+  const LIMIT = 3;
+
   const postsResult = await getPostsAction({
     creators: filterByCreatorsIds,
     tags: filterByTags,
     likedBy: filterLikedBy,
+    offset: currentOffset,
+    limit: LIMIT,
   });
 
   if (!postsResult.success) {
-    return <p>Failed to load posts</p>;
+    return <ErrorOverlay message="Failed to load posts" />;
   }
 
   const posts: MumbleWithId[] = (postsResult.payload.data ?? []).filter(
@@ -47,13 +55,15 @@ export const PostList: FC<PostListProps> = async ({
           userName={users[postIndex].fullName}
           userHandle={users[postIndex].handle}
           avatar={
-            <Image
-              src={users[postIndex].avatarUrl ?? "/avatars/default.png"}
-              alt={users[postIndex].fullName}
-              width={64}
-              height={64}
-              className="object-cover w-full h-full"
-            />
+            users[postIndex].avatarUrl && (
+              <Image
+                src={users[postIndex].avatarUrl}
+                alt={users[postIndex].fullName}
+                width={64}
+                height={64}
+                className="object-cover w-full h-full"
+              />
+            )
           }
           comments={post.replies ?? 0}
           likes={post.likes ?? 0}
@@ -72,6 +82,12 @@ export const PostList: FC<PostListProps> = async ({
           profileUrl={`/users/${post.creator?.id}`}
         />
       ))}
+      <PostListLoader
+        filterByTags={filterByTags}
+        filterLikedBy={filterLikedBy}
+        filterByCreatorsIds={filterByCreatorsIds}
+        currentOffset={LIMIT}
+      />
     </div>
   );
 };
