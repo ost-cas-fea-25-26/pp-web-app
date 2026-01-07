@@ -1,18 +1,5 @@
-import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeEach,
-  beforeAll,
-  afterAll,
-} from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { createMumble } from "@/lib/helpers/create-mumble";
-import {
-  resetMockServer,
-  startMockServer,
-  stopMockServer,
-} from "../../e2e/helpers/mock-server";
 
 vi.mock("@/components/toaster", () => ({
   // eslint-disable-next-line @typescript-eslint/no-unsafe-return
@@ -25,16 +12,6 @@ vi.mock("@/lib/actions/posts.actions", () => ({
 }));
 
 describe("create mumble", () => {
-  beforeAll(async () => {
-    await startMockServer();
-  });
-  afterAll(async () => {
-    await stopMockServer();
-  });
-  beforeEach(async () => {
-    await resetMockServer();
-  });
-
   it("should throw if no data is provided", async () => {
     await expect(createMumble(undefined)).rejects.toThrow("No data provided");
   });
