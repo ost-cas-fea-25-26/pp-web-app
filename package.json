@@ -31,7 +31,7 @@
     "node": "^22.0.0"
   },
   "dependencies": {
-    "@ost-cas-fea-25-26/pp-design-system": "^2.28.0",
+    "@ost-cas-fea-25-26/pp-design-system": "^2.28.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@vercel/blob": "^2.0.0",
