@@ -147,3 +147,25 @@ export const mockPostLikes = async () => {
     });
   }
 };
+
+export const mockGetPostById = async (postId: string) => {
+  const post = posts.find((post) => post.id === postId);
+  await fetch(`${MOCKSERVER_URL}${EXPECTATION_PATH}`, {
+    method: "PUT",
+    headers: JSON_HEADERS,
+    body: JSON.stringify({
+      priority: 20,
+      httpRequest: {
+        method: "GET",
+        path: `/posts/${postId}`,
+      },
+      httpResponse: {
+        statusCode: post ? 200 : 404,
+        headers: JSON_HEADERS,
+        body: post
+          ? JSON.stringify(post)
+          : JSON.stringify({ error: "Not found" }),
+      },
+    }),
+  });
+};
