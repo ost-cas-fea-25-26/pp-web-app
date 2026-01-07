@@ -9,6 +9,7 @@ import {
   Tabs,
 } from "@ost-cas-fea-25-26/pp-design-system";
 import { Suspense } from "react";
+import { getMumbleBaseUrl } from "@/lib/utils";
 
 type ProfilePageProps = {
   params: Promise<{
@@ -40,11 +41,21 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
               tabs={[
                 {
                   text: "Your Mumbles",
-                  content: <PostList filterByCreatorsIds={[userId]} />,
+                  content: (
+                    <PostList
+                      filterByCreatorsIds={[userId]}
+                      mumbleBaseUrl={getMumbleBaseUrl()}
+                    />
+                  ),
                 },
                 {
                   text: "Your Likes",
-                  content: <PostList filterLikedBy={[userId]} />,
+                  content: (
+                    <PostList
+                      filterLikedBy={[userId]}
+                      mumbleBaseUrl={getMumbleBaseUrl()}
+                    />
+                  ),
                 },
               ]}
             />
@@ -52,7 +63,10 @@ const ProfilePage = async ({ params }: ProfilePageProps) => {
         ) : (
           <>
             <FollowToggleSection userId={userId} />
-            <PostList filterByCreatorsIds={[userId]} />
+            <PostList
+              filterByCreatorsIds={[userId]}
+              mumbleBaseUrl={getMumbleBaseUrl()}
+            />
           </>
         )}
       </div>

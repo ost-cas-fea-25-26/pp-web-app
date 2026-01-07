@@ -30,6 +30,10 @@ export const getTimestampLabelFromUlid = (ulid: string): string => {
   });
 };
 
+export const getMumbleBaseUrl = (): string => {
+  return `${requireEnv("VERCEL_URL")}/mumble/`;
+};
+
 export const getDeepLinkUrlByMumbleId = (mumbleId: string): string => {
   return `${requireEnv("VERCEL_URL")}/mumble/${mumbleId}`;
 };
