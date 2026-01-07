@@ -1,6 +1,7 @@
 "use client";
 
 import { followUserAction } from "@/lib/actions/users.actions";
+import { toastAction } from "@/components/toaster";
 import { Button, MumbleIcon } from "@ost-cas-fea-25-26/pp-design-system";
 
 type FollowButtonProps = {
@@ -9,7 +10,11 @@ type FollowButtonProps = {
 
 export const FollowButton = ({ userId }: FollowButtonProps) => {
   const handleFollow = async () => {
-    await followUserAction(userId);
+    await toastAction(followUserAction(userId), {
+      loading: "Following user…",
+      success: "You are now following this user",
+      error: "Failed to follow user",
+    });
   };
 
   return (
