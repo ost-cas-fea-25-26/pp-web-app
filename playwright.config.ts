@@ -6,10 +6,13 @@ dotenv.config({ path: ".env.test", quiet: true });
 export default defineConfig({
   testDir: "./test",
   testMatch: ["**/*.e2e.test.ts"],
-  fullyParallel: true,
+
+  fullyParallel: false,
+  workers: 1,
+
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? "50%" : undefined,
+
   snapshotDir: "snapshots",
   snapshotPathTemplate:
     "{testDir}/{testFileDir}/__screenshots__/{projectName}/{testName}{ext}",

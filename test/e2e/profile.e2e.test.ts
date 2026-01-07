@@ -16,8 +16,8 @@ test.beforeEach(async () => {
   await mockPostLikes();
 });
 
-test("home page match screenshot", async ({ page }) => {
-  await page.goto("/");
+test("profile page match screenshot", async ({ page }) => {
+  await page.goto("/users/351340886451342425");
   await expect(
     page.getByText("Just made a birdie on the 18th hole!"),
   ).toBeVisible();
@@ -26,8 +26,8 @@ test("home page match screenshot", async ({ page }) => {
   await expect(page).toHaveScreenshot({ fullPage: true });
 });
 
-test("home page has no a11y violations", async ({ page }) => {
-  await page.goto("/");
+test("profile page has no a11y violations", async ({ page }) => {
+  await page.goto("/users/351340886451342425");
 
   await expect(
     page.getByText("Just made a birdie on the 18th hole!"),
