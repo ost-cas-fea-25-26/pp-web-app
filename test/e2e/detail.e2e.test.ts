@@ -24,12 +24,14 @@ test("detail page displays post", async ({ page }) => {
 
 test("detail page match screenshot", async ({ page }) => {
   await page.goto(DETAIL_PAGE_URL);
+  await expect(page.getByText("Loving this new putter I got!")).toBeVisible();
 
   await expect(page).toHaveScreenshot({ fullPage: true });
 });
 
 test("detail page has no a11y violations", async ({ page }) => {
   await page.goto(DETAIL_PAGE_URL);
+  await expect(page.getByText("Loving this new putter I got!")).toBeVisible();
 
   await expectNoA11yViolations(page);
 });
